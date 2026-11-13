@@ -1,0 +1,1195 @@
+// Final consolidated Flower Marketplace schema
+Project flower_marketplace {
+  database_type: "PostgreSQL"
+}
+
+Enum user_status {
+  PENDING_VERIFICATION
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+Table users {
+  id uuid [pk]
+  first_name varchar(100) [not null]
+  last_name varchar(100)
+  email varchar(255) [not null, unique]
+  phone varchar(20) [unique]
+  password_hash text [not null]
+  status user_status [not null, default: 'PENDING_VERIFICATION']
+  email_verified bool [not null, default: false]
+  last_login_at timestamptz
+  version int [not null, default: 1]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+  deleted_at timestamptz
+}
+
+Table roles {
+  id uuid [pk]
+  name varchar(50) [not null, unique]
+  description text
+}
+
+Table permissions {
+  id uuid [pk]
+  code varchar(100) [not null, unique]
+  description text
+}
+
+Table user_roles {
+  user_id uuid [not null]
+  role_id uuid [not null]
+
+  indexes {
+    (user_id, role_id) [pk]
+  }
+}
+
+Table role_permissions {
+  role_id uuid [not null]
+  permission_id uuid [not null]
+
+  indexes {
+    (role_id, permission_id) [pk]
+  }
+}
+
+Table refresh_tokens {
+  id uuid [pk]
+  user_id uuid [not null]
+  token_hash text [not null]
+  expires_at timestamptz [not null]
+  revoked_at timestamptz
+  created_at timestamptz [not null]
+}
+
+Table login_history {
+  id uuid [pk]
+  user_id uuid [not null]
+  ip_address varchar(64)
+  user_agent text
+  success bool [not null]
+  logged_at timestamptz [not null]
+}
+
+Ref: user_roles.user_id > users.id
+Ref: user_roles.role_id > roles.id
+Ref: role_permissions.role_id > roles.id
+Ref: role_permissions.permission_id > permissions.id
+Ref: refresh_tokens.user_id > users.id
+Ref: login_history.user_id > users.id
+
+// Marketplace Module
+
+Enum store_status {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+Enum location_status {
+  ACTIVE
+  INACTIVE
+}
+
+Table stores {
+  id uuid [pk]
+  owner_user_id uuid [not null, unique]
+  name varchar(200) [not null]
+  slug varchar(200) [not null, unique]
+  description text
+  email varchar(255)
+  phone varchar(20)
+  logo_url text
+  cover_image_url text
+
+  status store_status [not null, default: 'PENDING']
+
+  delivery_enabled bool [not null, default: true]
+  pickup_enabled bool [not null, default: true]
+
+  average_rating numeric(3,2) [default: 0]
+  total_reviews int [not null, default: 0]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+  deleted_at timestamptz
+  version int [not null, default: 1]
+
+  indexes {
+    slug [unique]
+    owner_user_id [unique]
+    status
+    name
+  }
+}
+
+Table categories {
+  id uuid [pk]
+  name varchar(100) [not null, unique]
+  slug varchar(120) [not null, unique]
+  description text
+  icon_url text
+  display_order int [default: 0]
+  is_active bool [not null, default: true]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+}
+
+Table store_categories {
+  store_id uuid [not null]
+  category_id uuid [not null]
+  assigned_at timestamptz [not null]
+
+  indexes {
+    (store_id, category_id) [pk]
+    category_id
+  }
+}
+
+Table store_addresses {
+  id uuid [pk]
+  store_id uuid [not null, unique]
+
+  address_line_1 varchar(255) [not null]
+  address_line_2 varchar(255)
+  city varchar(100) [not null]
+  district varchar(100) [not null]
+  province varchar(100) [not null]
+  postal_code varchar(20)
+  country varchar(100) [default: 'Sri Lanka']
+
+  latitude decimal(10,7)
+  longitude decimal(10,7)
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+}
+
+Table store_locations {
+  id uuid [pk]
+
+  store_id uuid [not null]
+
+  name varchar(150) [not null]
+
+  address_line_1 varchar(255) [not null]
+  address_line_2 varchar(255)
+
+  city varchar(100)
+  district varchar(100)
+  province varchar(100)
+  postal_code varchar(20)
+
+  latitude decimal(10,7)
+  longitude decimal(10,7)
+
+  is_default bool [not null, default: false]
+
+  status location_status [not null, default: 'ACTIVE']
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    store_id
+    status
+  }
+}
+
+Ref: stores.owner_user_id > users.id
+Ref: store_categories.store_id > stores.id
+Ref: store_categories.category_id > categories.id
+Ref: store_addresses.store_id > stores.id
+Ref: store_locations.store_id > stores.id
+
+// Catalog Module
+
+Enum product_status {
+  DRAFT
+  ACTIVE
+  OUT_OF_STOCK
+  ARCHIVED
+}
+
+Table products {
+  id uuid [pk]
+  store_id uuid [not null]
+
+  name varchar(255) [not null]
+  slug varchar(255) [not null]
+  short_description varchar(500)
+  description text
+
+  base_price numeric(12,2) [not null]
+  currency varchar(10) [default: 'LKR']
+
+  status product_status [not null, default: 'DRAFT']
+  featured bool [default: false]
+
+  average_rating numeric(3,2) [default: 0]
+  total_reviews int [default: 0]
+
+  search_vector tsvector
+
+  created_at timestamptz
+  updated_at timestamptz
+  deleted_at timestamptz
+  version int [default: 1]
+
+  indexes {
+    store_id
+    (store_id, status)
+    slug [unique]
+    search_vector [type: gin]
+  }
+}
+
+Table product_attributes {
+  id uuid [pk]
+  store_id uuid [not null]
+
+  name varchar(100) [not null]
+  code varchar(100) [not null]
+
+  display_order int [default: 0]
+  is_required bool [default: false]
+  is_variant bool [default: true]
+
+  indexes {
+    (store_id, code) [unique]
+  }
+}
+
+Table attribute_values {
+  id uuid [pk]
+  attribute_id uuid [not null]
+
+  value varchar(150) [not null]
+  display_order int [default: 0]
+
+  indexes {
+    (attribute_id, value) [unique]
+  }
+}
+
+Table product_variants {
+  id uuid [pk]
+
+  product_id uuid [not null]
+
+  sku varchar(120) [not null]
+  barcode varchar(120)
+
+  variant_name varchar(255)
+
+  price numeric(12,2) [not null]
+
+  compare_at_price numeric(12,2)
+
+  weight numeric(10,2)
+
+  status product_status [default: 'ACTIVE']
+
+  created_at timestamptz
+  updated_at timestamptz
+
+  indexes {
+    sku [unique]
+    barcode [unique]
+    product_id
+  }
+}
+
+Table variant_option_values {
+  variant_id uuid [not null]
+  attribute_value_id uuid [not null]
+
+  indexes {
+    (variant_id, attribute_value_id) [pk]
+  }
+}
+
+Table product_images {
+  id uuid [pk]
+
+  product_id uuid [not null]
+
+  variant_id uuid
+
+  original_image_url text
+
+  processed_image_url text
+
+  thumbnail_url text
+
+  display_order int [default: 0]
+
+  is_primary bool [default: false]
+
+  storage_provider varchar(50) [default: 'AWS_S3']
+
+  background_removed bool [default: false]
+
+  created_at timestamptz
+
+  indexes {
+    product_id
+    variant_id
+  }
+}
+
+Ref: products.store_id > stores.id
+Ref: product_attributes.store_id > stores.id
+
+Ref: attribute_values.attribute_id > product_attributes.id
+
+Ref: product_variants.product_id > products.id
+
+Ref: variant_option_values.variant_id > product_variants.id
+
+Ref: variant_option_values.attribute_value_id > attribute_values.id
+
+Ref: product_images.product_id > products.id
+
+Ref: product_images.variant_id > product_variants.id
+
+
+// Inventory Module
+
+Enum inventory_transaction_type {
+  PURCHASE
+  SALE
+  RETURN
+  ADJUSTMENT
+  TRANSFER_IN
+  TRANSFER_OUT
+  DAMAGE
+  EXPIRED
+  RESERVED
+  RELEASED
+}
+
+Table inventories {
+  id uuid [pk]
+
+  variant_id uuid [not null]
+  store_location_id uuid [not null]
+
+  available_quantity int [not null, default: 0]
+  reserved_quantity int [not null, default: 0]
+  damaged_quantity int [not null, default: 0]
+
+  reorder_level int [not null, default: 5]
+  reorder_quantity int
+
+  allow_backorder bool [not null, default: false]
+
+  version int [not null, default: 1]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    (variant_id, store_location_id) [unique]
+    variant_id
+    store_location_id
+    available_quantity
+  }
+}
+
+Table inventory_transactions {
+  id uuid [pk]
+
+  inventory_id uuid [not null]
+
+  transaction_type inventory_transaction_type [not null]
+
+  quantity int [not null]
+
+  balance_after int [not null]
+
+  reference_type varchar(50)
+  reference_id uuid
+
+  remarks text
+
+  created_by uuid
+  created_at timestamptz [not null]
+
+  indexes {
+    inventory_id
+    transaction_type
+    created_at
+    reference_id
+  }
+}
+
+Ref: inventories.variant_id > product_variants.id
+Ref: inventories.store_location_id > store_locations.id
+Ref: inventory_transactions.inventory_id > inventories.id
+Ref: inventory_transactions.created_by > users.id
+
+
+// Shopping Module
+
+Table carts {
+  id uuid [pk]
+  customer_id uuid [not null, unique]
+
+  status varchar(20) [not null, default: 'ACTIVE']
+  expires_at timestamptz
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    customer_id [unique]
+    status
+  }
+}
+
+Table cart_items {
+  id uuid [pk]
+
+  cart_id uuid [not null]
+  store_id uuid [not null]
+  product_id uuid [not null]
+  variant_id uuid [not null]
+
+  quantity int [not null, default: 1]
+
+  unit_price numeric(12,2) [not null]
+
+  added_at timestamptz [not null]
+
+  indexes {
+    cart_id
+    store_id
+    variant_id
+    (cart_id, variant_id) [unique]
+  }
+}
+
+Table wishlists {
+  id uuid [pk]
+
+  customer_id uuid [not null, unique]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    customer_id [unique]
+  }
+}
+
+Table wishlist_items {
+  id uuid [pk]
+
+  wishlist_id uuid [not null]
+  product_id uuid [not null]
+  variant_id uuid
+
+  added_at timestamptz [not null]
+
+  indexes {
+    wishlist_id
+    product_id
+    variant_id
+    (wishlist_id, product_id, variant_id) [unique]
+  }
+}
+
+Ref: carts.customer_id > users.id
+
+Ref: cart_items.cart_id > carts.id
+Ref: cart_items.store_id > stores.id
+Ref: cart_items.product_id > products.id
+Ref: cart_items.variant_id > product_variants.id
+
+Ref: wishlists.customer_id > users.id
+Ref: wishlist_items.wishlist_id > wishlists.id
+Ref: wishlist_items.product_id > products.id
+Ref: wishlist_items.variant_id > product_variants.id
+
+// Orders Module
+
+Enum order_status {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  READY_FOR_PICKUP
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+Table orders {
+  id uuid [pk]
+
+  order_number varchar(30) [not null, unique]
+
+  customer_id uuid [not null]
+  store_id uuid [not null]
+
+  status order_status [not null, default: 'PENDING']
+
+  currency varchar(10) [not null, default: 'LKR']
+
+  subtotal numeric(12,2) [not null]
+  discount_amount numeric(12,2) [not null, default: 0]
+  delivery_fee numeric(12,2) [not null, default: 0]
+  tax_amount numeric(12,2) [not null, default: 0]
+  total_amount numeric(12,2) [not null]
+
+  notes text
+
+  placed_at timestamptz [not null]
+  confirmed_at timestamptz
+  completed_at timestamptz
+  cancelled_at timestamptz
+
+  version int [not null, default: 1]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    order_number [unique]
+    customer_id
+    store_id
+    status
+    placed_at
+    (customer_id, placed_at)
+    (store_id, status)
+  }
+}
+
+Table order_items {
+  id uuid [pk]
+
+  order_id uuid [not null]
+
+  product_id uuid
+  variant_id uuid
+
+  sku varchar(120)
+  product_name varchar(255) [not null]
+  variant_name varchar(255)
+
+  unit_price numeric(12,2) [not null]
+  quantity int [not null]
+  line_total numeric(12,2) [not null]
+
+  product_image_url text
+
+  created_at timestamptz [not null]
+
+  indexes {
+    order_id
+    product_id
+    variant_id
+  }
+}
+
+Table order_status_history {
+  id uuid [pk]
+
+  order_id uuid [not null]
+
+  previous_status order_status
+  new_status order_status [not null]
+
+  remarks text
+
+  changed_by uuid
+
+  changed_at timestamptz [not null]
+
+  indexes {
+    order_id
+    new_status
+    changed_at
+  }
+}
+
+Ref: orders.customer_id > users.id
+Ref: orders.store_id > stores.id
+
+Ref: order_items.order_id > orders.id
+Ref: order_items.product_id > products.id
+Ref: order_items.variant_id > product_variants.id
+
+Ref: order_status_history.order_id > orders.id
+Ref: order_status_history.changed_by > users.id
+
+
+// Payments Module
+
+Enum payment_method {
+  PAYHERE
+}
+
+Enum payment_status {
+  PENDING
+  AUTHORIZED
+  SUCCESS
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+Enum refund_status {
+  REQUESTED
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+Table payments {
+  id uuid [pk]
+
+  order_id uuid [not null, unique]
+
+  payment_reference varchar(120) [not null, unique]
+  gateway_transaction_id varchar(150)
+
+  payment_method payment_method [not null, default: 'PAYHERE']
+  status payment_status [not null, default: 'PENDING']
+
+  currency varchar(10) [not null, default: 'LKR']
+  amount numeric(12,2) [not null]
+
+  paid_at timestamptz
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  version int [not null, default: 1]
+
+  indexes {
+    payment_reference [unique]
+    gateway_transaction_id
+    status
+    paid_at
+  }
+}
+
+Table payment_transactions {
+  id uuid [pk]
+
+  payment_id uuid [not null]
+
+  gateway_transaction_id varchar(150)
+  gateway_status varchar(100)
+
+  request_payload text
+  response_payload text
+
+  is_success bool [not null, default: false]
+
+  processed_at timestamptz [not null]
+
+  indexes {
+    payment_id
+    gateway_transaction_id
+    processed_at
+  }
+}
+
+Table payment_webhooks {
+  id uuid [pk]
+
+  payment_id uuid
+
+  event_id varchar(150) [not null, unique]
+  event_type varchar(100) [not null]
+
+  payload text [not null]
+
+  processed bool [not null, default: false]
+  processed_at timestamptz
+
+  received_at timestamptz [not null]
+
+  indexes {
+    event_id [unique]
+    event_type
+    processed
+    received_at
+  }
+}
+
+Table refunds {
+  id uuid [pk]
+
+  payment_id uuid [not null]
+
+  refund_reference varchar(120) [not null, unique]
+
+  amount numeric(12,2) [not null]
+
+  reason text
+
+  status refund_status [not null, default: 'REQUESTED']
+
+  requested_at timestamptz [not null]
+  completed_at timestamptz
+
+  indexes {
+    payment_id
+    refund_reference [unique]
+    status
+  }
+}
+
+Ref: payments.order_id > orders.id
+Ref: payment_transactions.payment_id > payments.id
+Ref: payment_webhooks.payment_id > payments.id
+Ref: refunds.payment_id > payments.id
+
+
+// Delivery Module
+
+Enum delivery_method {
+  PICKUP
+  UBER_CONNECT
+  PICKME
+}
+
+Enum delivery_status {
+  PENDING
+  BOOKED
+  DRIVER_ASSIGNED
+  PICKED_UP
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+Table delivery_addresses {
+  id uuid [pk]
+
+  customer_id uuid [not null]
+
+  recipient_name varchar(150) [not null]
+  recipient_phone varchar(20) [not null]
+
+  address_line_1 varchar(255) [not null]
+  address_line_2 varchar(255)
+  city varchar(100) [not null]
+  district varchar(100) [not null]
+  province varchar(100) [not null]
+  postal_code varchar(20)
+  country varchar(100) [default: 'Sri Lanka']
+
+  latitude decimal(10,7)
+  longitude decimal(10,7)
+
+  is_default bool [not null, default: false]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    customer_id
+    is_default
+  }
+}
+
+Table deliveries {
+  id uuid [pk]
+
+  order_id uuid [not null, unique]
+  delivery_address_id uuid
+  pickup_store_location_id uuid [not null]
+
+  delivery_method delivery_method [not null]
+  status delivery_status [not null, default: 'PENDING']
+
+  provider_reference varchar(150)
+  tracking_url text
+
+  estimated_delivery_at timestamptz
+  picked_up_at timestamptz
+  delivered_at timestamptz
+
+  delivery_fee numeric(12,2) [not null, default: 0]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    order_id [unique]
+    status
+    delivery_method
+    provider_reference
+  }
+}
+
+Table delivery_provider_requests {
+  id uuid [pk]
+
+  delivery_id uuid [not null]
+
+  provider_name varchar(50) [not null]
+  request_type varchar(50) [not null]
+
+  external_request_id varchar(150)
+  request_payload text
+  response_payload text
+
+  response_status varchar(50)
+
+  created_at timestamptz [not null]
+
+  indexes {
+    delivery_id
+    provider_name
+    external_request_id
+  }
+}
+
+Ref: delivery_addresses.customer_id > users.id
+Ref: deliveries.order_id > orders.id
+Ref: deliveries.delivery_address_id > delivery_addresses.id
+Ref: deliveries.pickup_store_location_id > store_locations.id
+Ref: delivery_provider_requests.delivery_id > deliveries.id
+
+
+// Reviews Module
+
+Enum review_status {
+  PENDING
+  PUBLISHED
+  HIDDEN
+  REPORTED
+}
+
+Table reviews {
+  id uuid [pk]
+
+  order_id uuid [not null, unique]
+  customer_id uuid [not null]
+  store_id uuid [not null]
+  product_id uuid
+  variant_id uuid
+
+  rating int [not null, note: '1-5']
+  title varchar(200)
+  review_text text
+
+  is_verified_purchase bool [not null, default: true]
+
+  seller_reply text
+  seller_replied_at timestamptz
+
+  status review_status [not null, default: 'PUBLISHED']
+
+  helpful_count int [not null, default: 0]
+  report_count int [not null, default: 0]
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    order_id [unique]
+    customer_id
+    store_id
+    product_id
+    status
+    (store_id, rating)
+    (product_id, rating)
+  }
+}
+
+Table review_images {
+  id uuid [pk]
+
+  review_id uuid [not null]
+  image_url text [not null]
+  display_order int [default: 0]
+
+  created_at timestamptz [not null]
+
+  indexes {
+    review_id
+  }
+}
+
+Ref: reviews.order_id > orders.id
+Ref: reviews.customer_id > users.id
+Ref: reviews.store_id > stores.id
+Ref: reviews.product_id > products.id
+Ref: reviews.variant_id > product_variants.id
+Ref: review_images.review_id > reviews.id
+
+
+// Media Module
+
+Enum media_owner_type {
+  PRODUCT
+  PRODUCT_VARIANT
+  STORE
+  CATEGORY
+  REVIEW
+  USER
+}
+
+Enum media_type {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+Enum media_status {
+  UPLOADING
+  PROCESSING
+  ACTIVE
+  FAILED
+  ARCHIVED
+}
+
+Table media_assets {
+  id uuid [pk]
+
+  owner_type media_owner_type [not null]
+  owner_id uuid [not null]
+
+  media_type media_type [not null]
+
+  original_file_name varchar(255)
+  mime_type varchar(100)
+
+  storage_provider varchar(30) [not null, default: 'AWS_S3']
+  bucket_name varchar(100)
+
+  original_url text [not null]
+  processed_url text
+  thumbnail_url text
+
+  file_size bigint
+  width int
+  height int
+
+  checksum varchar(128)
+
+  background_removed bool [not null, default: false]
+  ai_processed bool [not null, default: false]
+
+  status media_status [not null, default: 'UPLOADING']
+
+  is_primary bool [not null, default: false]
+  display_order int [not null, default: 0]
+
+  metadata json
+
+  uploaded_by uuid
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    (owner_type, owner_id)
+    media_type
+    status
+    uploaded_by
+    checksum [unique]
+    (owner_type, owner_id, is_primary)
+  }
+}
+
+Table media_processing_jobs {
+  id uuid [pk]
+
+  media_asset_id uuid [not null]
+
+  processor varchar(100) [not null]
+
+  job_status varchar(50) [not null]
+
+  request_payload text
+  response_payload text
+
+  started_at timestamptz
+  completed_at timestamptz
+
+  indexes {
+    media_asset_id
+    job_status
+  }
+}
+
+Ref: media_processing_jobs.media_asset_id > media_assets.id
+Ref: media_assets.uploaded_by > users.id
+
+
+// Notifications Module
+
+Enum notification_channel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+  WEBHOOK
+}
+
+Enum notification_status {
+  PENDING
+  QUEUED
+  PROCESSING
+  SENT
+  DELIVERED
+  FAILED
+  READ
+}
+
+Enum notification_priority {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
+}
+
+Table notifications {
+  id uuid [pk]
+
+  user_id uuid [not null]
+
+  title varchar(255) [not null]
+  message text [not null]
+
+  channel notification_channel [not null]
+  status notification_status [not null, default: 'PENDING']
+  priority notification_priority [not null, default: 'NORMAL']
+
+  reference_type varchar(50)
+  reference_id uuid
+
+  is_read bool [not null, default: false]
+  read_at timestamptz
+
+  scheduled_at timestamptz
+  expires_at timestamptz
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    user_id
+    status
+    channel
+    priority
+    is_read
+    (user_id, is_read)
+    (reference_type, reference_id)
+  }
+}
+
+Table notification_queue {
+  id uuid [pk]
+
+  notification_id uuid [not null]
+
+  provider varchar(100)
+  provider_message_id varchar(150)
+
+  attempt_count int [not null, default: 0]
+  max_attempts int [not null, default: 5]
+
+  next_retry_at timestamptz
+  last_attempt_at timestamptz
+
+  error_message text
+
+  worker_name varchar(100)
+
+  created_at timestamptz [not null]
+  updated_at timestamptz [not null]
+
+  indexes {
+    notification_id
+    provider_message_id
+    next_retry_at
+    attempt_count
+  }
+}
+
+Ref: notifications.user_id > users.id
+Ref: notification_queue.notification_id > notifications.id
+
+
+// Audit Module
+
+Enum audit_action {
+  CREATE
+  UPDATE
+  DELETE
+  RESTORE
+  LOGIN
+  LOGOUT
+  PASSWORD_CHANGE
+  APPROVE
+  REJECT
+  PAYMENT
+  REFUND
+  STATUS_CHANGE
+  EXPORT
+  IMPORT
+}
+
+Table audit_logs {
+  id uuid [pk]
+
+  actor_user_id uuid
+
+  action audit_action [not null]
+
+  entity_type varchar(100) [not null]
+  entity_id uuid
+
+  entity_name varchar(255)
+
+  old_values json
+  new_values json
+
+  changed_fields json
+
+  ip_address varchar(64)
+  user_agent text
+
+  request_id varchar(100)
+  correlation_id varchar(100)
+
+  module varchar(100)
+
+  success bool [not null, default: true]
+  error_message text
+
+  created_at timestamptz [not null]
+
+  indexes {
+    actor_user_id
+    action
+    entity_type
+    entity_id
+    module
+    success
+    created_at
+    (entity_type, entity_id)
+    (actor_user_id, created_at)
+    correlation_id
+    request_id
+  }
+}
+
+Ref: audit_logs.actor_user_id > users.id

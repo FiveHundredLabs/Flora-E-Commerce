@@ -1,0 +1,2 @@
+# Optional Codex project-local defaults; verify compatibility with your Codex CLI version.
+model_reasoning_effort = "medium"

@@ -1,0 +1,1 @@
+:root{font-family:system-ui,sans-serif;color:#222;background:#fafafa;font-synthesis:none;line-height:1.6}body{margin:0;padding:clamp(1rem,4vw,3rem)}header,main{max-width:65rem;margin:auto}header{padding:1rem 0;border-bottom:1px solid #bbb}main{padding:3rem 0}a{color:#254b66}a:focus-visible{outline:3px solid #254b66;outline-offset:4px}h1{font-size:clamp(1.8rem,5vw,3rem)}

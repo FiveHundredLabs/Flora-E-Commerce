@@ -1,0 +1,2 @@
+# Codex adapter
+Read root `AGENTS.md` as authoritative. Use `docs/TASKS.md` for small scoped assignments. For each task report: requirement IDs, files changed, tests executed, blockers, and residual risks. Do not start a second dependent task before the first is validated. `.codex/config.toml` contains only conservative example project settings; Codex runtime capabilities depend on installed version.

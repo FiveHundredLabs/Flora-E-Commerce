@@ -1,0 +1,2 @@
+# Antigravity adapter
+Read root `AGENTS.md` first, then `.agent/rules/project.md`. Use `.agent/workflows/implement-feature.md` and `.agent/agents/*.md` as role-specific prompt templates. The `.agent` structure is portable project guidance; validate your installed Antigravity version's native agent/rule discovery before assuming automatic loading. Follow the same tasks and acceptance criteria as Codex.

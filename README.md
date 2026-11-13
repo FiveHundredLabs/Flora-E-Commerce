@@ -1,0 +1,37 @@
+# Flower & Flora — Frontend Agentic Starter Pack
+
+Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated with **OpenAI Codex** and **Google Antigravity**.
+
+> This workspace includes a minimal frontend foundation and project specifications. Marketplace features and live backend integrations remain pending. See `docs/PRIORITY_REMEDIATION.md` for the decision package.
+
+## Read first
+1. `docs/PROJECT_CONTEXT.md`
+2. `docs/PRODUCT_REQUIREMENTS.md`
+3. `docs/OPEN_DECISIONS.md`
+4. `docs/ARCHITECTURE.md`
+5. `docs/DESIGN.md`
+6. `docs/TASKS.md`
+7. `AGENTS.md`
+
+## Source of truth
+- `references/client-feature-document.pdf` — high-level client scope; contains unresolved decisions.
+- `references/flower-marketplace-schema.dbml` — data model reference, **not** a frontend REST API contract.
+- `docs/OPEN_DECISIONS.md` — blocks implementation where business behavior is undefined.
+- `docs/API_CONTRACT.md` — proposed interface process; must be approved before backend wiring.
+
+## Start
+1. Review open decisions with client and backend owner.
+2. Run `npm ci` from the root, then `npm run dev` to start the frontend foundation.
+3. Implement design tokens and shell before feature pages.
+4. Use mock adapters with clearly labeled fixtures until APIs are specified.
+5. Run checks defined in `docs/TESTING.md` before merging.
+
+## Agent coordination
+Codex: root `AGENTS.md`, optional `.codex/config.toml`, and `CODEX.md`.
+Antigravity: `.agent/rules/`, `.agent/workflows/`, `.agent/agents/` (agent definitions are **project role prompts**, not a guarantee of native automatic subagent registration).
+
+## Scope
+Customer, supplier, and super-admin interfaces; provider calls, payments, storage, n8n, and authoritative permission enforcement belong to backend/services.
+
+## Source summary
+Client target completion: **25 December 2026**, contingent on scope and third-party availability. Schema: **41 tables**, **19 enums**.
