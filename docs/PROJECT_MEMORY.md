@@ -4,7 +4,8 @@ Last reviewed: 2026-11-15
 
 ## Current state
 
-- FE-0101 is complete: npm 11 workspace/lockfile, strict TypeScript, routing/pages, Query provider/error boundary, ESLint, Vitest/RTL/MSW, Playwright/axe and CI configuration. Clean lockfile install, typecheck/lint/five unit tests/build/five Chrome E2E tests passed. See `FE-0101_FOUNDATION.md` for evidence and limits. Full marketplace features and FE-0102 are not implemented.
+- FE-0101 is complete: npm 11 workspace/lockfile, strict TypeScript, routing/pages, Query provider/error boundary, ESLint, Vitest/RTL/MSW, Playwright/axe and CI configuration. See `FE-0101_FOUNDATION.md` for its original validation evidence.
+- FE-0102 is complete within foundation scope: typed AsyncRegion (loading/empty/error/forbidden/ready), keyboard retry focus recovery, route titles/focus, local Query fixture integration tests and broader browser accessibility review. Final typecheck/lint/build, 14 unit/component tests and 14 Chrome browser tests passed. See `FE-0102_FOUNDATION_REVIEW.md` for evidence, fixture limits and manual NVDA/VoiceOver release follow-up. Full marketplace features and FE-0201 are not implemented.
 - Production dependency audit is clear; seven moderate development-only TypeScript ESLint/minimatch findings and ESLint 9 support status remain tracked tooling risks.
 - Owner approval on 2026-11-14: multi-store cart with separate checkout per store; PayHere payment gateway; PickMe and Uber Connect through backend-controlled APIs. See `OPEN_DECISIONS.md` for exact scope. Other proposals in `PRIORITY_REMEDIATION.md` remain unapproved; no live API access is established.
 - The intended stack is React 19, Vite, TypeScript strict mode, React Router v7, TanStack Query, Redux Toolkit only for truly shared client state, Zod, Vitest, React Testing Library/MSW, and Playwright.

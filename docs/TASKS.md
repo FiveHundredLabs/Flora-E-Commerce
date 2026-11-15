@@ -5,7 +5,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 1: Foundation
 
 ### FE-0101 — Scaffold Vite React TS, tooling, router, providers, test harness
-- **Status (2026-11-15): COMPLETE.** Foundation extended and validated. Evidence, reviewed limitations and dependency decisions: `docs/FE-0101_FOUNDATION.md`. FE-0102 has not been started.
+- **Status (2026-11-15): COMPLETE.** Foundation extended and validated. Evidence, reviewed limitations and dependency decisions: `docs/FE-0101_FOUNDATION.md`.
 - **Objective:** Scaffold Vite React TS, tooling, router, providers, test harness.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 1; exact paths determined after inspection.
@@ -17,6 +17,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0102 — Implement feature-level tests, error/empty/loading states and accessibility review
+- **Status (2026-11-15): COMPLETE within foundation scope.** Shared async states, Query integration tests, route focus/title recovery and accessibility review delivered. Typecheck/lint/build, 14 unit/component tests and 14 Chrome browser tests passed. Evidence and manual assistive-technology follow-up: `docs/FE-0102_FOUNDATION_REVIEW.md`. FE-0201 has not started.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 1; exact paths determined after inspection.

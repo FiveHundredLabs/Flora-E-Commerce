@@ -15,5 +15,13 @@ describe('foundation routes', () => {
     render(<MemoryRouter initialEntries={['/missing']}><App /></MemoryRouter>);
     await user.click(screen.getByRole('link', { name: 'Return home' }));
     expect(screen.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
+    expect(screen.getByRole('main')).toHaveFocus();
+    expect(document.title).toBe('Welcome to Flower & Flora | Flower & Flora');
+  });
+
+  it('does not steal keyboard focus on initial entry', () => {
+    render(<MemoryRouter><App /></MemoryRouter>);
+    expect(screen.getByRole('main')).not.toHaveFocus();
+    expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main');
   });
 });

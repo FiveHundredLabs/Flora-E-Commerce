@@ -19,7 +19,9 @@ main { padding: 3rem 0; }
 a { color: var(--primary); }
 a, button { min-height: 2.75rem; display: inline-flex; align-items: center; }
 button { font: inherit; cursor: pointer; }
+button { border: 1px solid var(--primary); border-radius: .25rem; padding: .5rem 1rem; color: var(--foreground); background: var(--background); }
 :focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
 h1 { font-size: clamp(1.8rem, 5vw, 3rem); }
 .skip-link { position: absolute; left: 1rem; top: -6rem; background: var(--background); padding: .5rem; }
 .skip-link:focus { top: .5rem; }
+.async-region { min-block-size: 10rem; }
