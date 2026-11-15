@@ -1,0 +1,32 @@
+:root {
+  /* Provisional neutral theme; OD-09 has not selected a client palette. */
+  --background: #f7f7f5;
+  --foreground: #25282d;
+  --card: #fff;
+  --card-foreground: #25282d;
+  --primary: #30343b;
+  --primary-foreground: #fff;
+  --secondary: #ebedea;
+  --secondary-foreground: #34383d;
+  --muted: #eff0ed;
+  --muted-foreground: #595e64;
+  --border: #d4d7d2;
+  --input: #858b87;
+  --destructive: #a52b31;
+  --destructive-foreground: #fff;
+  --ring: #315d99;
+  --radius: .75rem;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: Georgia, 'Times New Roman', serif;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --content-width: 76rem;
+  --shadow: 0 .4rem 1.5rem rgb(24 29 25 / 5%);
+}

@@ -6,6 +6,8 @@ The client PDF pp6–7 presents **three options**, none confirmed as selected: B
 ## Tokens
 Use CSS custom properties with semantic names (`--background`, `--foreground`, `--primary`, `--muted`, `--border`, `--destructive`, `--radius`) and map to shadcn/ui. Keep brand palette values configurable until signoff.
 
+FE-0201 implements these in `frontend/src/shared/styles/tokens.css` with provisional neutral values. Component APIs, shell routes and validation limits are documented in `FE-0201_DESIGN_SYSTEM.md`. No palette is approved by this implementation.
+
 ## Information architecture
 Customer: discovery → store/product detail → cart → fulfilment → payment outcome → orders → review.
 Supplier: overview → store profile → products/variants → inventory → orders/fulfilment → sales.

@@ -1,4 +1,6 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { Button } from './ui/Button';
+import { Skeleton } from './ui/Content';
 
 type RegionState =
   | { status: 'loading' }
@@ -26,16 +28,16 @@ export function AsyncRegion({ title, state }: AsyncRegionProps) {
   return (
     <section className="async-region" aria-labelledby={titleId}>
       <h2 id={titleId} ref={heading} tabIndex={-1}>{title}</h2>
-      {state.status === 'loading' && <p role="status">Loading. Please wait.</p>}
+      {state.status === 'loading' && <Skeleton label="Loading. Please wait." />}
       {state.status === 'empty' && <p>{state.message}</p>}
       {state.status === 'error' && (
         <>
           <p role="alert">We couldn’t load this content. Please try again.</p>
           {state.onRetry && (
-            <button type="button" onClick={() => {
+            <Button onClick={() => {
               restoreFocus.current = true;
               state.onRetry?.();
-            }}>Try again</button>
+            }}>Try again</Button>
           )}
         </>
       )}

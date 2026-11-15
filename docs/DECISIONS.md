@@ -1,5 +1,8 @@
 # Architecture decision records
 
+## ADR-005: FE-0201 token and shell foundation
+Status: Implemented 2026-11-15. Centralize semantic CSS variables and use a provisional neutral theme pending OD-09. Use native HTML controls and native dialog for this minimal component slice, retaining shadcn-compatible token names without dependency changes. Shared audience shells use local disclosure state; `/supplier` and `/admin` are labeled layout previews until auth contracts exist. Complex component inventory is added with actual consumers. Implementation evidence and limits: `FE-0201_DESIGN_SYSTEM.md`.
+
 ## ADR-001: Vite SPA + React Router v7
 Status: Proposed. Rationale: user selected React 19 + Vite; React Router v7 aligns with SPA architecture. Trade-off: public storefront SEO may require SSR/prerendering; validate before launch.
 

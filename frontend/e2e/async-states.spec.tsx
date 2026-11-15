@@ -3,6 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { ComponentProps } from 'react';
 import { AsyncRegion } from '../src/shared/components/AsyncRegion';
+import { mountFixture } from './helpers/fixture';
 
 const states: ComponentProps<typeof AsyncRegion>['state'][] = [
   { status: 'loading' },
@@ -16,8 +17,7 @@ const states: ComponentProps<typeof AsyncRegion>['state'][] = [
 for (const state of states) {
   test(`${state.status} state is accessible at mobile and desktop widths`, async ({ page }, testInfo) => {
     const markup = renderToStaticMarkup(<AsyncRegion title="Sample content" state={state} />);
-    await page.setContent(`<!doctype html><html lang="en"><head><title>State accessibility fixture</title></head><body><main><h1>State review</h1>${markup}</main></body></html>`);
-    await page.addStyleTag({ path: 'src/shared/styles.css' });
+    await mountFixture(page, markup);
     for (const width of [375, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();

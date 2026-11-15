@@ -6,6 +6,7 @@ test('keyboard recovery and browser history announce route changes', async ({ pa
  await page.keyboard.press('Tab');
  await page.keyboard.press('Tab');
  await page.keyboard.press('Tab');
+ await page.keyboard.press('Tab');
  await expect(page.getByRole('link', { name: 'Return home' })).toBeFocused();
  await page.keyboard.press('Enter');
  await expect(page.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
