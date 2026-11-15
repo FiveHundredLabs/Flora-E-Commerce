@@ -21,7 +21,7 @@ Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated
 
 ## Start
 1. Review open decisions with client and backend owner.
-2. Run `npm ci` from the root, then `npm run dev` to start the frontend foundation.
+2. Use Node 22 and npm 11, run `npm ci` from the root, then `npm run dev` to start the frontend foundation. With older bundled npm, use `npx npm@11 ci`.
 3. Implement design tokens and shell before feature pages.
 4. Use mock adapters with clearly labeled fixtures until APIs are specified.
 5. Run checks defined in `docs/TESTING.md` before merging.

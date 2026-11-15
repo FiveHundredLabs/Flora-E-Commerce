@@ -14,3 +14,7 @@ MSW mock parity tests against approved OpenAPI; verify status handling, paginati
 
 ## Quality gates
 `npm run typecheck`, `npm run lint`, `npm run test -- --run`, `npm run build`, `npm run test:e2e` after scaffold and scripts exist. Add a11y checks and bundle analysis. Record executed checks rather than assuming success.
+
+## Foundation harness
+
+Use npm 11 for lockfile installation (`npm ci`, or `npx npm@11 ci` with older bundled npm). Component tests install MSW lifecycle hooks and reject unhandled network requests. Pure `.test.ts` and component `.test.tsx` files are discovered under `frontend/src/`; browser specs are separate under `frontend/e2e/`. Install Chromium with `npm exec -w frontend playwright install chromium` or use `PLAYWRIGHT_CHANNEL=chrome npm run test:e2e` with installed Chrome. E2E starts a production build/preview automatically. Recorded FE-0101 evidence and remaining tooling risks are in `FE-0101_FOUNDATION.md`.

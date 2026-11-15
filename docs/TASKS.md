@@ -5,7 +5,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 1: Foundation
 
 ### FE-0101 — Scaffold Vite React TS, tooling, router, providers, test harness
-- **Progress (2026-11-14):** Minimal foundation added; see `docs/PRIORITY_REMEDIATION.md`. Completion depends on recorded validation. No dependent feature task has been started.
+- **Status (2026-11-15): COMPLETE.** Foundation extended and validated. Evidence, reviewed limitations and dependency decisions: `docs/FE-0101_FOUNDATION.md`. FE-0102 has not been started.
 - **Objective:** Scaffold Vite React TS, tooling, router, providers, test harness.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 1; exact paths determined after inspection.
