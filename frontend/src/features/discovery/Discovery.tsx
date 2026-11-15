@@ -1,5 +1,5 @@
-import { Link, useParams, useSearchParams } from 'react-router';
-import { useEffect } from 'react';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router';
+import { useEffect, useRef } from 'react';
 import { AsyncRegion } from '../../shared/components/AsyncRegion';
 import { Badge } from '../../shared/components/ui/Content';
 import { Breadcrumbs } from '../../shared/components/ui/Breadcrumbs';
@@ -9,6 +9,7 @@ import { categoryNames, defaultFilters, locationNames, readFilters, selectProduc
 import { Filters } from './Filters';
 import { ProductCards, StoreCards } from './Cards';
 import { Illustration } from './Illustration';
+import { RefreshNotice } from './RefreshNotice';
 
 export function MockNotice() {
   return <div className="mock-notice"><Badge>Sample catalog · MOCK</Badge><p>All shops and products here are fictional. Browsing only; purchasing is not available.</p></div>;
@@ -16,6 +17,8 @@ export function MockNotice() {
 
 export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: DiscoveryAdapter }) {
   const query = useDiscovery(adapter);
+  const results = useRef<HTMLDivElement>(null);
+  const { key: navigationKey } = useLocation();
   const [params, setParams] = useSearchParams();
   const { filters, invalid } = readFilters(params);
   const title = kind === 'shops' ? 'Shops' : 'Products';
@@ -27,16 +30,18 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
     <MockNotice />
     <p className="catalog-provisional">Sample filters are provisional while the final catalog rules are agreed.</p>
     {invalid && <p role="alert">Some URL filters were invalid. Safe defaults are shown; you can clear or change the filters.</p>}
-    <Filters key={params.toString()} values={filters} apply={(values) => setParams(writeFilters(values))} clear={() => setParams({})} />
-    {query.isSuccess && <p role="status" aria-live="polite">{count} sample {kind === 'shops' ? 'shops' : 'products'} found.</p>}
-    <AsyncRegion title={`Sample ${title.toLowerCase()}`} state={query.isPending || (query.isFetching && !query.data) ? { status: 'loading' }
-      : query.isError ? { status: 'error', onRetry: () => { void query.refetch(); } }
+    <Filters values={filters} revision={navigationKey} apply={(values) => setParams(writeFilters(values))} clear={() => setParams({})} />
+    {query.data && <><p role="status" aria-live="polite">{count} sample {kind === 'shops' ? 'shops' : 'products'} found.</p>
+      <RefreshNotice fetching={query.isFetching} failed={query.isError} retry={() => query.refetch()} target={results} /></>}
+    <div ref={results}><AsyncRegion title={`Sample ${title.toLowerCase()}`} state={query.isPending || (query.isFetching && !query.data) ? { status: 'loading' }
+      : !query.data ? { status: 'error', onRetry: () => { void query.refetch(); } }
       : count === 0 ? { status: 'empty', message: 'No matches. Try another search or clear the filters.' }
-      : { status: 'ready', children: kind === 'shops' ? <StoreCards stores={stores} /> : <ProductCards products={products} catalog={query.data} /> }} />
+      : { status: 'ready', children: kind === 'shops' ? <StoreCards stores={stores} /> : <ProductCards products={products} catalog={query.data} /> }} /></div>
   </>;
 }
 
 export function DiscoveryDetail({ kind, adapter }: { kind: Kind; adapter?: DiscoveryAdapter }) {
+  const results = useRef<HTMLDivElement>(null);
   const { slug } = useParams();
   const [params] = useSearchParams();
   const returnSearch = writeFilters(readFilters(params).filters).toString();
@@ -45,13 +50,15 @@ export function DiscoveryDetail({ kind, adapter }: { kind: Kind; adapter?: Disco
   const record = kind === 'shops' ? query.data?.stores.find((store) => store.slug === slug) : query.data?.products.find((product) => product.slug === slug);
   const store = kind === 'products' ? query.data?.stores.find((item) => item.slug === query.data?.products.find((product) => product.slug === slug)?.storeSlug) : undefined;
   const label = kind === 'shops' ? 'Shop' : 'Product';
-  useEffect(() => { document.title = `${record?.name ?? (query.isSuccess ? `${label} not found` : `${label} details`)} | Flower & Flora`; }, [record?.name, query.isSuccess, label]);
+  const pageTitle = record?.name ?? (query.data ? `${label} not found` : `${label} details`);
+  useEffect(() => { document.title = `${pageTitle} | Flower & Flora`; }, [pageTitle]);
   return <>
     <Breadcrumbs items={[{ label: 'Marketplace', to: '/' }, { label: kind === 'shops' ? 'Shops' : 'Products', to: listPath }]} current={record?.name ?? `${label} details`} />
-    <div className="page-heading"><h1>{record?.name ?? (query.isSuccess ? `${label} not found` : `${label} details`)}</h1></div>
+    <div className="page-heading"><h1>{pageTitle}</h1></div>
     <MockNotice />
-    <AsyncRegion title={`${label} information`} state={query.isPending || (query.isFetching && !query.data) ? { status: 'loading' }
-      : query.isError ? { status: 'error', onRetry: () => { void query.refetch(); } }
+    {query.data && <RefreshNotice fetching={query.isFetching} failed={query.isError} retry={() => query.refetch()} target={results} />}
+    <div ref={results}><AsyncRegion title={`${label} information`} state={query.isPending || (query.isFetching && !query.data) ? { status: 'loading' }
+      : !query.data ? { status: 'error', onRetry: () => { void query.refetch(); } }
       : !record ? { status: 'empty', message: `This sample ${label.toLowerCase()} could not be found.` }
       : { status: 'ready', children: <div className="catalog-detail">
         <Illustration category={'category' in record ? record.category : record.categories[0] ?? 'bouquets'} />
@@ -62,7 +69,7 @@ export function DiscoveryDetail({ kind, adapter }: { kind: Kind; adapter?: Disco
       </div> }} />
     {kind === 'shops' && query.data && record && <AsyncRegion title="Products from this shop" state={selectProducts(query.data, defaultFilters, record.slug).length === 0
       ? { status: 'empty', message: 'No sample products for this shop yet.' }
-      : { status: 'ready', children: <ProductCards products={selectProducts(query.data, defaultFilters, record.slug)} catalog={query.data} /> }} />}
+      : { status: 'ready', children: <ProductCards products={selectProducts(query.data, defaultFilters, record.slug)} catalog={query.data} /> }} />}</div>
     <Link className="catalog-back" to={listPath}>Back to {kind}</Link>
   </>;
 }

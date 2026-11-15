@@ -2,6 +2,8 @@
 
 Date: 2026-11-15. Requirements: C-01 (store/product discovery and detail), F-01 (sorting/filtering). Dependency: validated FE-0202.
 
+Follow-up: FE-0302 strengthens focus/history synchronization, validates all adapter results at the Query boundary and distinguishes initial failures from cached-content refresh failures. See `FE-0302_DISCOVERY_REVIEW.md`; the FE-0301 evidence below remains its original handoff record.
+
 ## Delivered scope
 
 `features/discovery/` owns mock catalog vocabulary, Zod schemas, adapter, Query hook, URL parsing/selectors, filter form, cards, illustrative art and page content. Its public entry point is imported by `pages/DiscoveryPage.tsx`; shared code does not import features. No dependencies were added.

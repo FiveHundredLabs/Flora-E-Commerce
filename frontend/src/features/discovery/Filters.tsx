@@ -1,12 +1,18 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '../../shared/components/ui/Button';
 import { SelectField, TextField } from '../../shared/components/ui/Fields';
 import { categories, categoryNames, defaultFilters, locations, locationNames, searchSchema, type Filters as FilterValues } from './model';
 
-export function Filters({ values, apply, clear }: { values: FilterValues; apply: (values: FilterValues) => void; clear: () => void }) {
+export function Filters({ values, revision, apply, clear }: { values: FilterValues; revision: string; apply: (values: FilterValues) => void; clear: () => void }) {
   const [draft, setDraft] = useState(values);
   const [error, setError] = useState<string>();
   const input = useRef<HTMLInputElement>(null);
+  const { q, category, location, sort } = values;
+  useEffect(() => {
+    // URL history replaces drafts without replacing focused form elements.
+    setDraft({ q, category, location, sort });
+    setError(undefined);
+  }, [q, category, location, sort, revision]);
   return <form className="catalog-filters" aria-label="Sample catalog filters" noValidate onSubmit={(event) => {
     event.preventDefault();
     const parsed = searchSchema.safeParse(draft.q);

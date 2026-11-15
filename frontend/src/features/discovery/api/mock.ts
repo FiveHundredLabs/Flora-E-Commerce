@@ -20,14 +20,14 @@ const fixture: unknown = {
   ],
 };
 
-export type DiscoveryAdapter = { key: string; load: (signal?: AbortSignal) => Promise<Catalog> };
-export const mockDiscoveryAdapter: DiscoveryAdapter = {
+export type DiscoveryAdapter = { key: string; load: (signal?: AbortSignal) => Promise<unknown> };
+export const mockDiscoveryAdapter = {
   key: 'sample-catalog-v1',
-  async load(signal) {
+  async load(signal?: AbortSignal): Promise<Catalog> {
     signal?.throwIfAborted();
     // Async boundary without a fake latency timer or an invented HTTP contract.
     const data: unknown = await Promise.resolve(fixture);
     signal?.throwIfAborted();
     return catalogSchema.parse(data);
   },
-};
+} satisfies DiscoveryAdapter;
