@@ -62,6 +62,19 @@ test('native modal contains focus, closes with Escape and restores the trigger',
   await expect(trigger).toBeFocused();
 });
 
+test('a modal closed by the browser can reopen and restores trigger focus', async ({ page }) => {
+  await page.goto('/supplier');
+  const trigger = page.getByRole('button', { name: 'About this workspace' });
+  await trigger.click();
+  const dialog = page.getByRole('dialog', { name: 'About this workspace' });
+  // Exercise the native close event, also emitted by a method=dialog form.
+  await dialog.evaluate((element: HTMLDialogElement) => element.close());
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  await expect(dialog).toBeVisible();
+});
+
 test('form and content primitives have accessible names, descriptions and contrast', async ({ page }, testInfo) => {
   await mountFixture(page, renderToStaticMarkup(<Card title="Sample form">
     <Badge>Sample label</Badge>

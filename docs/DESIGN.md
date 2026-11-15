@@ -8,6 +8,8 @@ Use CSS custom properties with semantic names (`--background`, `--foreground`, `
 
 FE-0201 implements these in `frontend/src/shared/styles/tokens.css` with provisional neutral values. Component APIs, shell routes and validation limits are documented in `FE-0201_DESIGN_SYSTEM.md`. No palette is approved by this implementation.
 
+FE-0202 adds forced-colors system-color boundaries for navigation, focus, buttons, invalid fields and loading skeletons. State-composition review and manual assistive-technology limits are in `FE-0202_DESIGN_SYSTEM_REVIEW.md`.
+
 ## Information architecture
 Customer: discovery → store/product detail → cart → fulfilment → payment outcome → orders → review.
 Supplier: overview → store profile → products/variants → inventory → orders/fulfilment → sales.

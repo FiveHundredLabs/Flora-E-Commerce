@@ -73,3 +73,12 @@ dialog::backdrop { background: rgb(24 28 32 / 45%); }
   .shell__footer { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (forced-colors: active) {
+  :focus-visible { outline-color: Highlight; }
+  .button { border-color: ButtonText; }
+  .button:disabled { color: GrayText; border-color: GrayText; opacity: 1; }
+  .shell__nav a[aria-current='page'] { border: 1px solid Highlight; font-weight: 700; }
+  /* Shadows/background fills can disappear in forced colors. Keep a visible loading bar. */
+  .skeleton > div { border: 1px solid GrayText; box-shadow: none; }
+  .field [aria-invalid='true'] { border: 2px solid CanvasText; }
+}

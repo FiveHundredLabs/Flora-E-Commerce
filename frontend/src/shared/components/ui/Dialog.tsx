@@ -19,6 +19,10 @@ export function Dialog({ open, title, description, onClose, children }: {
     };
   }, [open]);
   return <dialog ref={dialog} aria-labelledby={titleId} aria-describedby={descriptionId}
+    onClose={() => {
+      // Ignore stale close events if an effect already reopened the native modal.
+      if (open && dialog.current && !dialog.current.open) onClose();
+    }}
     onCancel={(event) => { event.preventDefault(); onClose(); }}>
     <h2 id={titleId}>{title}</h2><p id={descriptionId}>{description}</p>{children}
     <div className="dialog__actions"><Button variant="secondary" onClick={onClose}>Close</Button></div>
