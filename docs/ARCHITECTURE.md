@@ -21,6 +21,8 @@ Typed endpoint functions and Zod parsing at untrusted boundaries; consistent err
 ## Routes (proposed, not approved contract)
 `/` storefront; `/shops`, `/products/:slug`, `/cart`, `/checkout`, `/account/orders`; `/supplier/*`; `/admin/*`. Confirm slug/id behavior before API binding.
 
+FE-0301 implements `/shops`, `/shops/:slug`, `/products` and `/products/:slug` against an isolated mock discovery adapter. These frontend routes and sample slugs are provisional until approved for backend binding. Discovery's public module boundary is `features/discovery/index.ts`; filter state is serialized in the URL and Query owns catalog caching.
+
 ## Performance
 Route-level lazy loading; image sizes and responsive sources; virtualization only for large lists; avoid eager chart bundles; measure LCP/INP/CLS before setting budgets.
 

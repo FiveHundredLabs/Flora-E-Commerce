@@ -32,6 +32,10 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
         }}>
         <span className="shell__nav-label">{workspace ? 'Workspace' : 'Explore'}</span>
         <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>{config.homeLabel}</NavLink>
+        {!workspace && <>
+          <NavLink to="/shops" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Shops</NavLink>
+          <NavLink to="/products" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Products</NavLink>
+        </>}
         {workspace && <Link to="/" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Return to marketplace</Link>}
       </nav>
       <main id="main" tabIndex={-1}>{children}</main>

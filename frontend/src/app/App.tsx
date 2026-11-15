@@ -4,6 +4,7 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import { RouteAccessibility } from './RouteAccessibility';
 import { Shell } from '../shared/components/layout/Shell';
 import { WorkspacePage } from '../pages/WorkspacePage';
+import { DiscoveryPage } from '../pages/DiscoveryPage';
 
 export function App() {
   const { pathname } = useLocation();
@@ -15,6 +16,10 @@ export function App() {
       <Shell key={audience} audience={audience}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/shops" element={<DiscoveryPage kind="shops" />} />
+          <Route path="/shops/:slug" element={<DiscoveryPage kind="shops" detail />} />
+          <Route path="/products" element={<DiscoveryPage kind="products" />} />
+          <Route path="/products/:slug" element={<DiscoveryPage kind="products" detail />} />
           <Route path="/supplier" element={<WorkspacePage audience="supplier" />} />
           <Route path="/admin" element={<WorkspacePage audience="admin" />} />
           <Route path="*" element={<NotFoundPage />} />

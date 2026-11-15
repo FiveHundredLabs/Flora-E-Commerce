@@ -3,10 +3,10 @@ import AxeBuilder from '@axe-core/playwright';
 test('keyboard recovery and browser history announce route changes', async ({ page }) => {
  await page.goto('/missing');
  await expect(page).toHaveTitle('Page not found | Flower & Flora');
- await page.keyboard.press('Tab');
- await page.keyboard.press('Tab');
- await page.keyboard.press('Tab');
- await page.keyboard.press('Tab');
+ for (const name of ['Skip to content', 'Flower & Flora', 'Marketplace', 'Shops', 'Products', 'Return home']) {
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name, exact: true })).toBeFocused();
+ }
  await expect(page.getByRole('link', { name: 'Return home' })).toBeFocused();
  await page.keyboard.press('Enter');
  await expect(page.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();

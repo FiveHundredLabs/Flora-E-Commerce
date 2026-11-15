@@ -15,6 +15,8 @@ Acceptance examples for OD-02: add items from stores A and B and see both groups
 
 Concrete starting proposals, accountable owners and required evidence for all 13 decisions are in `PRIORITY_REMEDIATION.md`. They support review and do not constitute signoff.
 
+FE-0301 implements a labeled mock-only discovery slice. Its sample fields, categories, locations and URL rules in `FE-0301_CUSTOMER_DISCOVERY.md` do not resolve OD-07/OD-09/OD-10 or establish live backend capabilities.
+
 | ID | Question | Affects |
 |---|---|---|
 | OD-01 | Can suppliers publish immediately or require approval? | Product UI, permissions |

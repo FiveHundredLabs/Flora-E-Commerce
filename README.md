@@ -2,7 +2,7 @@
 
 Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated with **OpenAI Codex** and **Google Antigravity**.
 
-> This workspace includes a minimal frontend foundation and project specifications. Marketplace features and live backend integrations remain pending. See `docs/PRIORITY_REMEDIATION.md` for the decision package.
+> This workspace includes a validated frontend/design-system foundation and a labeled mock store/product discovery flow. Live backend integrations and commerce workflows remain pending. See `docs/FE-0301_CUSTOMER_DISCOVERY.md` for discovery scope and `docs/OPEN_DECISIONS.md` for remaining approvals.
 
 ## Read first
 1. `docs/PROJECT_CONTEXT.md`

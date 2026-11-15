@@ -1,0 +1,23 @@
+.mock-notice { border-inline-start: 3px solid var(--primary); padding-inline-start: var(--space-4); margin-block-end: var(--space-5); }
+.mock-notice p { margin-block: var(--space-2) 0; color: var(--muted-foreground); font-size: var(--text-sm); }
+.catalog-provisional { font-size: var(--text-sm); color: var(--muted-foreground); }
+.catalog-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); padding: var(--space-5); background: var(--muted); border-radius: var(--radius); margin-block-end: var(--space-5); }
+.catalog-filters .field { margin: 0; }
+.catalog-filter-actions, .catalog-entry-links { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.catalog-filter-actions { grid-column: 1 / -1; }
+.catalog-entry-links a, .catalog-back { display: inline-flex; align-items: center; }
+.catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); list-style: none; padding: 0; margin: 0; }
+.catalog-card { min-inline-size: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--card); }
+.catalog-card__link { display: block; text-decoration: none; }
+.catalog-card__link:focus-visible { outline-offset: -4px; }
+.catalog-card__link:hover h3 { text-decoration: underline; text-underline-offset: .2em; }
+.catalog-card h3 { margin: var(--space-4) var(--space-4) var(--space-2); font-size: 1.15rem; }
+.catalog-card__meta { padding: 0 var(--space-4) var(--space-4); }
+.catalog-card__meta p { font-size: var(--text-sm); color: var(--muted-foreground); margin-block: var(--space-2) 0; }
+.catalog-card__meta a { display: inline-flex; align-items: center; }
+.catalog-art { display: block; inline-size: 100%; aspect-ratio: 4 / 3; background: var(--muted); }
+.catalog-art--plants { background: var(--secondary); }
+.catalog-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--space-5); }
+.catalog-detail > * { min-inline-size: 0; }
+.catalog-detail .catalog-art { border-radius: var(--radius); }
+@media (max-width: 35rem) { .catalog-filters, .catalog-grid, .catalog-detail { grid-template-columns: minmax(0, 1fr); } }

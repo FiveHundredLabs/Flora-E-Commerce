@@ -4,10 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 import { App } from './App';
 describe('foundation routes', () => {
-  it('shows an honest unavailable catalog state', () => {
+  it('clearly labels the sample catalog entry points', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
     expect(screen.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
-    expect(screen.getByText(/Stores and products are not available/)).toBeVisible();
+    expect(screen.getByText(/All shops and products shown are fictional/)).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Browse sample shops' })).toHaveAttribute('href', '/shops');
   });
 
   it('recovers from unknown routes using client navigation', async () => {

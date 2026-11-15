@@ -43,7 +43,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0202 — Implement feature-level tests, error/empty/loading states and accessibility review
-- **Status (2026-11-15): COMPLETE within implemented design-system scope.** Shell-level async/validation tests, native dialog state fix, E2E argument forwarding and forced-colors review delivered. Typecheck/lint/build, 24 unit/component tests and 34 Chrome browser tests passed. Evidence and assistive-technology limits: `docs/FE-0202_DESIGN_SYSTEM_REVIEW.md`. FE-0301 has not started.
+- **Status (2026-11-15): COMPLETE within implemented design-system scope.** Shell-level async/validation tests, native dialog state fix, E2E argument forwarding and forced-colors review delivered. Typecheck/lint/build, 24 unit/component tests and 34 Chrome browser tests passed. Evidence and assistive-technology limits: `docs/FE-0202_DESIGN_SYSTEM_REVIEW.md`.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 2; exact paths determined after inspection.
@@ -57,6 +57,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 3: Customer discovery
 
 ### FE-0301 — Store/product listing and detail, URL-driven filters
+- **Status (2026-11-15): COMPLETE as a labeled mock-only slice.** Store/product lists and details, owning-shop navigation, URL filters and history recovery implemented. Typecheck/lint/build and 44 unit/component tests passed; full 45-test Chrome suite passed, plus final 11-test discovery regression after normalization. OD-07/09/10 remain open. Evidence/rules: `docs/FE-0301_CUSTOMER_DISCOVERY.md`. FE-0302 has not started.
 - **Objective:** Store/product listing and detail, URL-driven filters.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 3; exact paths determined after inspection.

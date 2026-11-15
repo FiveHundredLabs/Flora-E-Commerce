@@ -1,8 +1,8 @@
-import { useId, type InputHTMLAttributes, type SelectHTMLAttributes, type ReactNode } from 'react';
+import { useId, type ComponentProps, type ReactNode } from 'react';
 
 type FieldDetails = { label: string; hint?: string; error?: string };
 
-export function TextField({ label, hint, error, id: suppliedId, ...props }: FieldDetails & InputHTMLAttributes<HTMLInputElement>) {
+export function TextField({ label, hint, error, id: suppliedId, ...props }: FieldDetails & ComponentProps<'input'>) {
   const generatedId = useId();
   const id = suppliedId ?? generatedId;
   const describedBy = [props['aria-describedby'], hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined;
@@ -14,7 +14,7 @@ export function TextField({ label, hint, error, id: suppliedId, ...props }: Fiel
   </div>;
 }
 
-export function SelectField({ label, hint, error, id: suppliedId, children, ...props }: FieldDetails & SelectHTMLAttributes<HTMLSelectElement> & { children: ReactNode }) {
+export function SelectField({ label, hint, error, id: suppliedId, children, ...props }: FieldDetails & ComponentProps<'select'> & { children: ReactNode }) {
   const generatedId = useId();
   const id = suppliedId ?? generatedId;
   const describedBy = [props['aria-describedby'], hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined;
