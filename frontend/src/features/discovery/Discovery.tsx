@@ -1,18 +1,18 @@
 import { Link, useLocation, useParams, useSearchParams } from 'react-router';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { AsyncRegion } from '../../shared/components/AsyncRegion';
 import { Badge } from '../../shared/components/ui/Content';
 import { Breadcrumbs } from '../../shared/components/ui/Breadcrumbs';
 import { useDiscovery } from './query';
 import { type DiscoveryAdapter } from './api/mock';
-import { categoryNames, defaultFilters, locationNames, readFilters, selectProducts, selectStores, writeFilters, type Kind } from './model';
+import { categoryNames, defaultFilters, locationNames, readFilters, selectProducts, selectStores, writeFilters, type Kind, type Product } from './model';
 import { Filters } from './Filters';
 import { ProductCards, StoreCards } from './Cards';
 import { Illustration } from './Illustration';
 import { RefreshNotice } from './RefreshNotice';
 
 export function MockNotice() {
-  return <div className="mock-notice"><Badge>Sample catalog · MOCK</Badge><p>All shops and products here are fictional. Browsing only; purchasing is not available.</p></div>;
+  return <div className="mock-notice"><Badge>Sample catalog · MOCK</Badge><p>All shops and products here are fictional. No real purchases or payments are available.</p></div>;
 }
 
 export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: DiscoveryAdapter }) {
@@ -40,7 +40,7 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
   </>;
 }
 
-export function DiscoveryDetail({ kind, adapter }: { kind: Kind; adapter?: DiscoveryAdapter }) {
+export function DiscoveryDetail({ kind, adapter, renderProductAction }: { kind: Kind; adapter?: DiscoveryAdapter; renderProductAction?: (product: Product) => ReactNode }) {
   const results = useRef<HTMLDivElement>(null);
   const { slug } = useParams();
   const [params] = useSearchParams();
@@ -64,7 +64,7 @@ export function DiscoveryDetail({ kind, adapter }: { kind: Kind; adapter?: Disco
         <Illustration category={'category' in record ? record.category : record.categories[0] ?? 'bouquets'} />
         <div><p>{record.description}</p>
           {'location' in record ? <><p>{locationNames[record.location]} · Fictional location</p><p>{record.categories.map((category) => categoryNames[category]).join(' · ')}</p><p>Contact details are not available in the sample catalog.</p></>
-            : <><Badge tone="subtle">{categoryNames[record.category]}</Badge>{store && <p>From <Link to={`/shops/${store.slug}`}>{store.name}</Link></p>}<p>Illustration only. Price and availability are not offered in this sample catalog.</p></>}
+            : <><Badge tone="subtle">{categoryNames[record.category]}</Badge>{store && <p>From <Link to={`/shops/${store.slug}`}>{store.name}</Link></p>}<p>Illustration only. Price and availability are not offered in this sample catalog.</p>{renderProductAction?.(record)}</>}
         </div>
       </div> }} />
     {kind === 'shops' && query.data && record && <AsyncRegion title="Products from this shop" state={selectProducts(query.data, defaultFilters, record.slug).length === 0

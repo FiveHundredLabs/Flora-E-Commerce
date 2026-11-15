@@ -5,6 +5,7 @@ import { RouteAccessibility } from './RouteAccessibility';
 import { Shell } from '../shared/components/layout/Shell';
 import { WorkspacePage } from '../pages/WorkspacePage';
 import { DiscoveryPage } from '../pages/DiscoveryPage';
+import { CommercePage } from '../pages/CommercePage';
 
 export function App() {
   const { pathname } = useLocation();
@@ -20,6 +21,10 @@ export function App() {
           <Route path="/shops/:slug" element={<DiscoveryPage kind="shops" detail />} />
           <Route path="/products" element={<DiscoveryPage kind="products" />} />
           <Route path="/products/:slug" element={<DiscoveryPage kind="products" detail />} />
+          <Route path="/cart" element={<CommercePage screen="cart" />} />
+          <Route path="/checkout" element={<CommercePage screen="checkout" />} />
+          <Route path="/account/orders" element={<CommercePage screen="orders" />} />
+          <Route path="/account/orders/:orderId" element={<CommercePage screen="order" />} />
           <Route path="/supplier" element={<WorkspacePage audience="supplier" />} />
           <Route path="/admin" element={<WorkspacePage audience="admin" />} />
           <Route path="*" element={<NotFoundPage />} />

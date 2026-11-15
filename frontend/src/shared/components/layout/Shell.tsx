@@ -35,6 +35,8 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
         {!workspace && <>
           <NavLink to="/shops" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Shops</NavLink>
           <NavLink to="/products" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Products</NavLink>
+          <NavLink to="/cart" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Cart</NavLink>
+          <NavLink to="/account/orders" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Orders</NavLink>
         </>}
         {workspace && <Link to="/" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Return to marketplace</Link>}
       </nav>

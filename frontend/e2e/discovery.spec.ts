@@ -11,7 +11,8 @@ test('store browsing leads to its own products and product ownership', async ({ 
   await page.getByRole('link', { name: 'Morning Bouquet', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Morning Bouquet', level: 1 })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Willow & Stem', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /buy|cart/i })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Add to sample cart' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /pay now|buy now/i })).toHaveCount(0);
 });
 
 test('applied filters survive detail navigation, reload, back and forward', async ({ page }) => {

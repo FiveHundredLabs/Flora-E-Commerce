@@ -17,6 +17,8 @@ Concrete starting proposals, accountable owners and required evidence for all 13
 
 FE-0301 implements a labeled mock-only discovery slice. Its sample fields, categories, locations and URL rules in `FE-0301_CUSTOMER_DISCOVERY.md` do not resolve OD-07/OD-09/OD-10 or establish live backend capabilities.
 
+FE-0401 implements approved per-store checkout in a labeled in-memory commerce demo. Pickup/delivery/provider choices are preferences, not service availability. New sample orders have no payment request; text feedback is a provisional non-published preview. Price/currency, fees, provider operations, refunds/cancellation, review format/moderation and auth/API contracts remain open. See `FE-0401_CUSTOMER_COMMERCE.md`.
+
 | ID | Question | Affects |
 |---|---|---|
 | OD-01 | Can suppliers publish immediately or require approval? | Product UI, permissions |

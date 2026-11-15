@@ -69,7 +69,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0302 — Implement feature-level tests, error/empty/loading states and accessibility review
-- **Status (2026-11-15): COMPLETE within mock discovery scope.** Stable filter focus/history, adapter-boundary validation, initial/refresh states, cached retry recovery and cancellation regressions implemented. Final typecheck/lint/build, 56 unit/component tests and 52 Chrome browser tests passed. Evidence/limits: `docs/FE-0302_DISCOVERY_REVIEW.md`. FE-0401 has not started.
+- **Status (2026-11-15): COMPLETE within mock discovery scope.** Stable filter focus/history, adapter-boundary validation, initial/refresh states, cached retry recovery and cancellation regressions implemented. Final typecheck/lint/build, 56 unit/component tests and 52 Chrome browser tests passed. Evidence/limits: `docs/FE-0302_DISCOVERY_REVIEW.md`.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 3; exact paths determined after inspection.
@@ -83,6 +83,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 4: Customer commerce
 
 ### FE-0401 — Cart, checkout shell, delivery/pickup, payment state, orders, reviews
+- **Status (2026-11-15): COMPLETE as an in-memory mock slice.** Redux multi-store cart, per-store checkout preferences, safe sample-order creation/history/payment presentation and capability-gated sample feedback implemented. Clean install, typecheck/lint/build and 72 unit/component tests passed; full 64-test Chrome suite plus final 12-test commerce regression passed. Production audit clear. Contracts/limits/evidence: `docs/FE-0401_CUSTOMER_COMMERCE.md`. FE-0402 has not started.
 - **Objective:** Cart, checkout shell, delivery/pickup, payment state, orders, reviews.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 4; exact paths determined after inspection.

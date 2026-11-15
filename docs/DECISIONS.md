@@ -1,5 +1,8 @@
 # Architecture decision records
 
+## ADR-006: Activate client cart state for FE-0401
+Status: Implemented 2026-11-15. Add Redux Toolkit/react-redux for multi-store cart references/quantities/revisions only; keep catalog/order/feedback entities in TanStack Query. Page composition injects the cart action into discovery through public interfaces. Use an in-memory mock service for commerce until approved backend contracts exist, with no prices, credentials, persistent storage or provider calls. Detailed safety rules, provisional UI bounds and validation evidence: `FE-0401_CUSTOMER_COMMERCE.md`.
+
 ## ADR-005: FE-0201 token and shell foundation
 Status: Implemented 2026-11-15. Centralize semantic CSS variables and use a provisional neutral theme pending OD-09. Use native HTML controls and native dialog for this minimal component slice, retaining shadcn-compatible token names without dependency changes. Shared audience shells use local disclosure state; `/supplier` and `/admin` are labeled layout previews until auth contracts exist. Complex component inventory is added with actual consumers. Implementation evidence and limits: `FE-0201_DESIGN_SYSTEM.md`.
 
