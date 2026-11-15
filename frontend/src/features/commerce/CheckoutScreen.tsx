@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { AsyncRegion } from '../../shared/components/AsyncRegion';
 import { Button } from '../../shared/components/ui/Button';
@@ -13,6 +13,12 @@ export function CheckoutScreen({ catalog, adapter }: { catalog: CommerceCatalog;
   const [params] = useSearchParams();
   const parsed = sampleSlug.safeParse(params.get('store'));
   const storeSlug = parsed.success && params.getAll('store').length === 1 ? parsed.data : '';
+  // A checkout editor belongs to one store. Switching stores detaches its per-call
+  // navigation callbacks, while hook-level reconciliation still handles late commits.
+  return <StoreCheckout key={storeSlug} storeSlug={storeSlug} catalog={catalog} adapter={adapter} />;
+}
+
+function StoreCheckout({ storeSlug, catalog, adapter }: { storeSlug: string; catalog: CommerceCatalog; adapter?: CommerceAdapter }) {
   const allLines = useCartSelector((state) => state.cart.lines);
   const lines = allLines.filter((line) => line.storeSlug === storeSlug);
   const redux = useCartStore();
@@ -24,6 +30,10 @@ export function CheckoutScreen({ catalog, adapter }: { catalog: CommerceCatalog;
   const [providerError, setProviderError] = useState('');
   const form = useRef<HTMLFormElement>(null);
   const submission = useRef(false);
+  const submitButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (mutation.isError && document.activeElement === document.body) submitButton.current?.focus();
+  }, [mutation.isError]);
   const name = catalog.stores.find((store) => store.slug === storeSlug)?.name;
   const valid = !!name && lines.length > 0 && lines.every((line) => validCartLine(line, catalog));
 
@@ -57,7 +67,7 @@ export function CheckoutScreen({ catalog, adapter }: { catalog: CommerceCatalog;
           {error && <p role="alert">{error}</p>}
           {mutation.isError && <p role="alert">The sample order could not be created. Your cart has been kept. Try again.</p>}
           {mutation.isPending && <p role="status">Creating sample order. No payment is being made.</p>}
-          <Button type="submit" busy={mutation.isPending}>Create sample order</Button>
+          <Button ref={submitButton} type="submit" busy={mutation.isPending}>Create sample order</Button>
         </form>
       </section>}
   </>;

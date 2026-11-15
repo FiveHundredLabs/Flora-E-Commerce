@@ -1,4 +1,4 @@
-import { checkoutSchema, feedbackSchema, orderSchema, type CheckoutInput, type SampleOrder } from '../model';
+import { checkoutSchema, feedbackSchema, orderListSchema, orderSchema, type CheckoutInput, type SampleOrder } from '../model';
 
 export interface CommerceAdapter {
   key: string;
@@ -13,7 +13,7 @@ const seed: SampleOrder[] = [{
 
 /** In-memory demo service only. Reload resets orders/feedback. No money, PII or provider calls. */
 export function createMockCommerceAdapter(initial: SampleOrder[] = seed): CommerceAdapter {
-  const records = initial.map((order) => orderSchema.parse(order));
+  const records = orderListSchema.parse(initial);
   const placed = new Map<string, { order: SampleOrder; signature: string }>();
   let sequence = 1;
   return {

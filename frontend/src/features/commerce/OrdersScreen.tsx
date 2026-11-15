@@ -15,6 +15,13 @@ function FeedbackForm({ order, adapter }: { order: SampleOrder; adapter?: Commer
   const id = useId();
   const mutation = useFeedback(adapter);
   const submitted = useRef(false);
+  const saveButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!mutation.isPending && document.activeElement === document.body) {
+      if (mutation.isError) input.current?.focus();
+      else if (mutation.isSuccess) saveButton.current?.focus();
+    }
+  }, [mutation.isPending, mutation.isError, mutation.isSuccess]);
   return <form className="commerce-feedback" noValidate onSubmit={(event) => {
     event.preventDefault();
     if (submitted.current) return;
@@ -25,12 +32,12 @@ function FeedbackForm({ order, adapter }: { order: SampleOrder; adapter?: Commer
   }}>
     <p>Sample text-only feedback. It is not published; the final rating and moderation format is not yet approved.</p>
     <div className="field"><label htmlFor={id}>Sample feedback</label>
-      <textarea id={id} ref={input} value={comment} onChange={(event) => setComment(event.target.value)} rows={5} required disabled={mutation.isPending}
+      <textarea id={id} ref={input} value={comment} onChange={(event) => { setComment(event.target.value); if (mutation.isSuccess) mutation.reset(); }} rows={5} required disabled={mutation.isPending}
         aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined} />
       {error && <p className="field__error" id={`${id}-error`}>{error}</p>}
     </div>
     {mutation.isError && <p role="alert">Sample feedback could not be saved. Your text has been kept.</p>}
-    <Button type="submit" busy={mutation.isPending}>Save sample feedback</Button>
+    <Button ref={saveButton} type="submit" busy={mutation.isPending}>Save sample feedback</Button>
     {mutation.isPending && <p role="status">Saving sample feedback.</p>}
     {mutation.isSuccess && <p role="status">Sample feedback saved for this session only.</p>}
   </form>;

@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { z } from 'zod';
-import { checkoutSchema, feedbackSchema, orderSchema, type CheckoutInput } from './model';
+import { checkoutSchema, feedbackSchema, orderListSchema, orderSchema, type CheckoutInput } from './model';
 import { mockCommerceAdapter, type CommerceAdapter } from './api/mock';
 import { cartActions, useCartDispatch } from './cart';
 
@@ -9,7 +8,7 @@ export function useOrders(adapter: CommerceAdapter = mockCommerceAdapter) {
   return useQuery({ queryKey: orderKey(adapter), queryFn: async ({ signal }) => {
     const result = await adapter.orders(signal);
     signal.throwIfAborted();
-    return z.array(orderSchema).parse(result);
+    return orderListSchema.parse(result);
   } });
 }
 export function usePlaceOrder(adapter: CommerceAdapter = mockCommerceAdapter) {
@@ -27,6 +26,11 @@ export function usePlaceOrder(adapter: CommerceAdapter = mockCommerceAdapter) {
 }
 export function useFeedback(adapter: CommerceAdapter = mockCommerceAdapter) {
   const client = useQueryClient();
-  return useMutation({ retry: false, mutationFn: async (input: { orderId: string; comment: string }) => orderSchema.parse(await adapter.feedback(feedbackSchema.parse(input))),
+  return useMutation({ retry: false, mutationFn: async (input: { orderId: string; comment: string }) => {
+    const command = feedbackSchema.parse(input);
+    const order = orderSchema.parse(await adapter.feedback(command));
+    if (order.id !== command.orderId || order.review !== command.comment) throw new Error('Mismatched sample feedback receipt.');
+    return order;
+  },
     onSuccess: () => { void client.invalidateQueries({ queryKey: orderKey(adapter) }); } });
 }

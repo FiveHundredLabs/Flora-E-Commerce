@@ -18,8 +18,9 @@ export type CheckoutInput = z.infer<typeof checkoutSchema>;
 export const paymentExample = z.enum(['pending', 'successful', 'failed', 'refunded']);
 export const orderSchema = z.object({
   id: sampleSlug, storeSlug: sampleSlug, items: z.array(lineSchema).min(1), preference: preferenceSchema,
-  paymentStatus: paymentExample.nullable(), delivered: z.boolean(), canReview: z.boolean(), review: z.string().nullable(),
+  paymentStatus: paymentExample.nullable(), delivered: z.boolean(), canReview: z.boolean(), review: z.string().max(1000).nullable(),
 }).refine((order) => order.items.every((item) => item.storeSlug === order.storeSlug), 'Mixed sample order.');
+export const orderListSchema = z.array(orderSchema).refine((orders) => new Set(orders.map((order) => order.id)).size === orders.length, 'Duplicate sample order reference.');
 export type SampleOrder = z.infer<typeof orderSchema>;
 export const feedbackSchema = z.object({ orderId: sampleSlug, comment: z.string().trim().min(1, 'Enter sample feedback.').max(1000, 'Use 1,000 characters or fewer.') });
 

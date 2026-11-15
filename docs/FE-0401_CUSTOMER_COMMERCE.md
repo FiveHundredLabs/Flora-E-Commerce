@@ -59,4 +59,4 @@ No manual NVDA/VoiceOver, non-Chrome or native OS high-contrast testing is claim
 - PASS: production dependency audit (`npm audit --omit=dev`): zero vulnerabilities after the dependency additions. Existing development-tool advisory/support risks remain tracked; no new full dev audit is claimed.
 - PASS: responsive axe/overflow checks, grouped-cart/mobile-checkout screenshot inspection and `git diff --check`.
 
-FE-0401 is complete as an in-memory mock commerce slice. FE-0402 and supplier implementation have not started; no hosted CI/deployment or live provider readiness is claimed.
+FE-0401 is complete as an in-memory mock commerce slice. Subsequent hardening and validation are recorded in `FE-0402_COMMERCE_REVIEW.md`; the evidence above records the original FE-0401 checks. Supplier implementation has not started; no hosted CI/deployment or live provider readiness is claimed.
