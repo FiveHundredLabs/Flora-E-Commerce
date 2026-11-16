@@ -1,5 +1,6 @@
 .supplier-notice { border-inline-start: 3px solid var(--primary); padding-inline-start: var(--space-4); margin-block-end: var(--space-5); }
 .supplier-notice p { color: var(--muted-foreground); font-size: var(--text-sm); margin-block: var(--space-3); }
+.supplier-refresh { margin-block-end: var(--space-5); }
 .supplier-list { list-style: none; padding: 0; }
 .supplier-list > li { border-block-end: 1px solid var(--border); padding-block: var(--space-4); }
 .supplier-form { margin-block-end: var(--space-5); max-inline-size: 36rem; }

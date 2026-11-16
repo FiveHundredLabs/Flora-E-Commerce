@@ -8,7 +8,7 @@ import { Dialog } from '../../shared/components/ui/Dialog';
 import { SampleForm } from './SampleForm';
 import { noteInput, productInput, profileInput, stockValue, variantInput, type AllowedWorkspace, type SupplierCommand, type SupplierProduct } from './model';
 import { useSupplier, useSupplierCommand } from './query';
-import type { SupplierAdapter } from './api/mock';
+import { mockSupplierAdapter, type SupplierAdapter } from './api/mock';
 import './styles.css';
 
 export type SupplierScreenName = 'overview' | 'registration' | 'profile' | 'products' | 'newProduct' | 'product' | 'inventory' | 'orders' | 'sales';
@@ -16,15 +16,35 @@ const titles: Record<SupplierScreenName, string> = { overview: 'Supplier workspa
   products: 'Supplier products', newProduct: 'New sample product', product: 'Edit sample product', inventory: 'Supplier inventory', orders: 'Supplier orders', sales: 'Sales overview' };
 
 export function SupplierScreen({ screen, adapter }: { screen: SupplierScreenName; adapter?: SupplierAdapter }) {
+  const source = adapter ?? mockSupplierAdapter;
+  return <SupplierWorkspaceScreen key={source.key} screen={screen} adapter={source} />;
+}
+
+function SupplierWorkspaceScreen({ screen, adapter }: { screen: SupplierScreenName; adapter: SupplierAdapter }) {
   const query = useSupplier(adapter);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const title = useRef<HTMLHeadingElement>(null);
+  const retry = useRef<HTMLButtonElement>(null);
+  const restoreFocus = useRef(false);
+  useEffect(() => {
+    if (restoreFocus.current && !query.isFetching) {
+      if (document.activeElement === document.body) (retry.current ?? title.current)?.focus();
+      restoreFocus.current = false;
+    }
+  // Instant retries may batch away the fetching transition; also observe settlement.
+  }, [query.isFetching, query.isError, query.errorUpdatedAt]);
   return <>
-    <div className="page-heading"><p className="eyebrow">Supplier demo</p><h1>{titles[screen]}</h1><p>Explore store management with fictional data.</p></div>
+    <div className="page-heading"><p className="eyebrow">Supplier demo</p><h1 ref={title} tabIndex={-1}>{titles[screen]}</h1><p>Explore store management with fictional data.</p></div>
     <aside className="supplier-notice" aria-label="Sample supplier limitations"><Badge>Sample supplier · MOCK</Badge>
       <p>No account is created and nothing is published. All changes reset on refresh. Use fictional text only; do not enter personal information.</p>
     </aside>
+    {query.data?.access === 'allowed' && (query.isError || query.isFetching) && <div className="supplier-refresh">
+      {query.isError ? <p role="alert">We could not refresh the sample workspace. Showing the last sample snapshot; your unsaved inputs are kept.</p>
+        : <p role="status">Refreshing sample workspace.</p>}
+      <Button ref={retry} variant="secondary" busy={query.isFetching} onClick={() => { restoreFocus.current = true; void query.refetch(); }}>Retry workspace refresh</Button>
+    </div>}
     <AsyncRegion title={screen === 'overview' ? 'Overview' : titles[screen]} state={query.isPending ? { status: 'loading' }
-      : query.isError ? { status: 'error', onRetry: () => { void query.refetch(); } }
+      : !query.data ? { status: 'error', onRetry: () => { void query.refetch(); } }
       : query.data.access === 'forbidden' ? { status: 'forbidden' }
       : { status: 'ready', children: <WorkspaceContent screen={screen} data={query.data} adapter={adapter} /> }} />
     {screen === 'overview' && <><Button variant="secondary" onClick={() => setAboutOpen(true)}>About this workspace</Button>
@@ -135,13 +155,20 @@ function ProductEditor({ product, data, adapter }: { product: SupplierProduct; d
 function RemoveSample({ adapter, label, command, onRemoved }: { adapter?: SupplierAdapter; label: string; command: SupplierCommand; onRemoved?: () => void }) {
   const [open, setOpen] = useState(false);
   const mutation = useSupplierCommand(adapter);
+  const submitting = useRef(false);
+  const confirm = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (mutation.isError && document.activeElement === document.body) confirm.current?.focus();
+  }, [mutation.isError]);
   return <>
     <Button variant="secondary" onClick={() => { mutation.reset(); setOpen(true); }}>{label}</Button>
-    <Dialog open={open} onClose={() => { if (!mutation.isPending) setOpen(false); }} title={label} description="Remove this fictional item from the current session? This does not affect the marketplace or sample order history.">
+    <Dialog open={open} onClose={() => { if (!submitting.current) setOpen(false); }} title={label} description="Remove this fictional item from the current session? This does not affect the marketplace or sample order history.">
       {mutation.isError && <p role="alert">The sample item could not be removed. Try again.</p>}
-      <Button variant="destructive" busy={mutation.isPending} onClick={() => {
-        if (mutation.isPending) return;
-        mutation.mutate(command, { onSuccess: () => { setOpen(false); onRemoved?.(); } });
+      {mutation.isPending && <p role="status">Removing sample item.</p>}
+      <Button ref={confirm} variant="destructive" busy={mutation.isPending} onClick={() => {
+        if (submitting.current) return;
+        submitting.current = true;
+        mutation.mutate(command, { onSuccess: () => { setOpen(false); onRemoved?.(); }, onSettled: () => { submitting.current = false; } });
       }}>Confirm removal</Button>
     </Dialog>
   </>;

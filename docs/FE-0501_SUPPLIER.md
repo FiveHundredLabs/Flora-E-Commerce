@@ -52,4 +52,4 @@ Source review introduces no live network requests, secrets, customer PII, creden
 - PASS: scoped source/diff review and `git diff --check`.
 - Local Chrome/preview runs required sandbox escalation. The first automatic permission review timed out before execution; the permitted retry started successfully. No application operation was rejected as unsafe.
 
-FE-0501 is complete within mock supplier scope. Manual screen-reader speech, non-Chrome engines and native OS high-contrast behavior remain release follow-ups. No hosted CI, deployment or live supplier readiness is claimed. FE-0502 has not started.
+FE-0501 is complete within mock supplier scope. Subsequent hardening and validation are recorded in `FE-0502_SUPPLIER_REVIEW.md`; the evidence above records the original FE-0501 checks. Manual screen-reader speech, non-Chrome engines and native OS high-contrast behavior remain release follow-ups. No hosted CI, deployment or live supplier readiness is claimed.

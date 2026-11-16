@@ -109,7 +109,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 5: Supplier
 
 ### FE-0501 — Registration/profile, products, variants, inventory, orders, sales
-- **Status (2026-11-16): COMPLETE within mock supplier scope.** Isolated sample application/profile, unpublished product/variant CRUD, stock counts with stale-write rejection, capability-gated fulfilment notes and basic order/unit summaries implemented. Typecheck/lint/production build, 105 unit/component tests and all 89 Chrome tests passed; responsive axe/overflow and product/inventory screenshot review completed. Supplier approval, live registration/auth, publication, media, order transitions and revenue remain contract-dependent. Evidence: `docs/FE-0501_SUPPLIER.md`. FE-0502 has not started.
+- **Status (2026-11-16): COMPLETE within mock supplier scope.** Isolated sample application/profile, unpublished product/variant CRUD, stock counts with stale-write rejection, capability-gated fulfilment notes and basic order/unit summaries implemented. Typecheck/lint/production build, 105 unit/component tests and all 89 Chrome tests passed; responsive axe/overflow and product/inventory screenshot review completed. Supplier approval, live registration/auth, publication, media, order transitions and revenue remain contract-dependent. Original evidence: `docs/FE-0501_SUPPLIER.md`; subsequent review is recorded below.
 - **Objective:** Registration/profile, products, variants, inventory, orders, sales.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 5; exact paths determined after inspection.
@@ -121,6 +121,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0502 — Implement feature-level tests, error/empty/loading states and accessibility review
+- **Status (2026-11-16): COMPLETE within mock supplier scope.** Added 17 feature tests and four browser journeys; fixed background-refresh draft loss, receipt association, late-write denial recovery, adapter isolation and instant-retry focus. Strengthened removal progress/double-submit/error recovery. Typecheck/lint/build, all 122 unit/component tests and all 93 Chrome tests passed; narrow enlarged-text axe/overflow checks and stock/note screenshot review completed. Evidence/limits: `docs/FE-0502_SUPPLIER_REVIEW.md`. FE-0601 has not started.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 5; exact paths determined after inspection.
