@@ -16,6 +16,8 @@ FE-0401 activates Redux for cart references/quantities/client revisions. `CartPr
 
 FE-0501 adds an isolated `features/supplier` mock workspace, composed by `pages/SupplierPage.tsx` through its public screen interface. Query owns fixture reads/acknowledged revisions; forms and dialogs own transient state. Its local adapter protocol is not an HTTP contract. Supplier changes do not publish into discovery or mutate customer commerce. No new state library or dependency is added. See `FE-0501_SUPPLIER.md` for routes and contract boundaries.
 
+FE-0601 adds `features/admin` and `pages/AdminPage.tsx` through the same public feature boundary pattern. It owns an isolated Query snapshot for fictional suppliers/users/categories/orders/refund requests/feedback, with revision-checked sample label/category/note commands. Admin imports no supplier/customer feature internals and creates no operational decisions. The adapter is not an HTTP or authorization contract; no dependency/state-library change is needed. See `FE-0601_ADMIN.md`.
+
 ## Auth
 Prefer HttpOnly Secure SameSite cookies issued by backend; `withCredentials` only for approved origin. Handle 401 with a single-flight refresh strategy only after auth contract approval; never retry indefinitely. CSRF protection must be defined with backend. Authorization remains server-side.
 

@@ -37,7 +37,7 @@ describe('foundation routes', () => {
     expect(screen.getByRole('navigation', { name: `${name} navigation` })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute('aria-current', 'page');
     if (path === '/supplier') expect(await screen.findByRole('heading', { name: 'Meadow Studio' })).toBeVisible();
-    else expect(screen.getByRole('region', { name: 'Overview' })).toHaveTextContent('not available yet');
+    else expect(await screen.findByText('Sample oversight counts only. No revenue, refund totals or operational status is inferred.')).toBeVisible();
     client.clear();
   });
 });

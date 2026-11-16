@@ -21,6 +21,8 @@ FE-0401 implements approved per-store checkout in a labeled in-memory commerce d
 
 FE-0501 provides a fictional supplier application/profile, unpublished catalog/variant edits, sample stock counts, capability-gated order notes and order/unit summaries. It does not settle supplier approval/publication, registration/auth fields, inventory reservations, order transitions, revenue/reporting or media behavior. Application submission creates no account or approval request. See `FE-0501_SUPPLIER.md`; OD-01/OD-10/OD-11/OD-12 remain open.
 
+FE-0601 adds isolated fictional admin records, display-label/category edits and oversight notes. Notes do not approve suppliers, restrict accounts, grant roles, execute refunds or moderate public feedback. Fixture capabilities/taxonomy are illustrative; they do not resolve OD-01/OD-05/OD-06/OD-08–OD-12. See `FE-0601_ADMIN.md`; all live operational actions remain contract-dependent.
+
 | ID | Question | Affects |
 |---|---|---|
 | OD-01 | Can suppliers publish immediately or require approval? | Product UI, permissions |

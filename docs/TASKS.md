@@ -121,7 +121,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0502 — Implement feature-level tests, error/empty/loading states and accessibility review
-- **Status (2026-11-16): COMPLETE within mock supplier scope.** Added 17 feature tests and four browser journeys; fixed background-refresh draft loss, receipt association, late-write denial recovery, adapter isolation and instant-retry focus. Strengthened removal progress/double-submit/error recovery. Typecheck/lint/build, all 122 unit/component tests and all 93 Chrome tests passed; narrow enlarged-text axe/overflow checks and stock/note screenshot review completed. Evidence/limits: `docs/FE-0502_SUPPLIER_REVIEW.md`. FE-0601 has not started.
+- **Status (2026-11-16): COMPLETE within mock supplier scope.** Added 17 feature tests and four browser journeys; fixed background-refresh draft loss, receipt association, late-write denial recovery, adapter isolation and instant-retry focus. Strengthened removal progress/double-submit/error recovery. Typecheck/lint/build, all 122 unit/component tests and all 93 Chrome tests passed; narrow enlarged-text axe/overflow checks and stock/note screenshot review completed. Original evidence/limits: `docs/FE-0502_SUPPLIER_REVIEW.md`; subsequent admin implementation is recorded below.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 5; exact paths determined after inspection.
@@ -135,6 +135,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 6: Super admin
 
 ### FE-0601 — Supplier/user/category management, order/refund/review oversight
+- **Status (2026-11-16): COMPLETE within mock admin scope.** Added isolated supplier/user/category/order/refund/feedback lists/details, sample supplier/user label edits, category CRUD and capability-gated oversight notes. Operational approval/account/refund/moderation actions remain contract-dependent. Typecheck/lint/build, 149 unit/component tests and all 124 Chrome tests passed, including responsive axe/overflow and screenshot review. Original evidence/limits: `docs/FE-0601_ADMIN.md`; subsequent review is recorded below.
 - **Objective:** Supplier/user/category management, order/refund/review oversight.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 6; exact paths determined after inspection.
@@ -146,6 +147,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0602 — Implement feature-level tests, error/empty/loading states and accessibility review
+- **Status (2026-11-16): COMPLETE within mock admin scope.** Added 20 feature tests and four browser journeys; fixed denied-cache recovery after late write failure, unrelated receipt changes and stale empty-list detail entry. Reviewed cancellation, workspace/record isolation, missing/error/empty recovery, native modal keyboard behavior and enlarged-text validation. Typecheck/lint/build, all 169 unit/component tests and all 128 Chrome tests passed, including axe/overflow and screenshot review. Evidence/limits: `docs/FE-0602_ADMIN_REVIEW.md`. FE-0701 has not started.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 6; exact paths determined after inspection.

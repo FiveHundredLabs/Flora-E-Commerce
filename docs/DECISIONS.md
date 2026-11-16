@@ -1,5 +1,8 @@
 # Architecture decision records
 
+## ADR-008: Isolated admin oversight demo for FE-0601
+Status: Implemented 2026-11-16. Use a private fictional Query snapshot for sample supplier/user labels, category CRUD and oversight notes, with validated references, revision checks and receipt association. Do not introduce supplier approval, account restrictions/roles, refund execution or moderation transitions while policies/contracts are open. No cross-feature state sharing, new dependency or architecture change. Evidence and limitations: `FE-0601_ADMIN.md`.
+
 ## ADR-007: Isolated supplier demo for FE-0501
 Status: Implemented 2026-11-16. Keep supplier application/profile, catalog/inventory and order-note fixtures independent of public discovery/customer commerce. Query owns a validated workspace snapshot; local revision checks reject stale writes, while forms retain transient drafts. The adapter protocol is a mock implementation detail, not an approved API. Supplier approval, authentication, publication, stock reservations, fulfilment transitions, revenue and uploads remain contract-dependent. No new dependency or architecture change. Scope and validation: `FE-0501_SUPPLIER.md`.
 

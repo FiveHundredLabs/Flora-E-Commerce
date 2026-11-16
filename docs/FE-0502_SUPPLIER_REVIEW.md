@@ -40,4 +40,4 @@ Manual screen-reader speech, non-Chrome engines, native OS high-contrast and pro
 - PASS: narrow stock/note validation axe scans reported zero violations, overflow assertions passed, and full-page screenshots were visually inspected for wrapping, control/error visibility and clipping. Long native input contents scroll within the control. Existing 320/1440px supplier screen checks remain enabled.
 - PASS: scoped source/diff review and `git diff --check`.
 
-FE-0502 is complete within mock supplier scope. FE-0601 has not started.
+FE-0502 is complete within mock supplier scope. Subsequent admin implementation and evidence are recorded in `FE-0601_ADMIN.md`.

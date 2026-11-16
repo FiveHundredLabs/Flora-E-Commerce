@@ -20,7 +20,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="shell__header">
       <div className="shell__brand"><Link to="/">Flower & Flora</Link><span className="shell__eyebrow">{config.title}</span></div>
-      {workspace && <Badge>{audience === 'supplier' ? 'Sample workspace' : 'Layout preview'}</Badge>}
+      {workspace && <Badge>Sample workspace</Badge>}
       <Button ref={toggle} className="shell__toggle" variant="secondary" aria-expanded={expanded} aria-controls={navigationId}
         onKeyDown={(event) => { if (event.key === 'Escape') setExpanded(false); }}
         onClick={() => setExpanded((value) => !value)}>Menu</Button>
@@ -42,6 +42,12 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
           {([
             ['/supplier/register', 'Registration'], ['/supplier/profile', 'Store profile'], ['/supplier/products', 'Products'],
             ['/supplier/inventory', 'Inventory'], ['/supplier/orders', 'Orders'], ['/supplier/sales', 'Sales'],
+          ] as const).map(([to, label]) => <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>{label}</NavLink>)}
+        </>}
+        {audience === 'admin' && <>
+          {([
+            ['/admin/suppliers', 'Suppliers'], ['/admin/users', 'Users'], ['/admin/categories', 'Categories'],
+            ['/admin/orders', 'Orders'], ['/admin/refunds', 'Refund requests'], ['/admin/reviews', 'Feedback'],
           ] as const).map(([to, label]) => <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>{label}</NavLink>)}
         </>}
         {workspace && <Link to="/" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Return to marketplace</Link>}

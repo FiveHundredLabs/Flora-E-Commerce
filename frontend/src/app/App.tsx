@@ -3,7 +3,7 @@ import { HomePage } from '../pages/HomePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { RouteAccessibility } from './RouteAccessibility';
 import { Shell } from '../shared/components/layout/Shell';
-import { WorkspacePage } from '../pages/WorkspacePage';
+import { AdminPage } from '../pages/AdminPage';
 import { DiscoveryPage } from '../pages/DiscoveryPage';
 import { CommercePage } from '../pages/CommercePage';
 import { SupplierPage } from '../pages/SupplierPage';
@@ -35,7 +35,12 @@ export function App() {
           <Route path="/supplier/inventory" element={<SupplierPage screen="inventory" />} />
           <Route path="/supplier/orders" element={<SupplierPage screen="orders" />} />
           <Route path="/supplier/sales" element={<SupplierPage screen="sales" />} />
-          <Route path="/admin" element={<WorkspacePage audience="admin" />} />
+          <Route path="/admin" element={<AdminPage screen="overview" />} />
+          <Route path="/admin/categories/new" element={<AdminPage screen="newCategory" />} />
+          {(['suppliers', 'users', 'categories', 'orders', 'refunds', 'reviews'] as const).map((section) => <Route key={section} path={`/admin/${section}`}>
+            <Route index element={<AdminPage screen={section} />} />
+            <Route path=":recordId" element={<AdminPage screen={section} detail />} />
+          </Route>)}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Shell>
