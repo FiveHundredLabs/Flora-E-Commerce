@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 import { App } from './App';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 describe('foundation routes', () => {
   it('clearly labels the sample catalog entry points', () => {
     render(<MemoryRouter><App /></MemoryRouter>);
@@ -29,11 +30,14 @@ describe('foundation routes', () => {
   it.each([
     ['/supplier', 'Supplier workspace'],
     ['/admin', 'Super admin workspace'],
-  ])('renders the %s layout preview without account data', (path, name) => {
-    render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
+  ])('renders the %s workspace without real account data', async (path, name) => {
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
+    render(<QueryClientProvider client={client}><MemoryRouter initialEntries={[path]}><App /></MemoryRouter></QueryClientProvider>);
     expect(screen.getByRole('heading', { name, level: 1 })).toBeVisible();
     expect(screen.getByRole('navigation', { name: `${name} navigation` })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByRole('region', { name: 'Overview' })).toHaveTextContent('not available yet');
+    if (path === '/supplier') expect(await screen.findByRole('heading', { name: 'Meadow Studio' })).toBeVisible();
+    else expect(screen.getByRole('region', { name: 'Overview' })).toHaveTextContent('not available yet');
+    client.clear();
   });
 });

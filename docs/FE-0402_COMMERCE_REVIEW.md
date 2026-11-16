@@ -36,4 +36,4 @@ Manual NVDA/VoiceOver speech output, non-Chrome engines and native OS high-contr
 - PASS: narrow validation axe scans reported zero violations, overflow assertions passed, and cart/feedback screenshots were visually inspected for wrapping, control boundaries, focus and error visibility. Native textarea content scrolls within its control.
 - PASS: reviewed scoped diff and `git diff --check`.
 
-FE-0402 is complete within mock commerce scope. FE-0501 has not started.
+FE-0402 is complete within mock commerce scope. Subsequent supplier implementation and evidence are recorded in `FE-0501_SUPPLIER.md`.

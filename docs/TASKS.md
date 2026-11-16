@@ -95,7 +95,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0402 — Implement feature-level tests, error/empty/loading states and accessibility review
-- **Status (2026-11-15): COMPLETE within mock commerce scope.** Added 13 unit/component cases and four browser journeys; fixed stale feedback confirmation, receipt association, store-switch checkout lifecycle and lost-focus recovery. Strengthened order response validation. Typecheck/lint/build, all 85 unit/component tests and all 68 Chrome tests passed, including narrow axe/overflow checks and screenshot review. Evidence/limits: `docs/FE-0402_COMMERCE_REVIEW.md`. FE-0501 has not started.
+- **Status (2026-11-15): COMPLETE within mock commerce scope.** Added 13 unit/component cases and four browser journeys; fixed stale feedback confirmation, receipt association, store-switch checkout lifecycle and lost-focus recovery. Strengthened order response validation. Typecheck/lint/build, all 85 unit/component tests and all 68 Chrome tests passed, including narrow axe/overflow checks and screenshot review. Original evidence/limits: `docs/FE-0402_COMMERCE_REVIEW.md`; subsequent supplier implementation is recorded below.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 4; exact paths determined after inspection.
@@ -109,6 +109,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 5: Supplier
 
 ### FE-0501 — Registration/profile, products, variants, inventory, orders, sales
+- **Status (2026-11-16): COMPLETE within mock supplier scope.** Isolated sample application/profile, unpublished product/variant CRUD, stock counts with stale-write rejection, capability-gated fulfilment notes and basic order/unit summaries implemented. Typecheck/lint/production build, 105 unit/component tests and all 89 Chrome tests passed; responsive axe/overflow and product/inventory screenshot review completed. Supplier approval, live registration/auth, publication, media, order transitions and revenue remain contract-dependent. Evidence: `docs/FE-0501_SUPPLIER.md`. FE-0502 has not started.
 - **Objective:** Registration/profile, products, variants, inventory, orders, sales.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 5; exact paths determined after inspection.

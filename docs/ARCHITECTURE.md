@@ -14,6 +14,8 @@ Vite SPA with React Router v7 (declarative routing), feature-first modular monol
 
 FE-0401 activates Redux for cart references/quantities/client revisions. `CartProvider` lives in `features/commerce` and is composed by app providers. Catalog projections and optional product actions are wired in `pages/` using public feature APIs; commerce and discovery do not import each other's internals. Orders/feedback remain Query-owned mock-service entities. See `FE-0401_CUSTOMER_COMMERCE.md` for mock-only scope and reconciliation safety.
 
+FE-0501 adds an isolated `features/supplier` mock workspace, composed by `pages/SupplierPage.tsx` through its public screen interface. Query owns fixture reads/acknowledged revisions; forms and dialogs own transient state. Its local adapter protocol is not an HTTP contract. Supplier changes do not publish into discovery or mutate customer commerce. No new state library or dependency is added. See `FE-0501_SUPPLIER.md` for routes and contract boundaries.
+
 ## Auth
 Prefer HttpOnly Secure SameSite cookies issued by backend; `withCredentials` only for approved origin. Handle 401 with a single-flight refresh strategy only after auth contract approval; never retry indefinitely. CSRF protection must be defined with backend. Authorization remains server-side.
 

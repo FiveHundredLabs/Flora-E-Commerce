@@ -1,5 +1,8 @@
 # Architecture decision records
 
+## ADR-007: Isolated supplier demo for FE-0501
+Status: Implemented 2026-11-16. Keep supplier application/profile, catalog/inventory and order-note fixtures independent of public discovery/customer commerce. Query owns a validated workspace snapshot; local revision checks reject stale writes, while forms retain transient drafts. The adapter protocol is a mock implementation detail, not an approved API. Supplier approval, authentication, publication, stock reservations, fulfilment transitions, revenue and uploads remain contract-dependent. No new dependency or architecture change. Scope and validation: `FE-0501_SUPPLIER.md`.
+
 ## ADR-006: Activate client cart state for FE-0401
 Status: Implemented 2026-11-15. Add Redux Toolkit/react-redux for multi-store cart references/quantities/revisions only; keep catalog/order/feedback entities in TanStack Query. Page composition injects the cart action into discovery through public interfaces. Use an in-memory mock service for commerce until approved backend contracts exist, with no prices, credentials, persistent storage or provider calls. Detailed safety rules, provisional UI bounds and validation evidence: `FE-0401_CUSTOMER_COMMERCE.md`.
 

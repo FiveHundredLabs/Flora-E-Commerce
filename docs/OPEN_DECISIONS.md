@@ -19,6 +19,8 @@ FE-0301 implements a labeled mock-only discovery slice. Its sample fields, categ
 
 FE-0401 implements approved per-store checkout in a labeled in-memory commerce demo. Pickup/delivery/provider choices are preferences, not service availability. New sample orders have no payment request; text feedback is a provisional non-published preview. Price/currency, fees, provider operations, refunds/cancellation, review format/moderation and auth/API contracts remain open. See `FE-0401_CUSTOMER_COMMERCE.md`.
 
+FE-0501 provides a fictional supplier application/profile, unpublished catalog/variant edits, sample stock counts, capability-gated order notes and order/unit summaries. It does not settle supplier approval/publication, registration/auth fields, inventory reservations, order transitions, revenue/reporting or media behavior. Application submission creates no account or approval request. See `FE-0501_SUPPLIER.md`; OD-01/OD-10/OD-11/OD-12 remain open.
+
 | ID | Question | Affects |
 |---|---|---|
 | OD-01 | Can suppliers publish immediately or require approval? | Product UI, permissions |

@@ -62,11 +62,12 @@ test('unknown workspace routes retain their shell and recover without account da
   for (const path of ['/supplier/missing', '/admin/missing']) {
     await page.goto(path);
     await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible();
-    await expect(page.getByRole('banner').getByText('Layout preview')).toBeVisible();
+    await expect(page.getByRole('banner').getByText(path.startsWith('/supplier') ? 'Sample workspace' : 'Layout preview')).toBeVisible();
     await page.getByRole('link', { name: 'Return home' }).click();
     await expect(page).toHaveURL(/\/$/);
     await expect(page.getByRole('main')).toBeFocused();
     await expect(page.getByRole('banner').getByText('Layout preview')).toHaveCount(0);
+    await expect(page.getByRole('banner').getByText('Sample workspace')).toHaveCount(0);
   }
 });
 
