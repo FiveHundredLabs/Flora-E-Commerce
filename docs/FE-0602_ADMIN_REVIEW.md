@@ -39,4 +39,4 @@ No dependency changes, installation or new audit are claimed. Existing developme
 - PASS: narrow note/label validation axe WCAG A/AA scans reported zero violations, overflow checks passed, and both full-page screenshots were visually inspected for wrapping, controls, error/focus visibility and clipping. Long native input contents scroll inside their controls. Existing 320/1440px admin checks and native dialog/keyboard coverage remain enabled.
 - PASS: scoped source review, whitespace checks on new files and `git diff --check`. Existing FE-0601 workspace edits were preserved; no staging/commit or unrelated rewrite was performed.
 
-FE-0602 is complete within mock admin scope. FE-0701 has not started.
+FE-0602 is complete within mock admin scope. Subsequent FE-0701 readiness/hardening is recorded in `FE-0701_INTEGRATIONS_HARDENING.md`; live integration scope remains incomplete.

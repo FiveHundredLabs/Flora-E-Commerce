@@ -10,3 +10,5 @@
 - Use CSP and security headers configured at hosting layer; dependency scanning in CI.
 - Avoid leaking private customer/supplier data in telemetry, URL params or test fixtures.
 - Handle 403/401 consistently; do not mistake hidden buttons for authorization.
+
+FE-0701 adds a mock-only public-config allowlist, local production-preview security headers, build integrity checks and browser enforcement smoke tests. These do not establish live auth, CSRF, tenant isolation or production host security. Preview CSP intentionally allows inline styles, but not inline scripts/eval or browser connections. Review the final HTTPS host policy and integration allowlists before enabling live operations. Evidence and remaining gates: `FE-0701_INTEGRATIONS_HARDENING.md`; operational commands/limits: `DEPLOYMENT.md`.

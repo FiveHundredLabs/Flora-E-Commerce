@@ -8,7 +8,7 @@ export default defineConfig({
     channel: env.PLAYWRIGHT_CHANNEL || undefined,
   },
   webServer: {
-    command: 'npm run build && npm exec vite preview -- --host 127.0.0.1 --port 4173 --strictPort',
+    command: 'npm run build && npm run preview',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: false,
   },

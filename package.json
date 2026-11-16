@@ -10,6 +10,9 @@
     "lint": "npm run lint -w frontend",
     "test": "npm run test -w frontend --",
     "build": "npm run build -w frontend",
+  "verify:release": "npm run verify:release -w frontend",
+  "test:release": "npm run test:release -w frontend",
+  "preview": "npm run preview -w frontend",
     "test:e2e": "npm run test:e2e -w frontend --"
   }
 }

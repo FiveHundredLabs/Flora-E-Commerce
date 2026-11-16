@@ -1,5 +1,8 @@
 # Architecture decision records
 
+## ADR-009: Fail-closed mock configuration and local release checks for FE-0701
+Status: Implemented 2026-11-16 for local hardening only. Reject unsupported public Vite configuration rather than implying that an API URL enables live adapters. Apply loopback preview security headers and generate/verify a mock artifact manifest; add CI release checks without selecting or publishing to a host. No dependency or application-state architecture change. Backend/auth/media/hosting approvals remain required; FE-0701 is not complete. Evidence: `FE-0701_INTEGRATIONS_HARDENING.md`.
+
 ## ADR-008: Isolated admin oversight demo for FE-0601
 Status: Implemented 2026-11-16. Use a private fictional Query snapshot for sample supplier/user labels, category CRUD and oversight notes, with validated references, revision checks and receipt association. Do not introduce supplier approval, account restrictions/roles, refund execution or moderation transitions while policies/contracts are open. No cross-feature state sharing, new dependency or architecture change. Evidence and limitations: `FE-0601_ADMIN.md`.
 

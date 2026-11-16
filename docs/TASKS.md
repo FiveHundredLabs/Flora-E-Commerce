@@ -147,7 +147,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0602 — Implement feature-level tests, error/empty/loading states and accessibility review
-- **Status (2026-11-16): COMPLETE within mock admin scope.** Added 20 feature tests and four browser journeys; fixed denied-cache recovery after late write failure, unrelated receipt changes and stale empty-list detail entry. Reviewed cancellation, workspace/record isolation, missing/error/empty recovery, native modal keyboard behavior and enlarged-text validation. Typecheck/lint/build, all 169 unit/component tests and all 128 Chrome tests passed, including axe/overflow and screenshot review. Evidence/limits: `docs/FE-0602_ADMIN_REVIEW.md`. FE-0701 has not started.
+- **Status (2026-11-16): COMPLETE within mock admin scope.** Added 20 feature tests and four browser journeys; fixed denied-cache recovery after late write failure, unrelated receipt changes and stale empty-list detail entry. Reviewed cancellation, workspace/record isolation, missing/error/empty recovery, native modal keyboard behavior and enlarged-text validation. Typecheck/lint/build, all 169 unit/component tests and all 128 Chrome tests passed, including axe/overflow and screenshot review. Original evidence/limits: `docs/FE-0602_ADMIN_REVIEW.md`; subsequent FE-0701 readiness work is recorded below.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 6; exact paths determined after inspection.
@@ -161,6 +161,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 ## Phase 7: Integrations and hardening
 
 ### FE-0701 — Approved API wiring, auth, media processing status, security, E2E, deployment
+- **Status (2026-11-16): PARTIAL — local hardening validated; live integration/auth/media/hosted deployment BLOCKED.** Added mock-only public-config guard, preview security headers, artifact manifest/verification/restore checks and CI release gates. Original typecheck/lint/build, 177 unit/component tests, five direct artifact scenarios, all 131 Chrome tests and production audit (zero vulnerabilities) passed. No approved OpenAPI/auth/CSRF/media contract or hosting target exists; do not infer endpoints, media states, permissions or deployment approval. Required references were requested from the owner. Evidence/handoffs: `docs/FE-0701_INTEGRATIONS_HARDENING.md`. The owner subsequently requested FE-0702's independent local review; that does not unblock live acceptance or complete this task.
 - **Objective:** Approved API wiring, auth, media processing status, security, E2E, deployment.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 7; exact paths determined after inspection.
@@ -172,6 +173,7 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
 
 ### FE-0702 — Implement feature-level tests, error/empty/loading states and accessibility review
+- **Status (2026-11-16): PARTIAL — independently requested local review VALIDATED; live acceptance BLOCKED by incomplete FE-0701.** Added four artifact scenarios (nine total) and six browser checks; fixed missing bootstrap acceptance, reserved-asset HTML/200 fallback and blank first-load/JavaScript-disabled recovery. Supported preview startup now verifies the artifact. Typecheck/lint/build, 177 unit/component tests, nine artifact scenarios and all 137 Chrome checks passed, including recovery axe/overflow and visual review. No API/auth/media/provider/host contracts or approvals were invented. Evidence/dependency limits: `docs/FE-0702_RELEASE_REVIEW.md`. Do not mark the whole task complete until remaining live scope is available and validated.
 - **Objective:** Implement feature-level tests, error/empty/loading states and accessibility review.
 - **Context/requirements:** `docs/PRODUCT_REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/OPEN_DECISIONS.md`; confirm affected requirement IDs before coding.
 - **Affected modules:** `frontend/src/` feature/app/shared areas relevant to phase 7; exact paths determined after inspection.

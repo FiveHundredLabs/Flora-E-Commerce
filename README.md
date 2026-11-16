@@ -4,6 +4,10 @@ Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated
 
 > This workspace includes a validated frontend/design-system foundation, mock discovery, in-memory multi-store commerce, a fictional supplier workspace, and an isolated admin demo for sample labels, categories and oversight notes. Live backend, authentication, payment and delivery integrations remain pending. See `docs/FE-0401_CUSTOMER_COMMERCE.md`, `docs/FE-0501_SUPPLIER.md`, `docs/FE-0601_ADMIN.md` and `docs/OPEN_DECISIONS.md` for scope and remaining approvals.
 
+FE-0701 is partial: local mock configuration/security/artifact/E2E hardening is validated, while approved API/auth/media wiring and hosted deployment remain blocked. See `docs/FE-0701_INTEGRATIONS_HARDENING.md` and `docs/DEPLOYMENT.md` for evidence, commands and required handoffs. Only default/explicit `VITE_APP_MODE=mock` is supported.
+
+The independently requested FE-0702 local review is validated with startup recovery, reserved-asset 404s and expanded release/security/accessibility checks. Phase 7 live acceptance remains incomplete. See `docs/FE-0702_RELEASE_REVIEW.md` for verified results and limits.
+
 ## Read first
 1. `docs/PROJECT_CONTEXT.md`
 2. `docs/PRODUCT_REQUIREMENTS.md`
