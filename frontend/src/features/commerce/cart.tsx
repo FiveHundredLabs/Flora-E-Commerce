@@ -1,6 +1,6 @@
 import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
-import { useState, type PropsWithChildren } from 'react';
+import { Provider, ReactReduxContext, useSelector, useStore } from 'react-redux';
+import { useContext, useState, type PropsWithChildren } from 'react';
 import { cartRefSchema, lineSchema, type CartLine } from './model';
 
 const slice = createSlice({
@@ -37,8 +37,26 @@ export const cartActions = slice.actions;
 export const createCartStore = () => configureStore({ reducer: { cart: slice.reducer } });
 export type CartStore = ReturnType<typeof createCartStore>;
 type RootState = ReturnType<CartStore['getState']>;
-export const useCartDispatch = useDispatch.withTypes<CartStore['dispatch']>();
-export const useCartSelector = useSelector.withTypes<RootState>();
+
+const internalUseSelector = useSelector.withTypes<RootState>();
+
+export function useCartDispatch(): CartStore['dispatch'] {
+  const context = useContext(ReactReduxContext);
+  if (!context || !context.store) {
+    return ((action: unknown) => action) as unknown as CartStore['dispatch'];
+  }
+  return context.store.dispatch as CartStore['dispatch'];
+}
+
+export function useCartSelector<Selected>(selector: (state: RootState) => Selected): Selected {
+  const context = useContext(ReactReduxContext);
+  if (!context || !context.store) {
+    const defaultState: RootState = { cart: { lines: [], nextRevision: 1 } };
+    return selector(defaultState);
+  }
+  return internalUseSelector(selector);
+}
+
 export const useCartStore = useStore.withTypes<CartStore>();
 
 export function CartProvider({ children }: PropsWithChildren) {

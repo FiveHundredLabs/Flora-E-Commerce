@@ -1,7 +1,9 @@
 import type { ComponentProps } from 'react';
 
+export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'destructive' | 'icon-square';
+
 type ButtonProps = ComponentProps<'button'> & {
-  variant?: 'primary' | 'secondary' | 'destructive';
+  variant?: ButtonVariant;
   busy?: boolean;
 };
 

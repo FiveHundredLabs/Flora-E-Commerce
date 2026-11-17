@@ -7,6 +7,9 @@ import { AdminPage } from '../pages/AdminPage';
 import { DiscoveryPage } from '../pages/DiscoveryPage';
 import { CommercePage } from '../pages/CommercePage';
 import { SupplierPage } from '../pages/SupplierPage';
+import { WishlistPage } from '../pages/WishlistPage';
+import { AboutPage } from '../pages/AboutPage';
+import { ContactPage } from '../pages/ContactPage';
 
 export function App() {
   const { pathname } = useLocation();
@@ -22,6 +25,9 @@ export function App() {
           <Route path="/shops/:slug" element={<DiscoveryPage kind="shops" detail />} />
           <Route path="/products" element={<DiscoveryPage kind="products" />} />
           <Route path="/products/:slug" element={<DiscoveryPage kind="products" detail />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CommercePage screen="cart" />} />
           <Route path="/checkout" element={<CommercePage screen="checkout" />} />
           <Route path="/account/orders" element={<CommercePage screen="orders" />} />

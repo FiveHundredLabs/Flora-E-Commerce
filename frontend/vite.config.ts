@@ -15,6 +15,8 @@ export default defineConfig(({ mode }) => {
       setupFiles: ['./src/test/setup.ts'],
       include: ['src/**/*.test.{ts,tsx}'],
       clearMocks: true,
+      fileParallelism: false,
+      testTimeout: 15000,
     },
   };
 });

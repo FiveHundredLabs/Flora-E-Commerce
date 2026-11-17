@@ -1,21 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
 :root {
-  /* Provisional neutral theme; OD-09 has not selected a client palette. */
-  --background: #f7f7f5;
-  --foreground: #25282d;
-  --card: #fff;
-  --card-foreground: #25282d;
-  --primary: #30343b;
-  --primary-foreground: #fff;
-  --secondary: #ebedea;
-  --secondary-foreground: #34383d;
-  --muted: #eff0ed;
-  --muted-foreground: #595e64;
-  --border: #d4d7d2;
-  --input: #858b87;
-  --destructive: #a52b31;
-  --destructive-foreground: #fff;
-  --ring: #315d99;
-  --radius: .75rem;
+  /* Brand Palettes */
+  --color-forest-deep: #244c3a;
+  --color-sage-accent: #6f967b;
+  --color-mint-soft: #b7cdb5;
+  --color-cream-warm: #f5f3e9;
+  --color-gold-warm: #d9a85f;
+  --color-forest-text: #1a3629;
+  --color-forest-muted: #4e6b59;
+  --color-white: #ffffff;
+  --color-destructive: #b33a3a;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #2d6a4f;
+
+  /* Semantic UI Tokens */
+  --background: var(--color-cream-warm);
+  --foreground: var(--color-forest-text);
+  --card: var(--color-white);
+  --card-foreground: var(--color-forest-text);
+  --primary: var(--color-forest-deep);
+  --primary-foreground: var(--color-white);
+  --secondary: var(--color-sage-accent);
+  --secondary-foreground: var(--color-white);
+  --accent: var(--color-gold-warm);
+  --accent-foreground: var(--color-white);
+  --muted: #e8ede4;
+  --muted-foreground: var(--color-forest-muted);
+  --border: #dbe3d8;
+  --border-strong: var(--color-mint-soft);
+  --input: #9cb59a;
+  --input-focus: var(--color-sage-accent);
+  --destructive: var(--color-destructive);
+  --destructive-foreground: var(--color-destructive-foreground);
+  --ring: var(--color-sage-accent);
+
+  /* Geometry & Radii */
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-pill: 9999px;
+  --radius: var(--radius-none); /* Fiama signature sharp aesthetic */
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(36, 76, 58, 0.05);
+  --shadow-md: 0 5px 20px rgba(36, 76, 58, 0.08);
+  --shadow-lg: 0 16px 32px rgba(36, 76, 58, 0.12);
+  --shadow-hover: 0 8px 24px rgba(36, 76, 58, 0.14);
+  --shadow: var(--shadow-sm);
+
+  /* Spacing */
   --space-1: .25rem;
   --space-2: .5rem;
   --space-3: .75rem;
@@ -23,10 +57,25 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
-  --font-display: Georgia, 'Times New Roman', serif;
-  --text-sm: .875rem;
+  --space-gutter: 30px;
+  --section-padding-y: 100px;
+
+  /* Typography */
+  --font-heading: 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
   --text-base: 1rem;
-  --content-width: 76rem;
-  --shadow: 0 .4rem 1.5rem rgb(24 29 25 / 5%);
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-hero: 4.25rem;
+
+  /* Layout */
+  --content-width: 1200px;
 }
