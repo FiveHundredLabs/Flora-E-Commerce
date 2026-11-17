@@ -1,0 +1,16 @@
+.commerce-notice { border-inline-start: 3px solid var(--primary); padding-inline-start: var(--space-4); margin-block-end: var(--space-5); }
+.commerce-notice p, .commerce-add > p { color: var(--muted-foreground); font-size: var(--text-sm); margin-block: var(--space-3); }
+.commerce-lines, .cart-items, .order-list { list-style: none; padding: 0; margin: 0 0 var(--space-5); }
+.commerce-lines li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); padding-block: var(--space-3); border-block-end: 1px solid var(--border); }
+.cart-items > li, .order-list > li { border-block-end: 1px solid var(--border); padding-block: var(--space-4); }
+.cart-items h3 { margin-block: 0 var(--space-3); }
+.quantity-editor { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3); margin-block-end: var(--space-3); }
+.quantity-editor .field { margin: 0; max-inline-size: 20rem; }
+fieldset { min-inline-size: 0; border: 1px solid var(--input); border-radius: var(--radius); padding: var(--space-4); margin-block: var(--space-5); }
+legend { font-weight: 600; padding-inline: var(--space-2); }
+.commerce-radio { display: flex; align-items: center; gap: var(--space-3); min-block-size: 2.75rem; }
+.commerce-radio input { inline-size: 1.25rem; block-size: 1.25rem; }
+.commerce-feedback textarea { inline-size: 100%; min-block-size: 8rem; padding: var(--space-3); border: 1px solid var(--input); border-radius: var(--radius); background: var(--card); color: var(--foreground); font: inherit; resize: vertical; }
+.commerce-feedback textarea[aria-invalid='true'] { border-color: var(--destructive); }
+.commerce-add { margin-block-start: var(--space-5); }
+@media (forced-colors: active) { .commerce-feedback textarea[aria-invalid='true'] { border: 2px solid CanvasText; } }

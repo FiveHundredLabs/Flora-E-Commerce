@@ -1,5 +1,7 @@
 # Priority remediation — 2026-11-14
 
+Update 2026-11-15: FE-0101 installation and validation blockers recorded below are historical and have been resolved. See `FE-0101_FOUNDATION.md` for the successful clean npm 11 install, quality checks and browser evidence. Business/API decisions remain governed by OPEN_DECISIONS.
+
 Scope: FE-0101 foundation; contract readiness for C-01–C-04, S-01–S-03, M-01, D-01, P-01, A-01, F-01. No business decision is approved by this document.
 
 ## Findings and implementation

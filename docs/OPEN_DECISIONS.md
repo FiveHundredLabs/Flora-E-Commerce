@@ -15,6 +15,14 @@ Acceptance examples for OD-02: add items from stores A and B and see both groups
 
 Concrete starting proposals, accountable owners and required evidence for all 13 decisions are in `PRIORITY_REMEDIATION.md`. They support review and do not constitute signoff.
 
+FE-0301 implements a labeled mock-only discovery slice. Its sample fields, categories, locations and URL rules in `FE-0301_CUSTOMER_DISCOVERY.md` do not resolve OD-07/OD-09/OD-10 or establish live backend capabilities.
+
+FE-0401 implements approved per-store checkout in a labeled in-memory commerce demo. Pickup/delivery/provider choices are preferences, not service availability. New sample orders have no payment request; text feedback is a provisional non-published preview. Price/currency, fees, provider operations, refunds/cancellation, review format/moderation and auth/API contracts remain open. See `FE-0401_CUSTOMER_COMMERCE.md`.
+
+FE-0501 provides a fictional supplier application/profile, unpublished catalog/variant edits, sample stock counts, capability-gated order notes and order/unit summaries. It does not settle supplier approval/publication, registration/auth fields, inventory reservations, order transitions, revenue/reporting or media behavior. Application submission creates no account or approval request. See `FE-0501_SUPPLIER.md`; OD-01/OD-10/OD-11/OD-12 remain open.
+
+FE-0601 adds isolated fictional admin records, display-label/category edits and oversight notes. Notes do not approve suppliers, restrict accounts, grant roles, execute refunds or moderate public feedback. Fixture capabilities/taxonomy are illustrative; they do not resolve OD-01/OD-05/OD-06/OD-08–OD-12. See `FE-0601_ADMIN.md`; all live operational actions remain contract-dependent.
+
 | ID | Question | Affects |
 |---|---|---|
 | OD-01 | Can suppliers publish immediately or require approval? | Product UI, permissions |

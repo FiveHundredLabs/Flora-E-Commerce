@@ -2,7 +2,11 @@
 
 Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated with **OpenAI Codex** and **Google Antigravity**.
 
-> This workspace includes a minimal frontend foundation and project specifications. Marketplace features and live backend integrations remain pending. See `docs/PRIORITY_REMEDIATION.md` for the decision package.
+> This workspace includes a validated frontend/design-system foundation, mock discovery, in-memory multi-store commerce, a fictional supplier workspace, and an isolated admin demo for sample labels, categories and oversight notes. Live backend, authentication, payment and delivery integrations remain pending. See `docs/FE-0401_CUSTOMER_COMMERCE.md`, `docs/FE-0501_SUPPLIER.md`, `docs/FE-0601_ADMIN.md` and `docs/OPEN_DECISIONS.md` for scope and remaining approvals.
+
+FE-0701 is partial: local mock configuration/security/artifact/E2E hardening is validated, while approved API/auth/media wiring and hosted deployment remain blocked. See `docs/FE-0701_INTEGRATIONS_HARDENING.md` and `docs/DEPLOYMENT.md` for evidence, commands and required handoffs. Only default/explicit `VITE_APP_MODE=mock` is supported.
+
+The independently requested FE-0702 local review is validated with startup recovery, reserved-asset 404s and expanded release/security/accessibility checks. Phase 7 live acceptance remains incomplete. See `docs/FE-0702_RELEASE_REVIEW.md` for verified results and limits.
 
 ## Read first
 1. `docs/PROJECT_CONTEXT.md`
@@ -21,7 +25,7 @@ Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated
 
 ## Start
 1. Review open decisions with client and backend owner.
-2. Run `npm ci` from the root, then `npm run dev` to start the frontend foundation.
+2. Use Node 22 and npm 11, run `npm ci` from the root, then `npm run dev` to start the frontend foundation. With older bundled npm, use `npx npm@11 ci`.
 3. Implement design tokens and shell before feature pages.
 4. Use mock adapters with clearly labeled fixtures until APIs are specified.
 5. Run checks defined in `docs/TESTING.md` before merging.

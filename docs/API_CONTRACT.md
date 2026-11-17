@@ -2,6 +2,8 @@
 
 **No backend API specification was provided.** PostgreSQL table names and enum values do not establish REST URLs, JSON shapes, or authentication semantics.
 
+FE-0701 readiness review (2026-11-16) found no new approved API/auth/media contract. Live adapters remain blocked. Dev/build/preview allow only mock configuration; the previous illustrative API URL is removed. See `FE-0701_INTEGRATIONS_HARDENING.md` for the concrete handoff requirements and independently validated hardening work.
+
 See `PRIORITY_REMEDIATION.md` for the auth review specification, schema-to-capability boundary and decision ownership. An OpenAPI file with guessed paths would violate AGENTS.md; the backend owner must provide or approve operation paths first.
 
 ## Contract handoff acceptance
