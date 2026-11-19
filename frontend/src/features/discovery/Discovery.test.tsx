@@ -109,12 +109,15 @@ it('shows only the selected shop products and updates its document title', async
   expect(screen.getByRole('link', { name: 'Morning Bouquet' })).toBeVisible();
   expect(screen.queryByRole('link', { name: 'Little Fern' })).not.toBeInTheDocument();
   expect(document.title).toBe('Willow & Stem | Flower & Flora');
+  expect(screen.getByText('Verified Artisan Florist')).toBeVisible();
+  expect(screen.queryByRole('group', { name: 'Product thumbnails' })).not.toBeInTheDocument();
 });
 
 it('renders product ownership and keeps purchase controls absent', async () => {
   mount('products', '/products/little-fern', true);
   await screen.findByRole('heading', { name: 'Little Fern', level: 1 });
   expect(screen.getByRole('link', { name: 'Fern House' })).toHaveAttribute('href', '/shops/fern-house');
+  expect(screen.getByRole('group', { name: 'Product thumbnails' })).toBeVisible();
   expect(screen.queryByRole('button', { name: /cart|buy/i })).not.toBeInTheDocument();
 });
 

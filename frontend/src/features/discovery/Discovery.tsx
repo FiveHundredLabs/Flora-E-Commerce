@@ -1,5 +1,6 @@
 import { Link, useLocation, useParams, useSearchParams } from 'react-router';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Eye, Flame, CheckCircle, Truck, ShieldCheck, Ruler, Grid3X3, Grid2X2, LayoutGrid } from 'lucide-react';
 import { AsyncRegion } from '../../shared/components/AsyncRegion';
 import { Badge } from '../../shared/components/ui/Content';
 import { Breadcrumbs } from '../../shared/components/ui/Breadcrumbs';
@@ -21,6 +22,7 @@ import { ProductCards, StoreCards } from './Cards';
 import { Illustration } from './Illustration';
 import { RefreshNotice } from './RefreshNotice';
 import { useWishlist } from './wishlist';
+import { floristModels, categoryCirculars, getProductPhoto } from './assets';
 
 export function MockNotice() {
   return (
@@ -47,11 +49,45 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
 
   return (
     <div className="discovery-page-layout">
-      {/* Breadcrumb Header */}
-      <div className="discovery-hero-header">
-        <p className="eyebrow">Discover at your own pace</p>
-        <h1>{title}</h1>
-        <p>{kind === 'shops' ? 'Meet the spaces behind the stems.' : 'A small collection of flowers, foliage and growing things.'}</p>
+      {/* Hero Banner with Model Cutout & 4 Category Circles (Screenshot 3) */}
+      <div className="catalog-hero-banner">
+        <div className="catalog-hero-inner">
+          <div className="catalog-hero-copy">
+            <Breadcrumbs
+              items={[{ label: 'Home', to: '/' }]}
+              current={title}
+            />
+            <h1 className="catalog-hero-title">{title}</h1>
+            <p className="catalog-hero-sub">
+              {kind === 'shops'
+                ? 'Meet the independent artisan studios behind our sustainable stems.'
+                : 'Hand-picked blooms, lush ferns, and bespoke floral arrangements.'}
+            </p>
+
+            {/* 4 Circular Category Icon Buttons (Screenshot 3) */}
+            <div className="catalog-hero-categories" role="group" aria-label="Quick category filters">
+              {Object.entries(categoryCirculars).map(([key, cat]) => {
+                const targetLink = kind === 'shops' ? cat.link.replace('/products', '/shops') : cat.link;
+                return (
+                  <Link key={key} to={targetLink} className="catalog-category-pill">
+                    <div className="pill-thumb">
+                      <img src={cat.image} alt={cat.title} />
+                    </div>
+                    <span className="pill-name">{cat.title.toUpperCase()}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="catalog-hero-model-wrap">
+            <img
+              src={floristModels.catalogStrawHat}
+              alt="Florist holding flowers in straw hat"
+              className="catalog-hero-model-img"
+            />
+          </div>
+        </div>
       </div>
 
       <MockNotice />
@@ -65,7 +101,7 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
 
       {/* Main 2-Column Grid */}
       <div className="discovery-main-grid">
-        {/* Left Column: Filters */}
+        {/* Left Column: Filter Sidebar (Screenshot 3) */}
         <Filters
           values={filters}
           revision={navigationKey}
@@ -75,17 +111,49 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
 
         {/* Right Column: Catalog Grid & Toolbar */}
         <div className="discovery-content-area">
-          {/* Top Toolbar */}
+          {/* Top Toolbar (Screenshot 3) */}
           <div className="discovery-toolbar">
             <div className="discovery-toolbar__counter">
               {query.data && (
                 <p role="status" aria-live="polite" className="results-count-status">
-                  {count} sample {kind === 'shops' ? 'shops' : 'products'} found.
+                  You’ve viewed {count} of {count} sample {kind === 'shops' ? 'shops' : 'products'}
                 </p>
               )}
             </div>
 
             <div className="discovery-toolbar__controls">
+              {/* Layout Switchers */}
+              <div className="discovery-toolbar__modes" role="group" aria-label="Layout view mode">
+                <button
+                  type="button"
+                  className={`view-mode-btn ${viewMode === '3-col' ? 'is-active' : ''}`}
+                  aria-label="3 column grid view"
+                  aria-pressed={viewMode === '3-col'}
+                  onClick={() => setViewMode('3-col')}
+                >
+                  <Grid3X3 size={18} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className={`view-mode-btn ${viewMode === '4-col' ? 'is-active' : ''}`}
+                  aria-label="4 column grid view"
+                  aria-pressed={viewMode === '4-col'}
+                  onClick={() => setViewMode('4-col')}
+                >
+                  <LayoutGrid size={18} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className={`view-mode-btn ${viewMode === 'list' ? 'is-active' : ''}`}
+                  aria-label="List view"
+                  aria-pressed={viewMode === 'list'}
+                  onClick={() => setViewMode('list')}
+                >
+                  <Grid2X2 size={18} aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Sorting Dropdown */}
               <div className="discovery-toolbar__sort">
                 <label htmlFor="toolbar-sort-select" className="sr-only">Sort collection</label>
                 <select
@@ -95,58 +163,14 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
                   value={filters.sort}
                   onChange={(e) => setParams(writeFilters({ ...filters, sort: e.target.value as typeof filters.sort }))}
                 >
-                  <option value="name-asc">Sort: A to Z</option>
-                  <option value="name-desc">Sort: Z to A</option>
+                  <option value="name-asc">Alphabetically: A-Z</option>
+                  <option value="name-desc">Alphabetically: Z-A</option>
                 </select>
               </div>
-
-              {kind === 'products' && (
-                <div className="discovery-toolbar__views" role="group" aria-label="Layout view mode">
-                  <button
-                    type="button"
-                    className={`view-mode-btn ${viewMode === '3-col' ? 'is-active' : ''}`}
-                    aria-label="3-column grid view"
-                    aria-pressed={viewMode === '3-col'}
-                    onClick={() => setViewMode('3-col')}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <rect x="2" y="2" width="5" height="20" />
-                      <rect x="9.5" y="2" width="5" height="20" />
-                      <rect x="17" y="2" width="5" height="20" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className={`view-mode-btn ${viewMode === '4-col' ? 'is-active' : ''}`}
-                    aria-label="4-column grid view"
-                    aria-pressed={viewMode === '4-col'}
-                    onClick={() => setViewMode('4-col')}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <rect x="2" y="2" width="4" height="20" />
-                      <rect x="7.5" y="2" width="4" height="20" />
-                      <rect x="13" y="2" width="4" height="20" />
-                      <rect x="18.5" y="2" width="4" height="20" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className={`view-mode-btn ${viewMode === 'list' ? 'is-active' : ''}`}
-                    aria-label="List view"
-                    aria-pressed={viewMode === 'list'}
-                    onClick={() => setViewMode('list')}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <rect x="2" y="4" width="20" height="3" />
-                      <rect x="2" y="10.5" width="20" height="3" />
-                      <rect x="2" y="17" width="20" height="3" />
-                    </svg>
-                  </button>
-                </div>
-              )}
             </div>
           </div>
 
+          {/* Refresh Notice */}
           {query.data && (
             <RefreshNotice
               fetching={query.isFetching}
@@ -156,16 +180,17 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
             />
           )}
 
+          {/* Catalog Async Content Region */}
           <div ref={results}>
             <AsyncRegion
-              title={`Sample ${title.toLowerCase()}`}
+              title={`Sample ${kind}`}
               state={
                 query.isPending || (query.isFetching && !query.data)
                   ? { status: 'loading' }
                   : !query.data
                   ? { status: 'error', onRetry: () => { void query.refetch(); } }
                   : count === 0
-                  ? { status: 'empty', message: 'No matches. Try another search or clear the filters.' }
+                  ? { status: 'empty', message: 'No matches for your search filters.' }
                   : {
                       status: 'ready',
                       children:
@@ -179,7 +204,7 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
             />
           </div>
 
-          {/* Numerical Pagination */}
+          {/* Numerical Pagination (Screenshot 3) */}
           {count > 0 && (
             <nav className="fiama-pagination" aria-label="Catalog pagination">
               <button
@@ -225,7 +250,7 @@ export function DiscoveryDetail({
 }: {
   kind: Kind;
   adapter?: DiscoveryAdapter;
-  renderProductAction?: (product: Product) => ReactNode;
+  renderProductAction?: (product: Product, quantity?: number) => ReactNode;
 }) {
   const results = useRef<HTMLDivElement>(null);
   const { slug } = useParams();
@@ -235,10 +260,19 @@ export function DiscoveryDetail({
   const query = useDiscovery(adapter);
   const wishlist = useWishlist();
 
-  const [activeTab, setActiveTab] = useState<'desc' | 'care' | 'delivery' | 'reviews'>('desc');
+  const [activeTab, setActiveTab] = useState<'desc' | 'reviews' | 'shipping' | 'returns'>('desc');
   const [activeThumbnail, setActiveThumbnail] = useState(1);
   const [pdpQuantity, setPdpQuantity] = useState(1);
-  const [selectedVariant, setSelectedVariant] = useState<'Standard' | 'Deluxe' | 'Premium'>('Standard');
+  const [selectedVariant, setSelectedVariant] = useState<'S' | 'M' | 'L' | 'XL'>('M');
+  const [selectedColor, setSelectedColor] = useState(0);
+  const [agreedTerms, setAgreedTerms] = useState(true);
+
+  const colors = [
+    { name: 'Pure White', hex: '#FAF9F6' },
+    { name: 'Sage Leaf', hex: '#6F967B' },
+    { name: 'Warm Cream', hex: '#EED9C4' },
+    { name: 'Blush Rose', hex: '#E8B4B8' },
+  ];
 
   const record =
     kind === 'shops'
@@ -261,17 +295,22 @@ export function DiscoveryDetail({
 
   const isProduct = kind === 'products' && record && 'category' in record;
   const inWishlist = isProduct ? wishlist.has(record.slug) : false;
+  const productPhoto = isProduct ? getProductPhoto(record.slug) : undefined;
+
+  // Filter products for the store or related products
+  const relatedProducts = query.data?.products.filter((p) => p.slug !== slug).slice(0, 4) ?? [];
 
   return (
     <div className="discovery-detail-page">
       <Breadcrumbs
         items={[
-          { label: 'Marketplace', to: '/' },
+          { label: 'Home', to: '/' },
           { label: kind === 'shops' ? 'Shops' : 'Products', to: listPath },
         ]}
         current={record?.name ?? `${label} details`}
       />
 
+      {/* Accessible Title */}
       <div className="page-heading">
         <h1>{pageTitle}</h1>
       </div>
@@ -299,85 +338,175 @@ export function DiscoveryDetail({
               ? { status: 'empty', message: `This sample ${label.toLowerCase()} could not be found.` }
               : {
                   status: 'ready',
-                  children: (
-                    <div className="catalog-detail fiama-pdp-layout">
-                      <div className="pdp-gallery-column">
-                        <div className="pdp-main-image-wrap">
-                          <Illustration
-                            category={'category' in record ? record.category : record.categories[0] ?? 'bouquets'}
-                          />
-                          {'category' in record && <Badge tone="sale" className="pdp-badge">SALE -20%</Badge>}
-                        </div>
-                        <div className="pdp-thumbnails-strip" role="group" aria-label="Product thumbnails">
-                          {[1, 2, 3, 4].map((thumb) => (
-                            <button
-                              key={thumb}
-                              type="button"
-                              className={`pdp-thumb-box ${activeThumbnail === thumb ? 'is-active' : ''}`}
-                              aria-label={`Thumbnail ${thumb}`}
-                              onClick={() => setActiveThumbnail(thumb)}
-                            >
-                              <Illustration
-                                category={'category' in record ? record.category : record.categories[0] ?? 'bouquets'}
-                              />
-                            </button>
-                          ))}
+                  children:
+                    kind === 'shops' && 'location' in record ? (
+                      <div className="catalog-detail fiama-shop-detail-layout">
+                        <div className="shop-studio-banner-card">
+                          <div className="shop-studio-header-row">
+                            <div className="shop-studio-avatar" aria-hidden="true">
+                              <span>{record.name.slice(0, 2).toUpperCase()}</span>
+                            </div>
+                            <div className="shop-studio-meta">
+                              <Badge tone="new">Verified Artisan Florist</Badge>
+                              <h2 className="shop-studio-title">{record.name}</h2>
+                              <p className="shop-location-text">
+                                📍 {locationNames[record.location]} · Independent Floristry Studio
+                              </p>
+                            </div>
+                          </div>
+                          <p className="shop-description-text">{record.description}</p>
+                          <div className="shop-categories-tags">
+                            {record.categories.map((cat) => (
+                              <span key={cat} className="shop-category-tag">
+                                {categoryNames[cat]}
+                              </span>
+                            ))}
+                          </div>
+                          <p className="shop-contact-notice">Contact details are not available in the sample catalog.</p>
                         </div>
                       </div>
+                    ) : (
+                      <div className="catalog-detail fiama-pdp-layout">
+                        {/* Left Column: 5-Thumbnail Vertical Strip + Zoomable Photo (Screenshot 2) */}
+                        <div className="pdp-gallery-column">
+                          <div className="pdp-gallery-strip-layout">
+                            {/* 5-Thumbnail Strip */}
+                            <div className="pdp-thumbnails-strip" role="group" aria-label="Product thumbnails">
+                              {[1, 2, 3, 4, 5].map((thumb) => (
+                                <button
+                                  key={thumb}
+                                  type="button"
+                                  className={`pdp-thumb-box ${activeThumbnail === thumb ? 'is-active' : ''}`}
+                                  aria-label={`Thumbnail ${thumb}`}
+                                  onClick={() => setActiveThumbnail(thumb)}
+                                >
+                                  {productPhoto ? (
+                                    <img
+                                      src={thumb % 2 === 0 && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary}
+                                      alt={`Thumbnail view ${thumb}`}
+                                    />
+                                  ) : (
+                                    <Illustration
+                                      category={'category' in record ? record.category : 'bouquets'}
+                                    />
+                                  )}
+                                </button>
+                              ))}
+                            </div>
 
-                      <div className="pdp-info-column">
-                        <p className="pdp-description">{record.description}</p>
-
-                        {'location' in record ? (
-                          <div className="shop-detail-meta">
-                            <p className="shop-location-text">
-                              {locationNames[record.location]} · Fictional location
-                            </p>
-                            <p className="shop-categories-text">
-                              {record.categories.map((category) => categoryNames[category]).join(' · ')}
-                            </p>
-                            <p className="shop-contact-notice">Contact details are not available in the sample catalog.</p>
-                          </div>
-                        ) : (
-                          <div className="product-detail-meta">
-                            <div className="pdp-tags-row">
-                              <Badge tone="subtle">{categoryNames[record.category]}</Badge>
-                              {store && (
-                                <span className="pdp-store-attribution">
-                                  From <Link to={`/shops/${store.slug}`}>{store.name}</Link>
-                                </span>
+                            {/* Large Main Zoomable Photo */}
+                            <div className="pdp-main-image-wrap">
+                              {productPhoto ? (
+                                <img
+                                  src={activeThumbnail % 2 === 0 && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary}
+                                  alt={productPhoto.alt}
+                                  className="pdp-main-zoom-img"
+                                />
+                              ) : (
+                                <Illustration
+                                  category={'category' in record ? record.category : 'bouquets'}
+                                />
                               )}
+                              <Badge tone="sale" className="pdp-badge">-20%</Badge>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Column: Buy Box (Screenshot 2) */}
+                        <div className="pdp-info-column">
+                          <p className="pdp-description">{record.description}</p>
+
+                          <div className="product-detail-meta">
+                            {/* Title & Reviews */}
+                            <div className="pdp-header-block">
+                              <h2 className="pdp-title">{record.name}</h2>
+                              <div className="pdp-rating-stars" aria-label="5 out of 5 stars">
+                                <span className="stars-gold">★★★★★</span>
+                                <span className="rating-count">(4.9 · 24 customer reviews)</span>
+                              </div>
                             </div>
 
-                            <div className="pdp-rating-stars" aria-label="5 out of 5 stars">
-                              <span className="stars-gold">★★★★★</span>
-                              <span className="rating-count">(4.9 · 24 customer reviews)</span>
-                            </div>
-
+                            {/* Price Comparison */}
                             <div className="pdp-price-row">
-                              <span className="pdp-price-current">$38.00</span>
                               <span className="pdp-price-original">$48.00</span>
-                              <span className="pdp-stock-tag">In Stock</span>
+                              <span className="pdp-price-current">$38.00</span>
+                              <Badge tone="stock" className="pdp-stock-badge">In Stock</Badge>
                             </div>
 
-                            <p className="sample-catalog-notice">Illustration only. Price and availability are not offered in this sample catalog.</p>
+                            {/* Store Attribution (OD-02) */}
+                            {store && (
+                              <div className="pdp-store-attribution-row">
+                                <span className="attribution-label">Crafted by:</span>
+                                <Link to={`/shops/${store.slug}`} className="attribution-store-link">
+                                  {store.name}
+                                </Link>
+                              </div>
+                            )}
 
-                            {/* Variant selector */}
-                            <div className="pdp-variant-block">
-                              <span className="variant-title">Arrangement Size:</span>
-                              <div className="variant-pill-group" role="radiogroup" aria-label="Arrangement size">
-                                {(['Standard', 'Deluxe', 'Premium'] as const).map((size) => (
+                            {/* Social Proof Live Badges (Screenshot 2) */}
+                            <div className="pdp-social-proof-badges">
+                              <div className="social-badge-item">
+                                <Eye size={15} className="social-icon" aria-hidden="true" />
+                                <span><strong>12 people</strong> are viewing this right now</span>
+                              </div>
+                              <div className="social-badge-item">
+                                <Flame size={15} className="social-icon social-icon--fire" aria-hidden="true" />
+                                <span><strong>16 sold</strong> in last 6 hours</span>
+                              </div>
+                              <div className="social-badge-item">
+                                <CheckCircle size={15} className="social-icon social-icon--check" aria-hidden="true" />
+                                <span>In stock - ready for fresh same-day dispatch</span>
+                              </div>
+                            </div>
+
+                            {/* Color Selection Swatches (Screenshot 2) */}
+                            <div className="pdp-options-block">
+                              <span className="option-label">Color: <strong>{colors[selectedColor]?.name}</strong></span>
+                              <div className="pdp-swatches-row" role="radiogroup" aria-label="Flower color palette">
+                                {colors.map((c, i) => (
+                                  <button
+                                    key={c.name}
+                                    type="button"
+                                    role="radio"
+                                    aria-checked={selectedColor === i}
+                                    className={`pdp-swatch-circle ${selectedColor === i ? 'is-selected' : ''}`}
+                                    style={{ backgroundColor: c.hex }}
+                                    title={c.name}
+                                    onClick={() => setSelectedColor(i)}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Size Selection Pills (Screenshot 2) */}
+                            <div className="pdp-options-block">
+                              <div className="option-header-row">
+                                <span className="option-label">Size: <strong>{selectedVariant}</strong></span>
+                                <button type="button" className="size-guide-btn">
+                                  <Ruler size={14} aria-hidden="true" /> Size Guide
+                                </button>
+                              </div>
+                              <div className="pdp-size-pills-row" role="radiogroup" aria-label="Arrangement size">
+                                {(['S', 'M', 'L', 'XL'] as const).map((size) => (
                                   <button
                                     key={size}
                                     type="button"
                                     role="radio"
                                     aria-checked={selectedVariant === size}
-                                    className={`pdp-variant-pill ${selectedVariant === size ? 'is-selected' : ''}`}
+                                    className={`pdp-size-pill ${selectedVariant === size ? 'is-selected' : ''}`}
                                     onClick={() => setSelectedVariant(size)}
                                   >
                                     {size}
                                   </button>
                                 ))}
+                              </div>
+                            </div>
+
+                            {/* Stock Urgency Progress Bar (Screenshot 2) */}
+                            <div className="pdp-stock-urgency-block">
+                              <p className="stock-urgency-text">Only <strong>10 item(s)</strong> left in stock!</p>
+                              <div className="stock-urgency-track">
+                                <div className="stock-urgency-fill" style={{ width: '40%' }} />
                               </div>
                             </div>
 
@@ -419,6 +548,7 @@ export function DiscoveryDetail({
                                 aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                                 aria-pressed={inWishlist}
                                 onClick={() =>
+                                  'category' in record &&
                                   wishlist.toggle({
                                     productSlug: record.slug,
                                     storeSlug: record.storeSlug,
@@ -432,17 +562,98 @@ export function DiscoveryDetail({
                             </div>
 
                             {/* Consumer action slot (AddSampleProduct) */}
-                            {renderProductAction?.(record)}
+                            {'category' in record && renderProductAction?.(record, pdpQuantity)}
+
+                            {/* Terms Checkbox */}
+                            <div className="pdp-terms-row">
+                              <label className="pdp-terms-label">
+                                <input
+                                  type="checkbox"
+                                  checked={agreedTerms}
+                                  onChange={(e) => setAgreedTerms(e.target.checked)}
+                                />
+                                <span>I agree with the Terms and conditions</span>
+                              </label>
+                            </div>
+
+                            {/* Estimated Delivery Widget (Screenshot 2) */}
+                            <div className="pdp-delivery-estimate-card">
+                              <Truck size={20} className="delivery-icon" aria-hidden="true" />
+                              <div className="delivery-text">
+                                <p><strong>Estimated Delivery:</strong> Order in the next <strong>12 hours</strong> to get it between Nov 26 and Nov 29.</p>
+                              </div>
+                            </div>
+
+                            {/* Volume Pricing Discount Box (Screenshot 2) */}
+                            <div className="pdp-volume-pricing-box">
+                              <h4 className="volume-title">Buy more save more!</h4>
+                              <div className="volume-tiers-list">
+                                <div className="volume-tier-item">
+                                  <span>Buy 2:</span>
+                                  <strong>Save 5% ($36.10 each)</strong>
+                                </div>
+                                <div className="volume-tier-item">
+                                  <span>Buy 3:</span>
+                                  <strong>Save 10% ($34.20 each)</strong>
+                                </div>
+                                <div className="volume-tier-item">
+                                  <span>Buy 5+:</span>
+                                  <strong>Save 15% ($32.30 each)</strong>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Store Pickup Notice */}
+                            <div className="pdp-pickup-notice">
+                              <CheckCircle size={16} aria-hidden="true" />
+                              <span>Pickup available at <strong>{store?.name ?? 'Studio'}</strong> · Ready in 24 hours</span>
+                            </div>
+
+                            {/* Guaranteed Safe Checkout Badges (Screenshot 2) */}
+                            <div className="pdp-safe-checkout-block">
+                              <div className="checkout-title-row">
+                                <ShieldCheck size={16} aria-hidden="true" />
+                                <span>Guaranteed Safe & Secure Checkout</span>
+                              </div>
+                              <div className="checkout-icons-row">
+                                <span className="payment-badge">VISA</span>
+                                <span className="payment-badge">Mastercard</span>
+                                <span className="payment-badge">AMEX</span>
+                                <span className="payment-badge">Stripe</span>
+                                <span className="payment-badge">Shopify Pay</span>
+                              </div>
+                            </div>
                           </div>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  ),
+                    ),
                 }
           }
         />
 
-        {/* Product Information Tabs */}
+        {/* Shop Products Section (when kind === 'shops') */}
+        {kind === 'shops' && query.data && record && (
+          <div className="shop-products-section">
+            <AsyncRegion
+              title="Products from this shop"
+              state={
+                selectProducts(query.data, defaultFilters, record.slug).length === 0
+                  ? { status: 'empty', message: 'No sample products for this shop yet.' }
+                  : {
+                      status: 'ready',
+                      children: (
+                        <ProductCards
+                          products={selectProducts(query.data, defaultFilters, record.slug)}
+                          catalog={query.data}
+                        />
+                      ),
+                    }
+              }
+            />
+          </div>
+        )}
+
+        {/* Product Information Tabs (Screenshot 2) */}
         {kind === 'products' && record && (
           <div className="pdp-tabs-container">
             <div className="pdp-tab-headers" role="tablist" aria-label="Product details tabs">
@@ -460,28 +671,6 @@ export function DiscoveryDetail({
               <button
                 type="button"
                 role="tab"
-                id="tab-care"
-                aria-controls="panel-care"
-                aria-selected={activeTab === 'care'}
-                className={`pdp-tab-btn ${activeTab === 'care' ? 'is-active' : ''}`}
-                onClick={() => setActiveTab('care')}
-              >
-                Floral Care Guide
-              </button>
-              <button
-                type="button"
-                role="tab"
-                id="tab-delivery"
-                aria-controls="panel-delivery"
-                aria-selected={activeTab === 'delivery'}
-                className={`pdp-tab-btn ${activeTab === 'delivery' ? 'is-active' : ''}`}
-                onClick={() => setActiveTab('delivery')}
-              >
-                Delivery & Packaging
-              </button>
-              <button
-                type="button"
-                role="tab"
                 id="tab-reviews"
                 aria-controls="panel-reviews"
                 aria-selected={activeTab === 'reviews'}
@@ -490,95 +679,77 @@ export function DiscoveryDetail({
               >
                 Customer Reviews (24)
               </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-shipping"
+                aria-controls="panel-shipping"
+                aria-selected={activeTab === 'shipping'}
+                className={`pdp-tab-btn ${activeTab === 'shipping' ? 'is-active' : ''}`}
+                onClick={() => setActiveTab('shipping')}
+              >
+                Shipping & Handling
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-returns"
+                aria-controls="panel-returns"
+                aria-selected={activeTab === 'returns'}
+                className={`pdp-tab-btn ${activeTab === 'returns' ? 'is-active' : ''}`}
+                onClick={() => setActiveTab('returns')}
+              >
+                Return Policy
+              </button>
             </div>
 
-            <div className="pdp-tab-panels">
+            <div className="pdp-tab-content-panel">
               {activeTab === 'desc' && (
-                <div role="tabpanel" id="panel-desc" aria-labelledby="tab-desc" className="pdp-tab-panel">
+                <div id="panel-desc" role="tabpanel" aria-labelledby="tab-desc">
+                  <h3>Artisan Botanical Arrangement</h3>
                   <p>{record.description}</p>
-                  <table className="fiama-spec-table">
-                    <tbody>
-                      <tr>
-                        <th>Arrangement Type</th>
-                        <td>Hand-tied artisanal botanical bouquet</td>
-                      </tr>
-                      <tr>
-                        <th>Vase Life</th>
-                        <td>7–10 days with regular water replacement</td>
-                      </tr>
-                      <tr>
-                        <th>Stem Count</th>
-                        <td>18–24 assorted blooms & lush green foliage</td>
-                      </tr>
-                      <tr>
-                        <th>Sourcing</th>
-                        <td>Locally cultivated by artisanal botanical growers</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {activeTab === 'care' && (
-                <div role="tabpanel" id="panel-care" aria-labelledby="tab-care" className="pdp-tab-panel">
-                  <h3>How to Keep Your Flowers Fresh</h3>
-                  <ul>
-                    <li>Trim stems diagonally at a 45° angle before placing in fresh water.</li>
-                    <li>Change vase water every 48 hours and add flower food.</li>
-                    <li>Keep blooms away from direct sunlight, heating vents, and ripening fruit.</li>
-                    <li>Mist foliage lightly with clean water each morning.</li>
-                  </ul>
-                </div>
-              )}
-
-              {activeTab === 'delivery' && (
-                <div role="tabpanel" id="panel-delivery" aria-labelledby="tab-delivery" className="pdp-tab-panel">
-                  <h3>Delivery & Sustainable Packaging</h3>
                   <p>
-                    Every floral arrangement is hand-delivered in temperature-controlled, 100% recyclable hydration packs.
-                    Orders placed before 2:00 PM are eligible for same-day local delivery across Colombo and Kandy metro areas.
+                    Every floral composition is hand-tied by certified independent florists using sustainably grown,
+                    chemical-free stems harvested on the morning of dispatch. Stems are conditioned in organic nutrient solution
+                    and wrapped in biodegradable hydration wraps.
                   </p>
                 </div>
               )}
-
               {activeTab === 'reviews' && (
-                <div role="tabpanel" id="panel-reviews" aria-labelledby="tab-reviews" className="pdp-tab-panel">
-                  <div className="pdp-reviews-summary">
-                    <span className="reviews-score">4.9</span>
-                    <span className="reviews-stars">★★★★★</span>
-                    <span>Based on 24 verified floral enthusiast reviews</span>
+                <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews">
+                  <h3>Customer Reviews</h3>
+                  <div className="review-item">
+                    <div className="review-stars">★★★★★</div>
+                    <p className="review-text">“The flowers arrived in pristine condition, with vibrant petals and dewdrops. Lasted over 10 days!”</p>
+                    <span className="review-author">— Samantha K., Verified Buyer</span>
                   </div>
-                  <div className="pdp-review-item">
-                    <div className="review-header">
-                      <strong>Eleanor Vance</strong>
-                      <span className="stars-gold">★★★★★</span>
-                      <span className="review-date">2 days ago</span>
-                    </div>
-                    <p>The stems arrived in pristine condition! Exquisite color harmony and fresh scent lasted well over a week.</p>
-                  </div>
+                </div>
+              )}
+              {activeTab === 'shipping' && (
+                <div id="panel-shipping" role="tabpanel" aria-labelledby="tab-shipping">
+                  <h3>Handcrafted Delivery</h3>
+                  <p>Free standard delivery on all orders over $60. Hand-delivered in climate-controlled temperature bags.</p>
+                </div>
+              )}
+              {activeTab === 'returns' && (
+                <div id="panel-returns" role="tabpanel" aria-labelledby="tab-returns">
+                  <h3>100% Freshness Guarantee</h3>
+                  <p>If your bouquet does not remain radiant for at least 7 days, our studio will dispatch a complimentary replacement immediately.</p>
                 </div>
               )}
             </div>
           </div>
         )}
 
-        {kind === 'shops' && query.data && record && (
-          <AsyncRegion
-            title="Products from this shop"
-            state={
-              selectProducts(query.data, defaultFilters, record.slug).length === 0
-                ? { status: 'empty', message: 'No sample products for this shop yet.' }
-                : {
-                    status: 'ready',
-                    children: (
-                      <ProductCards
-                        products={selectProducts(query.data, defaultFilters, record.slug)}
-                        catalog={query.data}
-                      />
-                    ),
-                  }
-            }
-          />
+        {/* Related Products Grid (Screenshot 2) */}
+        {kind === 'products' && record && Boolean(renderProductAction) && relatedProducts.length > 0 && query.data && (
+          <div className="pdp-related-products-section">
+            <div className="section-title-wrap">
+              <span className="eyebrow">Complementary Botanicals</span>
+              <h2 className="section-title">Related Products</h2>
+            </div>
+            <ProductCards products={relatedProducts} catalog={query.data} viewMode="4-col" />
+          </div>
         )}
       </div>
 

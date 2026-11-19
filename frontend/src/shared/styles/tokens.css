@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Brand Palettes */
+  /* Brand Palette - Botanical Green (Fresh & Natural) */
   --color-forest-deep: #244c3a;
   --color-sage-accent: #6f967b;
   --color-mint-soft: #b7cdb5;
   --color-cream-warm: #f5f3e9;
   --color-gold-warm: #d9a85f;
   --color-forest-text: #1a3629;
-  --color-forest-muted: #4e6b59;
+  --color-forest-muted: #5a6b60;
   --color-white: #ffffff;
   --color-destructive: #b33a3a;
   --color-destructive-foreground: #ffffff;
@@ -24,12 +24,12 @@
   --secondary: var(--color-sage-accent);
   --secondary-foreground: var(--color-white);
   --accent: var(--color-gold-warm);
-  --accent-foreground: var(--color-white);
+  --accent-foreground: var(--color-forest-deep);
   --muted: #e8ede4;
   --muted-foreground: var(--color-forest-muted);
   --border: #dbe3d8;
   --border-strong: var(--color-mint-soft);
-  --input: #9cb59a;
+  --input: #cfd9cc;
   --input-focus: var(--color-sage-accent);
   --destructive: var(--color-destructive);
   --destructive-foreground: var(--color-destructive-foreground);
@@ -37,16 +37,18 @@
 
   /* Geometry & Radii */
   --radius-none: 0px;
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
   --radius-pill: 9999px;
-  --radius: var(--radius-none); /* Fiama signature sharp aesthetic */
+  --radius-circle: 50%;
+  --radius: var(--radius-md);
 
   /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(36, 76, 58, 0.05);
-  --shadow-md: 0 5px 20px rgba(36, 76, 58, 0.08);
-  --shadow-lg: 0 16px 32px rgba(36, 76, 58, 0.12);
-  --shadow-hover: 0 8px 24px rgba(36, 76, 58, 0.14);
+  --shadow-sm: 0 2px 6px rgba(36, 76, 58, 0.05);
+  --shadow-md: 0 6px 20px rgba(36, 76, 58, 0.08);
+  --shadow-lg: 0 16px 36px rgba(36, 76, 58, 0.12);
+  --shadow-hover: 0 10px 28px rgba(36, 76, 58, 0.14);
   --shadow: var(--shadow-sm);
 
   /* Spacing */
@@ -58,10 +60,10 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-gutter: 30px;
-  --section-padding-y: 100px;
+  --section-padding-y: 80px;
 
   /* Typography */
-  --font-heading: 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Marcellus', Georgia, serif;
   --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);
@@ -74,8 +76,9 @@
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
   --text-5xl: 3rem;
-  --text-hero: 4.25rem;
+  --text-hero: 4rem;
 
   /* Layout */
-  --content-width: 1200px;
+  --content-width: 1440px;
+  --content-wide: 1770px;
 }

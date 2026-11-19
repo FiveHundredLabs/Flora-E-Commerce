@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
+import { Search, User, Heart, ShoppingBag, X, Plus, Minus } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Content';
 import { useWishlist } from '../../../features/discovery';
@@ -34,6 +35,10 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
   const { lines, dispatch } = useSafeCart();
 
   const totalCartCount = lines.reduce((acc, line) => acc + line.quantity, 0);
+  const cartSubtotal = totalCartCount * 38;
+  const freeShippingThreshold = 60;
+  const freeShippingProgress = Math.min(100, Math.round((cartSubtotal / freeShippingThreshold) * 100));
+  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartSubtotal);
 
   // Group cart lines by store (OD-02 compliant)
   const storeGroups = lines.reduce<Record<string, CartLine[]>>((acc, line) => {
@@ -45,7 +50,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
   // Sticky header scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 120);
+      setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -133,10 +138,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <button type="submit" className="search-pill-submit" aria-label="Submit search">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
+                    <Search size={18} aria-hidden="true" />
                   </button>
                 </div>
               </form>
@@ -145,17 +147,12 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               <div className="header-actions">
                 {/* Account */}
                 <Link to="/account/orders" className="header-action-btn" aria-label="My Account">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
+                  <User size={20} aria-hidden="true" />
                 </Link>
 
                 {/* Wishlist */}
                 <Link to="/wishlist" className="header-action-btn" aria-label={`Wishlist with ${wishlist.count} items`}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
+                  <Heart size={20} aria-hidden="true" />
                   {wishlist.count > 0 && (
                     <span className="badge-count wishlist-badge">{wishlist.count}</span>
                   )}
@@ -169,11 +166,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                   aria-expanded={cartDrawer.isOpen}
                   onClick={cartDrawer.toggle}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
+                  <ShoppingBag size={20} aria-hidden="true" />
                   <span className="badge-count cart-badge">{totalCartCount}</span>
                 </button>
 
@@ -323,18 +316,28 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                 aria-label="Close cart drawer"
                 onClick={cartDrawer.close}
               >
-                ×
+                <X size={20} aria-hidden="true" />
               </button>
+            </div>
+
+            {/* Free Shipping Progress Bar */}
+            <div className="cart-drawer__shipping-bar">
+              <p className="shipping-progress-text">
+                {remainingForFreeShipping > 0 ? (
+                  <>Spend <strong>${remainingForFreeShipping.toFixed(2)}</strong> more to qualify for <strong>FREE DELIVERY</strong>!</>
+                ) : (
+                  <>🎉 You have unlocked <strong>FREE DELIVERY</strong>!</>
+                )}
+              </p>
+              <div className="shipping-progress-track" role="progressbar" aria-valuenow={freeShippingProgress} aria-valuemin={0} aria-valuemax={100}>
+                <div className="shipping-progress-fill" style={{ width: `${freeShippingProgress}%` }} />
+              </div>
             </div>
 
             <div className="cart-drawer__body">
               {lines.length === 0 ? (
                 <div className="cart-drawer__empty">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
+                  <ShoppingBag size={48} strokeWidth={1.5} aria-hidden="true" />
                   <p>Your sample cart is currently empty.</p>
                   <Link to="/products" className="cart-drawer__browse-btn" onClick={cartDrawer.close}>
                     Browse Floral Products
@@ -348,10 +351,15 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                   {Object.entries(storeGroups).map(([storeSlug, storeLines]) => (
                     <div key={storeSlug} className="cart-drawer__store-group">
                       <div className="cart-drawer__store-header">
-                        <span className="store-badge-label">Florist Store:</span>
-                        <Link to={`/shops/${storeSlug}`} onClick={cartDrawer.close} className="store-name-link">
-                          {storeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
-                        </Link>
+                        <div className="cart-drawer__store-title-wrap">
+                          <span className="store-badge-label">Florist Store:</span>
+                          <Link to={`/shops/${storeSlug}`} onClick={cartDrawer.close} className="store-name-link">
+                            {storeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
+                          </Link>
+                        </div>
+                        <span className="store-group-subtotal">
+                          ${(storeLines.reduce((acc, l) => acc + l.quantity, 0) * 38).toFixed(2)}
+                        </span>
                       </div>
                       <ul className="cart-drawer__items-list">
                         {storeLines.map((line) => (
@@ -364,7 +372,12 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                               >
                                 {line.productSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
                               </Link>
-                              <span className="cart-drawer__item-price">$38.00</span>
+                              <span className="cart-drawer__item-price">
+                                ${(line.quantity * 38).toFixed(2)}
+                                {line.quantity > 1 && (
+                                  <span className="unit-price-sub"> (${(38).toFixed(2)} ea)</span>
+                                )}
+                              </span>
                             </div>
                             <div className="cart-drawer__item-stepper">
                               <button
@@ -379,7 +392,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                                   }
                                 }}
                               >
-                                -
+                                <Minus size={14} aria-hidden="true" />
                               </button>
                               <span className="stepper-val">{line.quantity}</span>
                               <button
@@ -391,7 +404,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                                   dispatch(cartActions.update({ ...line, quantity: Math.min(99, line.quantity + 1) }));
                                 }}
                               >
-                                +
+                                <Plus size={14} aria-hidden="true" />
                               </button>
                               <button
                                 type="button"
@@ -422,6 +435,10 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
 
             {lines.length > 0 && (
               <div className="cart-drawer__footer">
+                <div className="cart-drawer__subtotal-row">
+                  <span>Subtotal:</span>
+                  <span className="cart-drawer__subtotal-val">${cartSubtotal.toFixed(2)}</span>
+                </div>
                 <Link to="/cart" className="view-cart-full-btn" onClick={cartDrawer.close}>
                   View Full Cart & Review All Stores
                 </Link>
