@@ -22,7 +22,7 @@ import { ProductCards, StoreCards } from './Cards';
 import { Illustration } from './Illustration';
 import { RefreshNotice } from './RefreshNotice';
 import { useWishlist } from './wishlist';
-import { floristModels, categoryCirculars, getProductPhoto } from './assets';
+import { categoryCirculars } from './assets';
 
 export function MockNotice() {
   return (
@@ -68,10 +68,11 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
             <div className="catalog-hero-categories" role="group" aria-label="Quick category filters">
               {Object.entries(categoryCirculars).map(([key, cat]) => {
                 const targetLink = kind === 'shops' ? cat.link.replace('/products', '/shops') : cat.link;
+                const icon = cat.title === 'Plant' ? '🪴' : cat.title === 'Next Day' ? '🌾' : cat.title === 'Birthday' ? '🌻' : '🌸';
                 return (
                   <Link key={key} to={targetLink} className="catalog-category-pill">
-                    <div className="pill-thumb">
-                      <img src={cat.image} alt={cat.title} />
+                    <div className="pill-thumb" aria-hidden="true">
+                      <span className="pill-thumb-symbol">{icon}</span>
                     </div>
                     <span className="pill-name">{cat.title.toUpperCase()}</span>
                   </Link>
@@ -80,12 +81,12 @@ export function DiscoveryList({ kind, adapter }: { kind: Kind; adapter?: Discove
             </div>
           </div>
 
-          <div className="catalog-hero-model-wrap">
-            <img
-              src={floristModels.catalogStrawHat}
-              alt="Florist holding flowers in straw hat"
-              className="catalog-hero-model-img"
-            />
+          <div className="catalog-hero-model-wrap" aria-hidden="true">
+            <svg className="catalog-hero-model-art" viewBox="0 0 160 160" width="140" height="140">
+              <circle cx="80" cy="80" r="70" fill="var(--color-cream-warm)" stroke="var(--color-mint-soft)" strokeWidth="2" />
+              <path d="M80 40 C60 60 50 90 80 120 C110 90 100 60 80 40 Z" fill="var(--color-forest-deep)" opacity="0.8" />
+              <circle cx="80" cy="70" r="10" fill="var(--color-gold-warm)" />
+            </svg>
           </div>
         </div>
       </div>
@@ -295,7 +296,6 @@ export function DiscoveryDetail({
 
   const isProduct = kind === 'products' && record && 'category' in record;
   const inWishlist = isProduct ? wishlist.has(record.slug) : false;
-  const productPhoto = isProduct ? getProductPhoto(record.slug) : undefined;
 
   // Filter products for the store or related products
   const relatedProducts = query.data?.products.filter((p) => p.slug !== slug).slice(0, 4) ?? [];
@@ -380,33 +380,19 @@ export function DiscoveryDetail({
                                   aria-label={`Thumbnail ${thumb}`}
                                   onClick={() => setActiveThumbnail(thumb)}
                                 >
-                                  {productPhoto ? (
-                                    <img
-                                      src={thumb % 2 === 0 && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary}
-                                      alt={`Thumbnail view ${thumb}`}
-                                    />
-                                  ) : (
-                                    <Illustration
-                                      category={'category' in record ? record.category : 'bouquets'}
-                                    />
-                                  )}
+                                  <Illustration
+                                    category={'category' in record ? record.category : 'bouquets'}
+                                  />
                                 </button>
                               ))}
                             </div>
 
                             {/* Large Main Zoomable Photo */}
                             <div className="pdp-main-image-wrap">
-                              {productPhoto ? (
-                                <img
-                                  src={activeThumbnail % 2 === 0 && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary}
-                                  alt={productPhoto.alt}
-                                  className="pdp-main-zoom-img"
-                                />
-                              ) : (
-                                <Illustration
-                                  category={'category' in record ? record.category : 'bouquets'}
-                                />
-                              )}
+                              <Illustration
+                                category={'category' in record ? record.category : 'bouquets'}
+                                className="pdp-main-illustration"
+                              />
                               <Badge tone="sale" className="pdp-badge">-20%</Badge>
                             </div>
                           </div>

@@ -38,7 +38,7 @@
   font-size: var(--text-xs);
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--color-sage-accent);
+  color: var(--color-forest-deep);
   font-weight: 700;
   margin-bottom: var(--space-1);
 }
@@ -367,9 +367,9 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 .action-btn:hover, .action-btn:focus-visible {
-  background: var(--color-sage-accent);
+  background: var(--color-forest-text);
   color: #ffffff;
-  border-color: var(--color-sage-accent);
+  border-color: var(--color-forest-text);
 }
 .action-btn.wishlist-btn.is-active {
   color: var(--color-destructive);
@@ -582,11 +582,11 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--color-sage-accent);
+  color: var(--color-forest-deep);
   text-decoration: none;
 }
 .store-visit-btn:hover {
-  color: var(--color-forest-deep);
+  color: var(--color-forest-text);
   text-decoration: underline;
 }
 
@@ -806,7 +806,7 @@
   transition: background 0.2s ease;
 }
 .qtybutton:hover:not(:disabled) {
-  background: var(--color-sage-accent);
+  background: var(--color-forest-text);
   color: #ffffff;
 }
 .cart-plus-minus-box {
@@ -855,7 +855,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--color-sage-accent);
+  color: var(--color-forest-deep);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

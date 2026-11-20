@@ -309,7 +309,7 @@ export function HomePage() {
       </section>
 
       {/* Section 6: Shop Best Sellers (4-Column Product Grid) (Screenshot 5) */}
-      <section className="home-section best-sellers-section">
+      <section className="home-section best-sellers-section" aria-label="Stores and products">
         <div className="section-title-wrap">
           <span className="eyebrow">Curated Arrangements</span>
           <h2 className="section-title">Shop Best Sellers</h2>

@@ -1,16 +1,11 @@
-import { useState } from 'react';
 import type { Product } from './model';
-import { getProductPhoto } from './assets';
 
 /**
- * Modern High-Resolution Photorealistic Botanical Visual
- * Uses curated cutout photography with soft drop shadow and graceful vector fallback.
+ * Modern High-Resolution Photorealistic Botanical Vector Visual
+ * Original decorative vector study, 100% offline, CSP-compliant.
  */
 export function Illustration({
   category,
-  slug,
-  alt,
-  secondary = false,
   className = '',
 }: {
   category: Product['category'];
@@ -19,24 +14,6 @@ export function Illustration({
   secondary?: boolean;
   className?: string;
 }) {
-  const [imageError, setImageError] = useState(false);
-  const photo = getProductPhoto(slug);
-  const imageSrc = secondary && photo.secondary ? photo.secondary : photo.primary;
-  const imageAlt = alt || photo.alt;
-
-  if (!imageError && imageSrc) {
-    return (
-      <img
-        src={imageSrc}
-        alt={imageAlt}
-        loading="lazy"
-        onError={() => setImageError(true)}
-        className={`botanical-cutout-img ${className}`}
-      />
-    );
-  }
-
-  // Graceful botanical SVG fallback if offline or failed load
   return (
     <svg
       className={`catalog-art catalog-art--${category} ${className}`}

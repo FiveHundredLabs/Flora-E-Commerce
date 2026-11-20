@@ -249,9 +249,9 @@ describe('New Brand & Discovery Pages', () => {
       );
 
       const addBtn = screen.getByRole('button', { name: 'Add to sample cart' });
-      const buyNowBtn = screen.getByRole('button', { name: 'BUY IT NOW' });
+      const directCheckoutBtn = screen.getByRole('button', { name: 'Direct shop checkout' });
       expect(addBtn).toBeVisible();
-      expect(buyNowBtn).toBeVisible();
+      expect(directCheckoutBtn).toBeVisible();
 
       await user.click(addBtn);
       expect(screen.getByRole('status')).toHaveTextContent('Added 3 × Morning Bouquet to your sample cart.');

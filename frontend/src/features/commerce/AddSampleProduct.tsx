@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button } from '../../shared/components/ui/Button';
 import { cartActions, useCartDispatch, useCartSelector } from './cart';
-import { openCartDrawer } from './cartDrawer';
 
 export function AddSampleProduct({
   productSlug,
@@ -34,11 +33,10 @@ export function AddSampleProduct({
     const added = addItems(quantityToAdd);
     if (added > 0) {
       setMessage(`Added ${added > 1 ? `${added} × ` : ''}${name} to your sample cart.`);
-      openCartDrawer();
     }
   };
 
-  const handleBuyItNow = () => {
+  const handleDirectCheckout = () => {
     addItems(quantityToAdd);
     navigate(`/checkout?store=${storeSlug}`);
   };
@@ -60,9 +58,9 @@ export function AddSampleProduct({
           variant="secondary"
           className="pdp-buy-now-btn"
           disabled={currentQuantity >= 99}
-          onClick={handleBuyItNow}
+          onClick={handleDirectCheckout}
         >
-          BUY IT NOW
+          Direct shop checkout
         </Button>
       </div>
       <p>Sample cart only. No stock reservation or price is implied.</p>

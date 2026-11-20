@@ -122,7 +122,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               {/* Brand Logo */}
               <div className="shell__brand">
                 <Link to="/" className="brand-logo">
-                  Flower & Flora<span className="brand-dot">.</span>
+                  Flower & Flora<span className="brand-dot" aria-hidden="true">.</span>
                 </Link>
               </div>
 
@@ -185,27 +185,135 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               </div>
             </div>
 
-            {/* Tier 3: Primary Navigation Bar (Customer mode) */}
-            <div className="primary-nav-bar">
-              <nav className="primary-nav-bar__inner" aria-label="Main marketplace navigation">
-                <NavLink end to="/" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  HOME
-                </NavLink>
-                <NavLink to="/products" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  SHOP / PRODUCTS
-                </NavLink>
-                <NavLink to="/shops" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  SHOPS / STORES
-                </NavLink>
-                <NavLink to="/wishlist" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  WISHLIST
-                </NavLink>
-                <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  ABOUT US
-                </NavLink>
-                <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  CONTACT US
-                </NavLink>
+            {/* Tier 3: Primary Navigation Bar & Mobile Drawer (Customer mode) */}
+            <div className={`primary-nav-wrapper ${expanded ? 'is-drawer-open' : ''}`}>
+              <div
+                className={`mobile-drawer-overlay ${expanded ? 'is-visible' : ''}`}
+                aria-hidden={!expanded}
+                onClick={() => setExpanded(false)}
+              />
+              <nav
+                id={navigationId}
+                className={`primary-nav-bar ${expanded ? 'is-open' : ''}`}
+                aria-label="Marketplace navigation"
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape' && expanded) {
+                    setExpanded(false);
+                    toggle.current?.focus();
+                  }
+                }}
+              >
+                {/* Mobile Drawer Header (shown only on mobile when drawer is open) */}
+                <div className="mobile-drawer-header">
+                  <span className="brand-logo">
+                    Flower & Flora<span className="brand-dot" aria-hidden="true">.</span>
+                  </span>
+                </div>
+
+                <div className="primary-nav-bar__links">
+                  <NavLink
+                    end
+                    to="/"
+                    aria-label="Home"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">HOME</span>
+                  </NavLink>
+                  <NavLink
+                    to="/products"
+                    aria-label="Products"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">SHOP / PRODUCTS</span>
+                  </NavLink>
+                  <NavLink
+                    to="/shops"
+                    aria-label="Shops"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">SHOPS / STORES</span>
+                  </NavLink>
+                  <NavLink
+                    to="/cart"
+                    aria-label="Cart"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">CART</span>
+                    {totalCartCount > 0 && <span className="nav-badge-pill">{totalCartCount}</span>}
+                  </NavLink>
+                  <NavLink
+                    to="/wishlist"
+                    aria-label="Wishlist"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">WISHLIST</span>
+                    {wishlist.count > 0 && <span className="nav-badge-pill">{wishlist.count}</span>}
+                  </NavLink>
+                  <NavLink
+                    to="/about"
+                    aria-label="About Us"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">ABOUT US</span>
+                  </NavLink>
+                  <NavLink
+                    to="/contact"
+                    aria-label="Contact Us"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">CONTACT US</span>
+                  </NavLink>
+                  <NavLink
+                    to="/account/orders"
+                    aria-label="Orders"
+                    className={({ isActive }) => `nav-link mobile-only-nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">ORDERS</span>
+                  </NavLink>
+                </div>
+
+                {/* Mobile Drawer Footer (shown only on mobile) */}
+                <div className="mobile-drawer-footer">
+                  <Link to="/supplier" className="mobile-portal-link" onClick={() => setExpanded(false)}>
+                    Supplier Portal
+                  </Link>
+                  <span className="utility-divider" aria-hidden="true">|</span>
+                  <Link to="/admin" className="mobile-portal-link" onClick={() => setExpanded(false)}>
+                    Admin Access
+                  </Link>
+                </div>
               </nav>
             </div>
           </header>
@@ -214,75 +322,63 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
 
       {/* Main Body */}
       <div className="shell__body">
-        {/* Workspace Side Navigation (for supplier & admin) and mobile drawer */}
-        <nav
-          id={navigationId}
-          className={`shell__nav ${expanded ? 'is-open' : ''}`}
-          aria-label={`${config.title} navigation`}
-          onKeyDown={(event) => {
-            if (event.key === 'Escape' && expanded) {
-              setExpanded(false);
-              toggle.current?.focus();
-            }
-          }}
-        >
-          <span className="shell__nav-label">{workspace ? 'Workspace' : 'Explore'}</span>
-          <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-            {config.homeLabel}
-          </NavLink>
+        {/* Workspace Side Navigation (for supplier & admin only) */}
+        {workspace && (
+          <nav
+            id={navigationId}
+            className={`shell__nav ${expanded ? 'is-open' : ''}`}
+            aria-label={`${config.title} navigation`}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape' && expanded) {
+                setExpanded(false);
+                toggle.current?.focus();
+              }
+            }}
+          >
+            <span className="shell__nav-label">Workspace</span>
+            <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+              {config.homeLabel}
+            </NavLink>
 
-          {!workspace && (
-            <>
-              <NavLink to="/shops" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Shops</NavLink>
-              <NavLink to="/products" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Products</NavLink>
-              <NavLink to="/cart" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Cart</NavLink>
-              <NavLink to="/wishlist" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Wishlist</NavLink>
-              <NavLink to="/about" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>About Us</NavLink>
-              <NavLink to="/contact" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Contact Us</NavLink>
-              <NavLink to="/account/orders" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Orders</NavLink>
-            </>
-          )}
+            {audience === 'supplier' && (
+              <>
+                {([
+                  ['/supplier/register', 'Registration'],
+                  ['/supplier/profile', 'Store profile'],
+                  ['/supplier/products', 'Products'],
+                  ['/supplier/inventory', 'Inventory'],
+                  ['/supplier/orders', 'Orders'],
+                  ['/supplier/sales', 'Sales'],
+                ] as const).map(([to, label]) => (
+                  <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+                    {label}
+                  </NavLink>
+                ))}
+              </>
+            )}
 
-          {audience === 'supplier' && (
-            <>
-              {([
-                ['/supplier/register', 'Registration'],
-                ['/supplier/profile', 'Store profile'],
-                ['/supplier/products', 'Products'],
-                ['/supplier/inventory', 'Inventory'],
-                ['/supplier/orders', 'Orders'],
-                ['/supplier/sales', 'Sales'],
-              ] as const).map(([to, label]) => (
-                <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-                  {label}
-                </NavLink>
-              ))}
-            </>
-          )}
+            {audience === 'admin' && (
+              <>
+                {([
+                  ['/admin/suppliers', 'Suppliers'],
+                  ['/admin/users', 'Users'],
+                  ['/admin/categories', 'Categories'],
+                  ['/admin/orders', 'Orders'],
+                  ['/admin/refunds', 'Refund requests'],
+                  ['/admin/reviews', 'Feedback'],
+                ] as const).map(([to, label]) => (
+                  <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+                    {label}
+                  </NavLink>
+                ))}
+              </>
+            )}
 
-          {audience === 'admin' && (
-            <>
-              {([
-                ['/admin/suppliers', 'Suppliers'],
-                ['/admin/users', 'Users'],
-                ['/admin/categories', 'Categories'],
-                ['/admin/orders', 'Orders'],
-                ['/admin/refunds', 'Refund requests'],
-                ['/admin/reviews', 'Feedback'],
-              ] as const).map(([to, label]) => (
-                <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-                  {label}
-                </NavLink>
-              ))}
-            </>
-          )}
-
-          {workspace && (
             <Link to="/" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
               Return to marketplace
             </Link>
-          )}
-        </nav>
+          </nav>
+        )}
 
         <main id="main" tabIndex={-1}>
           {children}
@@ -527,6 +623,41 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               </div>
             </div>
           </footer>
+
+          {/* Sticky Bottom Mobile Dock (Customer mode) */}
+          <nav className="mobile-bottom-dock" aria-label="Quick mobile dock">
+            <NavLink end to="/" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <span className="dock-icon" aria-hidden="true">🌿</span>
+              <span className="dock-label">Home</span>
+            </NavLink>
+            <NavLink to="/products" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <Search size={18} aria-hidden="true" />
+              <span className="dock-label">Shop</span>
+            </NavLink>
+            <NavLink to="/wishlist" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <div className="dock-icon-wrap">
+                <Heart size={18} aria-hidden="true" />
+                {wishlist.count > 0 && <span className="dock-badge">{wishlist.count}</span>}
+              </div>
+              <span className="dock-label">Wishlist</span>
+            </NavLink>
+            <button
+              type="button"
+              className="dock-item dock-btn"
+              aria-label={`Open cart with ${totalCartCount} items`}
+              onClick={cartDrawer.open}
+            >
+              <div className="dock-icon-wrap">
+                <ShoppingBag size={18} aria-hidden="true" />
+                {totalCartCount > 0 && <span className="dock-badge">{totalCartCount}</span>}
+              </div>
+              <span className="dock-label">Cart</span>
+            </button>
+            <NavLink to="/account/orders" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <User size={18} aria-hidden="true" />
+              <span className="dock-label">Account</span>
+            </NavLink>
+          </nav>
         </>
       )}
     </div>

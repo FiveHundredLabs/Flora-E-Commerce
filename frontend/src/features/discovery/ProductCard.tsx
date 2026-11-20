@@ -135,7 +135,7 @@ export function ProductCard({
             <span className="product-category-badge">{categoryNames[product.category]}</span>
             {storeName && (
               <span className="product-store-attribution">
-                Crafted by: <Link to={storeUrl} className="store-link">{storeName}</Link>
+                Crafted by: <Link to={storeUrl} className="store-link" aria-label={`View ${storeName} shop`}>{storeName}</Link>
               </span>
             )}
           </div>
