@@ -10,13 +10,15 @@ import { SupplierPage } from '../pages/SupplierPage';
 import { WishlistPage } from '../pages/WishlistPage';
 import { AboutPage } from '../pages/AboutPage';
 import { ContactPage } from '../pages/ContactPage';
+import { DesignSystemPreview } from '../pages/dev/DesignSystemPreview';
+import { ToastProvider } from '../shared/components/ui/Toast';
 
 export function App() {
   const { pathname } = useLocation();
   const audience = pathname === '/supplier' || pathname.startsWith('/supplier/') ? 'supplier'
     : pathname === '/admin' || pathname.startsWith('/admin/') ? 'admin' : 'customer';
   return (
-    <>
+    <ToastProvider>
       <RouteAccessibility />
       <Shell key={audience} audience={audience}>
         <Routes>
@@ -47,9 +49,10 @@ export function App() {
             <Route index element={<AdminPage screen={section} />} />
             <Route path=":recordId" element={<AdminPage screen={section} detail />} />
           </Route>)}
+          {import.meta.env.DEV && <Route path="/dev/design-system" element={<DesignSystemPreview />} />}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Shell>
-    </>
+    </ToastProvider>
   );
 }

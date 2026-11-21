@@ -1,39 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Marcellus&family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Botanical Editorial Design Tokens
+ * Flower & Flora Design System v1
+ * Palette: Deep Green, Sage, Mist, Warm Cream, Warm Gold
+ */
 
 :root {
-  /* Brand Palette - Botanical Green (Fresh & Natural) */
-  --color-forest-deep: #244c3a;
-  --color-sage-accent: #6f967b;
-  --color-mint-soft: #b7cdb5;
-  --color-cream-warm: #f5f3e9;
-  --color-gold-warm: #d9a85f;
-  --color-forest-text: #1a3629;
-  --color-forest-muted: #5a6b60;
-  --color-white: #ffffff;
-  --color-destructive: #b33a3a;
-  --color-destructive-foreground: #ffffff;
-  --color-success: #2d6a4f;
+  /* Five Brand Core Colors */
+  --brand-deep: #244c3a;
+  --brand-sage: #6f967b;
+  --brand-mist: #b7cdb5;
+  --brand-cream: #f5f3e9;
+  --brand-gold: #d9a85f;
 
-  /* Semantic UI Tokens */
-  --background: var(--color-cream-warm);
-  --foreground: var(--color-forest-text);
-  --card: var(--color-white);
-  --card-foreground: var(--color-forest-text);
-  --primary: var(--color-forest-deep);
-  --primary-foreground: var(--color-white);
-  --secondary: var(--color-sage-accent);
-  --secondary-foreground: var(--color-white);
-  --accent: var(--color-gold-warm);
-  --accent-foreground: var(--color-forest-deep);
+  /* Backward Compatibility Aliases */
+  --color-forest-deep: var(--brand-deep);
+  --color-sage-accent: var(--brand-sage);
+  --color-mint-soft: var(--brand-mist);
+  --color-cream-warm: var(--brand-cream);
+  --color-gold-warm: var(--brand-gold);
+  --color-white: #ffffff;
+
+  /* Surfaces & Neutral Backgrounds */
+  --surface-paper: #ffffff;
+  --surface-soft: #fcfbf7;
+  --surface-cream: var(--brand-cream);
+  --surface-deep: var(--brand-deep);
+  --surface-muted: #eef2eb;
+
+  /* Borders & Dividers */
+  --border-soft: #dfe4d9;
+  --border-strong: var(--brand-mist);
+  --border: var(--border-soft);
+
+  /* Typography Colors (Measured >= 4.5:1 AA contrast against respective surfaces) */
+  --text-strong: #244c3a;
+  --text-muted: #435648;
+  --text-inverse: #f5f3e9;
+  --text-on-dark: #f5f3e9;
+  --color-forest-text: #1a3629;
+  --color-forest-muted: var(--text-muted);
+
+  /* Semantic UI State Colors */
+  --danger: #b33a3a;
+  --danger-foreground: #ffffff;
+  --danger-surface: #fdf2f2;
+  --danger-border: #f8b4b4;
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--danger-foreground);
+
+  --warning: #8c4d00;
+  --warning-foreground: #ffffff;
+  --warning-surface: #fef7e0;
+  --warning-border: #f8d7a4;
+  --color-warning: var(--warning);
+
+  --success: #2d6a4f;
+  --success-foreground: #ffffff;
+  --success-surface: #eaf4ee;
+  --success-border: var(--brand-mist);
+  --color-success: var(--success);
+
+  --info: #234e70;
+  --info-foreground: #ffffff;
+  --info-surface: #edf4f9;
+  --info-border: #b4d1e6;
+
+  /* Semantic Component Mappings */
+  --background: var(--brand-cream);
+  --foreground: var(--text-strong);
+  --card: var(--surface-paper);
+  --card-foreground: var(--text-strong);
+  --popover: var(--surface-paper);
+  --popover-foreground: var(--text-strong);
+  --primary: var(--brand-deep);
+  --primary-foreground: var(--brand-cream);
+  --secondary: var(--surface-paper);
+  --secondary-foreground: var(--brand-deep);
+  --secondary-border: var(--brand-deep);
+  --accent: var(--brand-gold);
+  --accent-foreground: var(--brand-deep);
   --muted: #e8ede4;
-  --muted-foreground: var(--color-forest-muted);
-  --border: #dbe3d8;
-  --border-strong: var(--color-mint-soft);
+  --muted-foreground: var(--text-muted);
   --input: #cfd9cc;
-  --input-focus: var(--color-sage-accent);
-  --destructive: var(--color-destructive);
-  --destructive-foreground: var(--color-destructive-foreground);
-  --ring: var(--color-sage-accent);
+  --input-focus: var(--brand-deep);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-foreground);
+
+  /* Chart Tokens (Mapped to Botanical Editorial Palette) */
+  --chart-1: var(--brand-deep);
+  --chart-2: var(--brand-sage);
+  --chart-3: var(--brand-gold);
+  --chart-4: var(--brand-mist);
+  --chart-5: #435648;
+
+  /* Focus Indicator Ring */
+  --ring: var(--brand-deep);
+  --focus-ring: var(--brand-deep);
+  --focus-ring-offset: 2px;
 
   /* Geometry & Radii */
   --radius-none: 0px;
@@ -45,28 +107,32 @@
   --radius: var(--radius-md);
 
   /* Shadows */
-  --shadow-sm: 0 2px 6px rgba(36, 76, 58, 0.05);
-  --shadow-md: 0 6px 20px rgba(36, 76, 58, 0.08);
-  --shadow-lg: 0 16px 36px rgba(36, 76, 58, 0.12);
-  --shadow-hover: 0 10px 28px rgba(36, 76, 58, 0.14);
+  --shadow-sm: 0 1px 3px rgba(36, 76, 58, 0.05);
+  --shadow-md: 0 4px 12px rgba(36, 76, 58, 0.08);
+  --shadow-lg: 0 12px 28px rgba(36, 76, 58, 0.10);
+  --shadow-hover: 0 8px 24px rgba(36, 76, 58, 0.12);
   --shadow: var(--shadow-sm);
 
-  /* Spacing */
-  --space-1: .25rem;
-  --space-2: .5rem;
-  --space-3: .75rem;
+  /* Spacing Scale (4px / 8px basis) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --space-gutter: 30px;
-  --section-padding-y: 80px;
+  --space-8: 4rem;
+  --space-gutter: clamp(1.25rem, 3.5vw, 2.5rem);
+  --section-padding-y: clamp(3rem, 6vw, 6rem);
 
-  /* Typography */
-  --font-heading: 'Marcellus', Georgia, serif;
-  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
+  /* Typography Families */
+  --font-heading: 'Cormorant Garamond', 'Marcellus', Georgia, serif;
+  --font-body: 'DM Sans', 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);
+  --font-portal: var(--font-body);
+
+  /* Type Scale */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -76,9 +142,17 @@
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
   --text-5xl: 3rem;
-  --text-hero: 4rem;
+  --text-hero: clamp(2.5rem, 5vw, 4.5rem);
 
-  /* Layout */
-  --content-width: 1440px;
+  /* Layout Containers */
+  --content-width: 1360px;
+  --container-public: 1360px;
+  --container-dashboard: 1440px;
+  --container-narrow: 768px;
   --content-wide: 1770px;
+
+  /* Transitions & Motion */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 350ms cubic-bezier(0.16, 1, 0.3, 1);
 }

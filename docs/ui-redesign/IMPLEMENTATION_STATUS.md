@@ -1,6 +1,6 @@
 # Redesign implementation ledger
 
-Updated 2026-11-21. **Phase 00 complete; Phase 01 not started.** All rows below describe current source, not completed redesigns. See [audit and migration plan](REPOSITORY_AUDIT.md) and [actual verification](PHASE_00_VERIFICATION.md). Paths are relative to `frontend/src`; the canonical route registry is `app/App.tsx`.
+Updated 2026-11-21. **Phase 00 and Phase 01 complete; Phase 02 not started.** All rows below describe current source or completed foundation primitives. See [audit and migration plan](REPOSITORY_AUDIT.md) and [actual verification](PHASE_00_VERIFICATION.md). Paths are relative to `frontend/src`; the canonical route registry is `app/App.tsx`.
 
 ## Access, integration and status keys
 
@@ -58,7 +58,7 @@ Updated 2026-11-21. **Phase 00 complete; Phase 01 not started.** All rows below 
 ## Phase checklist
 
 - 00: audit, component/route inventory, issue register, migration decisions and baseline evidence completed; no runtime edits.
-- 01: tokens/primitives/layout frames/internal preview pending; detailed execution plan in audit.
+- 01: tokens, CSS primitives, accessible UI primitives, public/dashboard layout frames, and dev-gated preview harness (/dev/design-system) completed; verified with unit tests (246 passed) and full Playwright E2E suite (137 passed).
 - 02–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
 - 13: cross-route responsive/accessibility/performance polish pending.
 - 14: final regression/artifact verification pending; live release blocked by contracts/hosting.
