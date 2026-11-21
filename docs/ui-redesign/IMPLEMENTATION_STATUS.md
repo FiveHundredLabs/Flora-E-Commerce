@@ -1,6 +1,6 @@
 # Redesign implementation ledger
 
-Updated 2026-11-21. **Phase 00 complete; Phase 01 not started.** All rows below describe current source, not completed redesigns. See [audit and migration plan](REPOSITORY_AUDIT.md) and [actual verification](PHASE_00_VERIFICATION.md). Paths are relative to `frontend/src`; the canonical route registry is `app/App.tsx`.
+Updated 2026-11-21. **Phases 00 and 01 complete; Phase 02 ready.** Route rows below still describe legacy feature screens unless their assigned redesign phase is complete. See [audit and migration plan](REPOSITORY_AUDIT.md), [Phase 00 verification](PHASE_00_VERIFICATION.md), and [Phase 01 foundation evidence](PHASE_01_FOUNDATION.md). Paths are relative to `frontend/src`; the canonical production route registry is `app/App.tsx`.
 
 ## Access, integration and status keys
 
@@ -53,12 +53,12 @@ Updated 2026-11-21. **Phase 00 complete; Phase 01 not started.** All rows below 
 
 ## Unimplemented candidate routes — do not invent them
 
-`/flowers`, `/search`, nested shop/product URLs, `/checkout/:storeId`, `/account`, `/account/settings`, `/supplier/onboarding`, `/supplier/store`, `/supplier/products/:productId/edit`, `/supplier/orders/:orderId`, `/supplier/media`, `/admin/stores`, `/admin/payments`, `/admin/media`, login/registration for customers, policy/help routes and `/dev/design-system` are not registered. Keep the actual existing URLs above. Supplier order notes are currently inline; payment examples appear inside order detail. Candidate media/payment/account routes require supported contracts and explicit scope, not placeholder success pages. Phase 01 adds only the development-gated component preview.
+`/flowers`, `/search`, nested shop/product URLs, `/checkout/:storeId`, `/account`, `/account/settings`, `/supplier/onboarding`, `/supplier/store`, `/supplier/products/:productId/edit`, `/supplier/orders/:orderId`, `/supplier/media`, `/admin/stores`, `/admin/payments`, `/admin/media`, login/registration for customers and policy/help routes are not registered. Keep the actual existing URLs above. Supplier order notes are currently inline; payment examples appear inside order detail. Candidate media/payment/account routes require supported contracts and explicit scope, not placeholder success pages. `/dev/design-system` exists only in Vite development and resolves to the normal not-found screen in production.
 
 ## Phase checklist
 
 - 00: audit, component/route inventory, issue register, migration decisions and baseline evidence completed; no runtime edits.
-- 01: tokens/primitives/layout frames/internal preview pending; detailed execution plan in audit.
+- 01: semantic tokens, shared primitives, public/dashboard frames, internal preview and responsive/keyboard/contrast checks completed. Evidence: `PHASE_01_FOUNDATION.md`.
 - 02–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
 - 13: cross-route responsive/accessibility/performance polish pending.
 - 14: final regression/artifact verification pending; live release blocked by contracts/hosting.

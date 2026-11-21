@@ -13,6 +13,7 @@
   "verify:release": "npm run verify:release -w frontend",
   "test:release": "npm run test:release -w frontend",
   "preview": "npm run preview -w frontend",
-    "test:e2e": "npm run test:e2e -w frontend --"
+    "test:e2e": "npm run test:e2e -w frontend --",
+    "test:foundation": "npm run test:foundation -w frontend --"
   }
 }

@@ -195,8 +195,12 @@ FE task acceptance or unblock FE-0701 live integrations.
   `ui-redesign/IMPLEMENTATION_STATUS.md`. Documentation-only preparatory changes;
   no homepage or runtime redesign. Actual baseline checks and limitations:
   `ui-redesign/PHASE_00_VERIFICATION.md`.
-- **UI-R01 — READY TO START, not implemented:** semantic tokens, primitives,
-  public/dashboard layout frames and development-only preview. Use
-  `ui-redesign/prompts/01_FOUNDATION_DESIGN_SYSTEM.md` with the audit's scoped plan.
-  Baseline browser failures/limitations must be addressed or tracked before claiming
-  the phase passes its gates. Live API/auth/media/provider work remains blocked.
+- **UI-R01 — COMPLETE within foundation scope:** semantic tokens, accessible shared
+  primitives, dependency-free public/dashboard frames and a development-only design
+  library implemented. Phase 00 shell-rendering, admin-link naming and status-contrast
+  failures were corrected. Typecheck/lint, 215 unit/component tests, production build,
+  nine artifact scenarios and 11 focused Chrome checks passed; 70/71 affected production
+  regressions passed, with one pre-existing admin fixture reload mismatch recorded in
+  `ui-redesign/PHASE_01_FOUNDATION.md`. Existing feature pages
+  retain legacy composition for their scheduled phases. Live API/auth/media/provider
+  work remains blocked.

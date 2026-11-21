@@ -12,7 +12,8 @@
   "verify:release": "node scripts/release.mjs",
   "test:release": "node scripts/release.test.mjs",
   "preview": "node scripts/release.mjs && vite preview --host 127.0.0.1 --port 4173 --strictPort",
-  "test:e2e": "playwright test"
+  "test:e2e": "playwright test",
+  "test:foundation": "playwright test --config playwright.foundation.config.ts"
  },
  "dependencies": {
   "@reduxjs/toolkit": "^2.14.0",

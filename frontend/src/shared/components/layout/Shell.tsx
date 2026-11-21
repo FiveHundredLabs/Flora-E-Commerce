@@ -46,7 +46,8 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
         if (data?.access === 'allowed') return data;
       }
       return undefined;
-    }
+    },
+    () => undefined,
   );
 
   const adminCounts = useMemo(() => {
@@ -389,7 +390,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                     <Icon size={16} aria-hidden="true" className="shell__nav-icon" />
                     <span>{label}</span>
                     {count !== undefined && count > 0 && (
-                      <span className="nav-badge-pill admin-nav-badge">{count}</span>
+                      <span aria-hidden="true" className="nav-badge-pill admin-nav-badge">{count}</span>
                     )}
                   </NavLink>
                 ))}

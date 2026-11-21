@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 import { HomePage } from '../pages/HomePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -11,8 +12,11 @@ import { WishlistPage } from '../pages/WishlistPage';
 import { AboutPage } from '../pages/AboutPage';
 import { ContactPage } from '../pages/ContactPage';
 
+const DesignSystemPage = import.meta.env.DEV ? lazy(() => import('../pages/dev/DesignSystemPage')) : null;
+
 export function App() {
   const { pathname } = useLocation();
+  if (DesignSystemPage && pathname === '/dev/design-system') return <Suspense fallback={<p role="status">Loading design library…</p>}><DesignSystemPage /></Suspense>;
   const audience = pathname === '/supplier' || pathname.startsWith('/supplier/') ? 'supplier'
     : pathname === '/admin' || pathname.startsWith('/admin/') ? 'admin' : 'customer';
   return (

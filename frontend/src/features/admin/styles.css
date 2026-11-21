@@ -160,14 +160,14 @@
   gap: var(--space-2);
 }
 
-.admin-metric-card dt {
+.admin-metric-card h3 {
   font-size: var(--text-sm);
   font-weight: 700;
   color: var(--color-forest-deep);
   margin: 0;
 }
 
-.admin-metric-card dt a {
+.admin-metric-card h3 a {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -179,10 +179,11 @@
   color: var(--color-sage-accent);
 }
 
-.admin-metric-card dd {
+.admin-metric-card__value {
   font-family: var(--font-heading);
   font-size: 2.25rem;
   font-weight: 700;
+  margin: 0;
   color: var(--color-forest-deep);
   margin: 0;
   line-height: 1;
@@ -568,27 +569,27 @@
 }
 
 .badge--success, .badge--status-approved, .badge--status-active, .badge--status-delivered, .badge--status-successful {
-  background: #e6f4ea;
-  color: #137333;
-  border: 1px solid #b7e1cd;
+  background: var(--success-soft);
+  color: var(--success);
+  border: 1px solid var(--border);
 }
 
 .badge--warning, .badge--status-pending, .badge--status-processing {
-  background: #fef7e0;
-  color: #b06000;
-  border: 1px solid #fce8b2;
+  background: var(--warning-soft);
+  color: var(--warning);
+  border: 1px solid var(--border);
 }
 
 .badge--danger, .badge--status-suspended, .badge--status-rejected, .badge--status-hidden, .badge--status-failed, .badge--status-cancelled {
-  background: #fce8e6;
-  color: #c5221f;
-  border: 1px solid #fad2cf;
+  background: var(--danger-soft);
+  color: var(--destructive);
+  border: 1px solid var(--border);
 }
 
 .badge--neutral, .badge--status-flagged, .badge--status-shipped, .badge--status-archived {
-  background: #e8eaed;
-  color: #3c4043;
-  border: 1px solid #dadce0;
+  background: var(--info-soft);
+  color: var(--info);
+  border: 1px solid var(--border);
 }
 
 /* Native Modal Dialog Enhancements */
