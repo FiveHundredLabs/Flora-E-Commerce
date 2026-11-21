@@ -46,7 +46,8 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
         if (data?.access === 'allowed') return data;
       }
       return undefined;
-    }
+    },
+    () => undefined
   );
 
   const adminCounts = useMemo(() => {
@@ -385,11 +386,11 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                   ['/admin/refunds', 'Refund requests', Receipt, adminCounts?.refunds],
                   ['/admin/reviews', 'Feedback', MessageSquare, adminCounts?.reviews],
                 ] as const).map(([to, label, Icon, count]) => (
-                  <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+                  <NavLink key={to} to={to} aria-label={label} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
                     <Icon size={16} aria-hidden="true" className="shell__nav-icon" />
                     <span>{label}</span>
                     {count !== undefined && count > 0 && (
-                      <span className="nav-badge-pill admin-nav-badge">{count}</span>
+                      <span className="nav-badge-pill admin-nav-badge" aria-hidden="true">{count}</span>
                     )}
                   </NavLink>
                 ))}

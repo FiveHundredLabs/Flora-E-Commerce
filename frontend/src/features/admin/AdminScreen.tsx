@@ -315,53 +315,51 @@ function AdminOverview({ data, adapter }: { data: AllowedWorkspace; adapter: Adm
       <dl className="admin-metrics">
         {/* Suppliers KPI Card */}
         <div className="admin-metric-card">
-          <div className="admin-metric-card__header">
-            <dt>
-              <Link to="/admin/suppliers">
-                <Store size={18} className="admin-metric-icon" aria-hidden="true" />
-                Suppliers
-              </Link>
-            </dt>
+          <dt className="admin-metric-card__header">
+            <Link to="/admin/suppliers">
+              <Store size={18} className="admin-metric-icon" aria-hidden="true" />
+              Suppliers
+            </Link>
             {pendingSuppliers.length > 0 && (
               <span className="badge badge--warning">{pendingSuppliers.length} Pending</span>
             )}
-          </div>
-          <dd>{suppliers.length}</dd>
-          <div className="admin-metric-card__footer">
-            <span>{suppliers.filter((s) => s.status === 'approved').length} Approved</span>
-            <Link to="/admin/suppliers" className="admin-card-link">Review →</Link>
-          </div>
+          </dt>
+          <dd>
+            <span className="admin-metric-value">{suppliers.length}</span>
+            <div className="admin-metric-card__footer">
+              <span>{suppliers.filter((s) => s.status === 'approved').length} Approved</span>
+              <Link to="/admin/suppliers" className="admin-card-link">Review →</Link>
+            </div>
+          </dd>
         </div>
 
         {/* Users KPI Card */}
         <div className="admin-metric-card">
-          <div className="admin-metric-card__header">
-            <dt>
-              <Link to="/admin/users">
-                <Users size={18} className="admin-metric-icon" aria-hidden="true" />
-                Users
-              </Link>
-            </dt>
+          <dt className="admin-metric-card__header">
+            <Link to="/admin/users">
+              <Users size={18} className="admin-metric-icon" aria-hidden="true" />
+              Users
+            </Link>
             <span className="badge badge--neutral">
               {users.filter((u) => u.actor === 'Customer').length} Cust / {users.filter((u) => u.actor === 'Supplier').length} Supp
             </span>
-          </div>
-          <dd>{users.length}</dd>
-          <div className="admin-metric-card__footer">
-            <span>{users.filter((u) => u.status === 'suspended').length} Suspended</span>
-            <Link to="/admin/users" className="admin-card-link">Manage →</Link>
-          </div>
+          </dt>
+          <dd>
+            <span className="admin-metric-value">{users.length}</span>
+            <div className="admin-metric-card__footer">
+              <span>{users.filter((u) => u.status === 'suspended').length} Suspended</span>
+              <Link to="/admin/users" className="admin-card-link">Manage →</Link>
+            </div>
+          </dd>
         </div>
 
         {/* Categories KPI Card */}
         <div className="admin-metric-card">
-          <div className="admin-metric-card__header">
-            <dt>
-              <Link to="/admin/categories">
-                <FolderTree size={18} className="admin-metric-icon" aria-hidden="true" />
-                Categories
-              </Link>
-            </dt>
+          <dt className="admin-metric-card__header">
+            <Link to="/admin/categories">
+              <FolderTree size={18} className="admin-metric-icon" aria-hidden="true" />
+              Categories
+            </Link>
             <button
               type="button"
               className="admin-mini-action-btn"
@@ -370,72 +368,74 @@ function AdminOverview({ data, adapter }: { data: AllowedWorkspace; adapter: Adm
             >
               <Plus size={14} aria-hidden="true" /> Add
             </button>
-          </div>
-          <dd>{categories.length}</dd>
-          <div className="admin-metric-card__footer">
-            <span>Marketplace taxonomy</span>
-            <Link to="/admin/categories" className="admin-card-link">Browse →</Link>
-          </div>
+          </dt>
+          <dd>
+            <span className="admin-metric-value">{categories.length}</span>
+            <div className="admin-metric-card__footer">
+              <span>Marketplace taxonomy</span>
+              <Link to="/admin/categories" className="admin-card-link">Browse →</Link>
+            </div>
+          </dd>
         </div>
 
         {/* Orders KPI Card */}
         <div className="admin-metric-card">
-          <div className="admin-metric-card__header">
-            <dt>
-              <Link to="/admin/orders">
-                <ShoppingBag size={18} className="admin-metric-icon" aria-hidden="true" />
-                Orders
-              </Link>
-            </dt>
+          <dt className="admin-metric-card__header">
+            <Link to="/admin/orders">
+              <ShoppingBag size={18} className="admin-metric-icon" aria-hidden="true" />
+              Orders
+            </Link>
             {flaggedOrders.length > 0 && (
               <span className="badge badge--danger">{flaggedOrders.length} On Hold</span>
             )}
-          </div>
-          <dd>{orders.length}</dd>
-          <div className="admin-metric-card__footer">
-            <span>{orders.filter((o) => o.status === 'processing').length} Processing</span>
-            <Link to="/admin/orders" className="admin-card-link">Inspect →</Link>
-          </div>
+          </dt>
+          <dd>
+            <span className="admin-metric-value">{orders.length}</span>
+            <div className="admin-metric-card__footer">
+              <span>{orders.filter((o) => o.status === 'processing').length} Processing</span>
+              <Link to="/admin/orders" className="admin-card-link">Inspect →</Link>
+            </div>
+          </dd>
         </div>
 
         {/* Refunds KPI Card */}
         <div className="admin-metric-card">
-          <div className="admin-metric-card__header">
-            <dt>
-              <Link to="/admin/refunds">
-                <Receipt size={18} className="admin-metric-icon" aria-hidden="true" />
-                Refund requests
-              </Link>
-            </dt>
+          <dt className="admin-metric-card__header">
+            <Link to="/admin/refunds">
+              <Receipt size={18} className="admin-metric-icon" aria-hidden="true" />
+              Refund requests
+            </Link>
             {pendingRefunds.length > 0 && (
               <span className="badge badge--warning">{pendingRefunds.length} Action Needed</span>
             )}
-          </div>
-          <dd>{refunds.length}</dd>
-          <div className="admin-metric-card__footer">
-            <span>{pendingRefunds.length} Pending Review</span>
-            <Link to="/admin/refunds" className="admin-card-link">Decide →</Link>
-          </div>
+          </dt>
+          <dd>
+            <span className="admin-metric-value">{refunds.length}</span>
+            <div className="admin-metric-card__footer">
+              <span>{pendingRefunds.length} Pending Review</span>
+              <Link to="/admin/refunds" className="admin-card-link">Decide →</Link>
+            </div>
+          </dd>
         </div>
 
         {/* Feedback KPI Card */}
         <div className="admin-metric-card">
-          <div className="admin-metric-card__header">
-            <dt>
-              <Link to="/admin/reviews">
-                <MessageSquare size={18} className="admin-metric-icon" aria-hidden="true" />
-                Feedback
-              </Link>
-            </dt>
+          <dt className="admin-metric-card__header">
+            <Link to="/admin/reviews">
+              <MessageSquare size={18} className="admin-metric-icon" aria-hidden="true" />
+              Feedback
+            </Link>
             {flaggedReviews.length > 0 && (
               <span className="badge badge--danger">{flaggedReviews.length} Flagged</span>
             )}
-          </div>
-          <dd>{reviews.length}</dd>
-          <div className="admin-metric-card__footer">
-            <span>{reviews.filter((r) => r.status === 'approved').length} Public</span>
-            <Link to="/admin/reviews" className="admin-card-link">Moderate →</Link>
-          </div>
+          </dt>
+          <dd>
+            <span className="admin-metric-value">{reviews.length}</span>
+            <div className="admin-metric-card__footer">
+              <span>{reviews.filter((r) => r.status === 'approved').length} Public</span>
+              <Link to="/admin/reviews" className="admin-card-link">Moderate →</Link>
+            </div>
+          </dd>
         </div>
       </dl>
 

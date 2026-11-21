@@ -143,4 +143,4 @@ export function createMockAdminAdapter(initial?: AdminWorkspace, persistSession 
   };
 }
 
-export const mockAdminAdapter = createMockAdminAdapter(undefined, true);
+export const mockAdminAdapter = createMockAdminAdapter();

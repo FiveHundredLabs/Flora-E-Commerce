@@ -180,11 +180,17 @@
 }
 
 .admin-metric-card dd {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.admin-metric-value {
   font-family: var(--font-heading);
   font-size: 2.25rem;
   font-weight: 700;
   color: var(--color-forest-deep);
-  margin: 0;
   line-height: 1;
 }
 
@@ -575,7 +581,7 @@
 
 .badge--warning, .badge--status-pending, .badge--status-processing {
   background: #fef7e0;
-  color: #b06000;
+  color: #8c4d00;
   border: 1px solid #fce8b2;
 }
 
