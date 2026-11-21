@@ -183,3 +183,20 @@ All tasks require `AGENTS.md` workflow and `docs/TESTING.md` gates. Tasks marked
 - **Tests:** unit/component tests; E2E for critical flows; no live payment/provider calls.
 - **Validation:** typecheck, lint, unit tests, build, relevant Playwright tests (after scaffold).
 - **Done:** reviewed diff, evidence of tests, requirement traceability and documented blockers.
+
+## Botanical Editorial redesign (2026-11-21)
+
+This migration has separate Phase 00–14 numbering; it does not replace historical
+FE task acceptance or unblock FE-0701 live integrations.
+
+- **UI-R00 — COMPLETE within audit scope:** current architecture, 36 route entries,
+  component/contract inventory, prioritized gaps, migration boundaries and Phase 01
+  execution plan recorded in `ui-redesign/REPOSITORY_AUDIT.md` and
+  `ui-redesign/IMPLEMENTATION_STATUS.md`. Documentation-only preparatory changes;
+  no homepage or runtime redesign. Actual baseline checks and limitations:
+  `ui-redesign/PHASE_00_VERIFICATION.md`.
+- **UI-R01 — READY TO START, not implemented:** semantic tokens, primitives,
+  public/dashboard layout frames and development-only preview. Use
+  `ui-redesign/prompts/01_FOUNDATION_DESIGN_SYSTEM.md` with the audit's scoped plan.
+  Baseline browser failures/limitations must be addressed or tracked before claiming
+  the phase passes its gates. Live API/auth/media/provider work remains blocked.

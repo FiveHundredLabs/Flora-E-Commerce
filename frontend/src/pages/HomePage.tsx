@@ -1,56 +1,66 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
+import { Truck, Headphones, Gift, ShieldCheck, ArrowRight, Sparkles, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import { ProductCard } from '../features/discovery/ProductCard';
-import { Illustration } from '../features/discovery/Illustration';
-import { categoryNames, type Product } from '../features/discovery/model';
+import { type Product } from '../features/discovery/model';
+import {
+  floristModels,
+  categoryCirculars,
+  promoBanners,
+  flowerSubscriptions,
+  blogStories,
+} from '../features/discovery/assets';
 
 const HERO_SLIDES = [
   {
-    eyebrow: 'Artisanal Floral Marketplace',
+    kicker: 'VALENTINE DAY',
     title: 'Welcome to Flower & Flora',
+    tagline: 'Fresh Flower Feeling Love',
     subtitle: 'Connecting passionate local florists with flower lovers. Handcrafted bouquets, sustainable botanicals, and seasonal fresh blooms.',
-    cta: 'Shop Collection',
+    cta: 'SHOP NOW >',
     link: '/products',
-    category: 'bouquets' as const,
+    image: floristModels.heroWhiteTulips,
   },
   {
-    eyebrow: 'Indoor Living Greenery',
+    kicker: 'BOTANICAL LIVING',
     title: 'Bring Living Nature Home',
+    tagline: 'Living Greens & Curated Plants',
     subtitle: 'Explore curated houseplants, lush ferns, and hardy succulents cultivated by artisanal growers across Colombo and Kandy.',
-    cta: 'Explore Plants',
+    cta: 'EXPLORE PLANTS >',
     link: '/products?category=plants',
-    category: 'plants' as const,
+    image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=1000&q=85',
   },
   {
-    eyebrow: 'Seasonal Stems & Botanicals',
+    kicker: 'SEASONAL HARVEST',
     title: 'Fresh From Local Gardens',
+    tagline: 'Single Variety Stems & Wildflowers',
     subtitle: 'Single-variety stems, exotic blossoms, and wildflower bundles harvested daily with freshness guaranteed.',
-    cta: 'Browse Stems',
+    cta: 'BROWSE STEMS >',
     link: '/products?category=stems',
-    category: 'stems' as const,
+    image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1000&q=85',
   },
 ];
 
-const FEATURES = [
+const GUARANTEES = [
   {
-    icon: '🚚',
-    title: 'Free Local Delivery',
-    desc: 'Complimentary shipping on local orders over $60',
+    icon: Truck,
+    title: 'Free Shipping',
+    desc: 'Free delivery on all local orders over $60',
   },
   {
-    icon: '🌸',
-    title: '100% Freshness Guarantee',
-    desc: 'Hand-picked blooms with a 7-day vase life assurance',
+    icon: Headphones,
+    title: '24/7 Support',
+    desc: 'Dedicated botanical concierge team',
   },
   {
-    icon: '🛡️',
-    title: 'Secure Checkout',
-    desc: 'Protected payment processing and multi-store isolation',
+    icon: Gift,
+    title: 'Gift Package',
+    desc: 'Eco-friendly luxury hydration packaging',
   },
   {
-    icon: '✂️',
-    title: 'Artisan Crafted',
-    desc: 'Arranged by independent floral designers',
+    icon: ShieldCheck,
+    title: 'Secure Payment',
+    desc: '100% secure payment with multi-store isolation',
   },
 ];
 
@@ -83,34 +93,42 @@ const SAMPLE_FEATURED_PRODUCTS: Product[] = [
     category: 'bouquets',
     description: 'A fictional bouquet inspired by gentle flower shapes.',
   },
+  {
+    slug: 'sunny-meadow',
+    storeSlug: 'willow-stem',
+    name: 'Sunny Meadow',
+    category: 'bouquets',
+    description: 'Golden sunflowers and yellow ranunculus in summer meadow bouquet.',
+  },
+  {
+    slug: 'leafy-companion',
+    storeSlug: 'fern-house',
+    name: 'Leafy Companion',
+    category: 'plants',
+    description: 'A sample potted plant with a simple, sculptural shape.',
+  },
+  {
+    slug: 'garden-stems',
+    storeSlug: 'garden-notes',
+    name: 'Garden Stems',
+    category: 'stems',
+    description: 'A fictional selection of stems with an open garden feel.',
+  },
+  {
+    slug: 'afternoon-flowers',
+    storeSlug: 'garden-notes',
+    name: 'Afternoon Flowers',
+    category: 'bouquets',
+    description: 'An illustrated sample bouquet for exploring the marketplace.',
+  },
 ];
 
 const STORE_NAMES: Record<string, string> = {
   'willow-stem': 'Willow & Stem',
   'fern-house': 'Fern House',
   'petal-room': 'The Petal Room',
+  'garden-notes': 'Garden Notes',
 };
-
-const TESTIMONIALS = [
-  {
-    name: 'Amara Senanayake',
-    location: 'Colombo 07',
-    stars: '★★★★★',
-    text: 'The Morning Bouquet arrived fresh with dewdrops still clinging to the petals. The presentation and scent transformed our living room.',
-  },
-  {
-    name: 'Kavinda Perera',
-    location: 'Kandy Hills',
-    stars: '★★★★★',
-    text: 'Ordering from Fern House was seamless. Being able to support independent botanical studios directly makes every purchase meaningful.',
-  },
-  {
-    name: 'Dilini Mendis',
-    location: 'Mount Lavinia',
-    stars: '★★★★★',
-    text: 'The floral care guide and hydrated packaging kept our wedding anniversary centerpiece looking radiant for nearly two weeks!',
-  },
-];
 
 export function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -131,47 +149,54 @@ export function HomePage() {
 
   return (
     <div className="fiama-homepage">
-      {/* Required test links */}
-      <div className="homepage-fictional-notice sr-only">
-        <Link to="/products">Browse sample products</Link>
-      </div>
+      {/* Section 1: Editorial Hero Slider (Screenshot 5) */}
+      <section className="editorial-hero-slider" aria-label="Editorial featured slider">
+        <div className="editorial-hero-slide">
+          <div className="editorial-hero-content">
+            <span className="editorial-kicker">{slide.kicker}</span>
+            <h1 className="editorial-title">{slide.title}</h1>
+            <span className="editorial-tagline">{slide.tagline}</span>
+            <p className="editorial-subtitle">{slide.subtitle}</p>
 
-      {/* Section 1: Multi-Slide Hero Carousel */}
-      <section className="hero-carousel-section" aria-label="Featured promotions carousel">
-        <div className="hero-slide-card">
-          <div className="hero-slide-content">
-            <span className="hero-eyebrow">{slide.eyebrow}</span>
-            <div className="hero-accent-bar" aria-hidden="true" />
-            <h1 className="hero-heading">{slide.title}</h1>
-            <p className="hero-subtitle">{slide.subtitle}</p>
-            <div className="hero-cta-group">
-              <Link to={slide.link} className="hero-primary-btn">
+            <div className="editorial-cta-wrap">
+              <Link to={slide.link} className="pill-cta-btn">
                 {slide.cta}
               </Link>
-              <Link to="/shops" className="hero-secondary-btn">
+              <Link to="/shops" className="pill-ghost-btn">
                 Browse sample shops
               </Link>
             </div>
+            <p className="editorial-fictional-note">
+              Explore our sample catalog. All shops and products shown are fictional.
+            </p>
           </div>
 
-          <div className="hero-slide-visual">
-            <div className="hero-visual-frame">
-              <Illustration category={slide.category} />
+          <div className="editorial-hero-media">
+            <div className="hero-model-wrap">
+              <img
+                src={slide.image}
+                alt="Florist model holding fresh white tulips"
+                className="hero-model-img"
+              />
+              <div className="hero-media-badge">
+                <Sparkles size={16} aria-hidden="true" />
+                <span>Hand-Tied Today</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Carousel Controls */}
-        <div className="hero-carousel-nav" aria-label="Carousel navigation">
+        {/* Slider Navigation Arrows & Dots */}
+        <div className="slider-controls-bar" aria-label="Slider navigation">
           <button
             type="button"
-            className="carousel-arrow prev"
+            className="slider-arrow-btn"
             aria-label="Previous slide"
             onClick={prevSlide}
           >
-            ←
+            <ChevronLeft size={20} aria-hidden="true" />
           </button>
-          <div className="carousel-dots" role="tablist" aria-label="Hero slides">
+          <div className="slider-dots-group" role="tablist" aria-label="Hero slides">
             {HERO_SLIDES.map((_, idx) => (
               <button
                 key={idx}
@@ -179,65 +204,116 @@ export function HomePage() {
                 role="tab"
                 aria-label={`Slide ${idx + 1}`}
                 aria-selected={currentSlide === idx}
-                className={`carousel-dot ${currentSlide === idx ? 'is-active' : ''}`}
+                className={`slider-dot ${currentSlide === idx ? 'is-active' : ''}`}
                 onClick={() => setCurrentSlide(idx)}
               />
             ))}
           </div>
           <button
             type="button"
-            className="carousel-arrow next"
+            className="slider-arrow-btn"
             aria-label="Next slide"
             onClick={nextSlide}
           >
-            →
+            <ChevronRight size={20} aria-hidden="true" />
           </button>
         </div>
       </section>
 
-      {/* Section 2: Floating 4-Column Feature Bar */}
-      <section className="floating-feature-bar" aria-label="Marketplace guarantees">
-        <div className="feature-bar-grid">
-          {FEATURES.map((feature) => (
-            <div key={feature.title} className="feature-item">
-              <span className="feature-icon" aria-hidden="true">{feature.icon}</span>
-              <div className="feature-text">
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-desc">{feature.desc}</p>
+      {/* Section 2: 4-Item Service Guarantees Bar (Screenshot 5) */}
+      <section className="guarantees-bar" aria-label="Service guarantees">
+        <div className="guarantees-grid">
+          {GUARANTEES.map((g) => {
+            const Icon = g.icon;
+            return (
+              <div key={g.title} className="guarantee-item">
+                <div className="guarantee-icon-wrap" aria-hidden="true">
+                  <Icon size={24} />
+                </div>
+                <div className="guarantee-text">
+                  <h3 className="guarantee-title">{g.title}</h3>
+                  <p className="guarantee-desc">{g.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Section 3: Asymmetric 3-Column Banner Grid (Screenshot 5) */}
+      <section className="home-section promo-banners-section">
+        <div className="promo-banners-grid">
+          {Object.entries(promoBanners).map(([key, banner]) => (
+            <div key={key} className="promo-banner-card">
+              <div className="promo-banner-bg">
+                <img src={banner.image} alt={banner.title} className="promo-banner-img" />
+              </div>
+              <div className="promo-banner-overlay">
+                <span className="promo-kicker">{banner.subtitle}</span>
+                <h3 className="promo-title">{banner.title}</h3>
+                <Link to={banner.link} className="promo-discover-link">
+                  {banner.action} <ArrowRight size={14} aria-hidden="true" />
+                </Link>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Section 3: Curated Collections / Categories */}
-      <section className="home-section categories-section">
+      {/* Section 4: Hot Categories (Circular Showcase) (Screenshot 5) */}
+      <section className="home-section hot-categories-section">
         <div className="section-title-wrap">
-          <span className="eyebrow">Botanical Categories</span>
-          <h2 className="section-title">Curated Floral Collections</h2>
-          <p className="section-sub">Explore our sample catalog. All shops and products shown are fictional.</p>
+          <span className="eyebrow">Discover Our Collections</span>
+          <h2 className="section-title">Hot Categories</h2>
+          <div className="section-accent-leaf" aria-hidden="true">🌿</div>
         </div>
 
-        <div className="categories-grid">
-          {(['bouquets', 'plants', 'stems'] as const).map((cat) => (
-            <Link key={cat} to={`/products?category=${cat}`} className="category-highlight-card">
-              <div className="category-card-art">
-                <Illustration category={cat} />
+        <div className="circular-categories-grid">
+          {Object.entries(categoryCirculars).map(([key, cat]) => (
+            <Link key={key} to={cat.link} className="circular-category-item">
+              <div className="circular-avatar-wrap">
+                <img src={cat.image} alt={cat.title} className="circular-avatar-img" />
+                <span className="circular-hover-ring" aria-hidden="true" />
               </div>
-              <div className="category-card-info">
-                <h3>{categoryNames[cat]}</h3>
-                <span className="category-link-text">Browse Collection →</span>
-              </div>
+              <h3 className="circular-category-title">{cat.title}</h3>
+              <span className="circular-category-count">{cat.count}</span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Section 4: Featured Products Tabs */}
-      <section className="home-section featured-products-section">
+      {/* Section 5: Birthday Bouquets Spotlight Banner (Screenshot 5) */}
+      <section className="home-section spotlight-banner-section">
+        <div className="spotlight-banner-card">
+          <div className="spotlight-content-column">
+            <span className="spotlight-badge">SPECIAL COLLECTION</span>
+            <h2 className="spotlight-heading">Birthday Bouquets</h2>
+            <p className="spotlight-desc">
+              Vibrant yellow daffodils, cheerful garden ranunculus, and sun-kissed roses hand-arranged to bring instant joy to every birthday celebration.
+            </p>
+            <div className="spotlight-cta-row">
+              <Link to="/products?category=bouquets" className="pill-cta-btn pill-cta--dark">
+                SHOP NOW <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="spotlight-image-column">
+            <img
+              src={floristModels.birthdaySpotlight}
+              alt="Smiling florist holding vibrant yellow birthday bouquet"
+              className="spotlight-model-img"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Section 6: Shop Best Sellers (4-Column Product Grid) (Screenshot 5) */}
+      <section className="home-section best-sellers-section" aria-label="Stores and products">
         <div className="section-title-wrap">
-          <span className="eyebrow">Artisan Selections</span>
-          <h2 className="section-title">Featured Floral Arrangements</h2>
+          <span className="eyebrow">Curated Arrangements</span>
+          <h2 className="section-title">Shop Best Sellers</h2>
+          <div className="section-accent-line" aria-hidden="true" />
         </div>
 
         <div className="home-product-tabs" role="tablist" aria-label="Filter featured products by category">
@@ -279,11 +355,11 @@ export function HomePage() {
           </button>
         </div>
 
-        <div className="featured-products-grid">
+        <div className="best-sellers-grid">
           {filteredProducts.map((product, idx) => {
             const storeName = STORE_NAMES[product.storeSlug] ?? 'Artisan Florist';
             return (
-              <div key={product.slug} className="featured-grid-item">
+              <div key={product.slug} className="best-seller-item">
                 <ProductCard
                   product={product}
                   storeName={storeName}
@@ -295,88 +371,65 @@ export function HomePage() {
         </div>
 
         <div className="home-view-all-wrap">
-          <Link to="/products" className="view-all-btn">
-            View All Floral Catalog →
+          <Link to="/products" className="pill-cta-btn pill-cta--outline">
+            VIEW ALL PRODUCTS <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
       </section>
 
-      {/* Section 5: Asymmetric Promotion Banners */}
-      <section className="home-section promo-banners-section">
-        <div className="promo-banners-grid">
-          <div className="promo-banner-card promo-banner--left">
-            <div className="promo-banner-content">
-              <span className="promo-tag">Seasonal Offer</span>
-              <h3>Spring Awakening Bouquets</h3>
-              <p>Hand-tied peony, garden rose, and eucalyptus compositions with 20% savings this week.</p>
-              <Link to="/products?category=bouquets" className="promo-btn">
-                Discover Bouquets →
-              </Link>
-            </div>
-            <div className="promo-banner-art">
-              <Illustration category="bouquets" />
-            </div>
-          </div>
-
-          <div className="promo-banner-card promo-banner--right">
-            <div className="promo-banner-content">
-              <span className="promo-tag">Artisan Highlight</span>
-              <h3>Meet Our Local Florists</h3>
-              <p>Direct from independent Colombo and Kandy flower studios, grown with heart and mindful care.</p>
-              <Link to="/shops" className="promo-btn">
-                Browse sample shops →
-              </Link>
-            </div>
-            <div className="promo-banner-art">
-              <Illustration category="plants" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 6: Customer Testimonials */}
-      <section className="home-section testimonials-section">
+      {/* Section 7: Flower Subscriptions (Screenshot 5) */}
+      <section className="home-section subscriptions-section">
         <div className="section-title-wrap">
-          <span className="eyebrow">Flower Enthusiasts</span>
-          <h2 className="section-title">Words From Our Community</h2>
+          <span className="eyebrow">Living Florals Delivered</span>
+          <h2 className="section-title">Flower Subscriptions</h2>
+          <p className="section-sub">Experience perpetual beauty in your sanctuary. Cancel, pause or reschedule at any moment.</p>
         </div>
 
-        <div className="testimonials-grid">
-          {TESTIMONIALS.map((testimonial) => (
-            <div key={testimonial.name} className="testimonial-card">
-              <div className="testimonial-stars" aria-label="5 stars">{testimonial.stars}</div>
-              <p className="testimonial-quote">“{testimonial.text}”</p>
-              <div className="testimonial-author">
-                <div className="author-avatar">{testimonial.name.slice(0, 2).toUpperCase()}</div>
-                <div className="author-meta">
-                  <strong>{testimonial.name}</strong>
-                  <span>{testimonial.location}</span>
-                </div>
+        <div className="subscriptions-grid">
+          {flowerSubscriptions.map((sub) => (
+            <div key={sub.frequency} className={`subscription-card ${sub.featured ? 'is-featured' : ''}`}>
+              <div className="sub-media-wrap">
+                <img src={sub.image} alt={sub.frequency} className="sub-media-img" />
+                <span className="sub-savings-badge">{sub.savings}</span>
+              </div>
+              <div className="sub-card-body">
+                <h3 className="sub-card-title">{sub.frequency}</h3>
+                <div className="sub-price">{sub.price}</div>
+                <p className="sub-desc">{sub.desc}</p>
+                <Link to="/products?category=bouquets" className="sub-cta-btn">
+                  SUBSCRIBE NOW <ArrowRight size={14} aria-hidden="true" />
+                </Link>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Section 7: Deep Green Newsletter Banner */}
-      <section className="newsletter-banner-section">
-        <div className="newsletter-banner-inner">
-          <div className="newsletter-banner-text">
-            <h2>Join the Botanical Circle</h2>
-            <p>Subscribe for weekly floral guides, studio spotlights, and first access to rare botanical drops.</p>
-          </div>
-          <form className="newsletter-banner-form" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder="Enter your email address..."
-              aria-label="Email address for subscription"
-              className="newsletter-banner-input"
-              required
-            />
-            <button type="submit" className="newsletter-banner-btn">
-              Subscribe
-            </button>
-          </form>
+      {/* Section 8: Our Blog & Editorial Stories (Screenshot 5) */}
+      <section className="home-section blog-stories-section">
+        <div className="section-title-wrap">
+          <span className="eyebrow">Botanical Journal</span>
+          <h2 className="section-title">Our Blog & Editorial Stories</h2>
+        </div>
+
+        <div className="blog-stories-grid">
+          {blogStories.map((post) => (
+            <article key={post.title} className="blog-story-card">
+              <div className="blog-story-thumb">
+                <img src={post.image} alt={post.title} className="blog-thumb-img" />
+              </div>
+              <div className="blog-story-content">
+                <div className="blog-meta-row">
+                  <span className="blog-date"><Calendar size={13} aria-hidden="true" /> {post.date}</span>
+                  <span className="blog-author">By {post.author}</span>
+                </div>
+                <h3 className="blog-title">{post.title}</h3>
+                <Link to="/about" className="blog-read-more">
+                  Read Article <ArrowRight size={13} aria-hidden="true" />
+                </Link>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </div>

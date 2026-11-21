@@ -1,9 +1,12 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
+import { QueryClientContext } from '@tanstack/react-query';
+import { Search, User, Heart, ShoppingBag, X, Plus, Minus, Store, Users, FolderTree, Receipt, MessageSquare, LayoutDashboard } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Content';
 import { useWishlist } from '../../../features/discovery';
 import { useCartDrawer, cartActions, useCartDispatch, useCartSelector, type CartLine } from '../../../features/commerce';
+import type { AdminWorkspace } from '../../../features/admin/model';
 
 type Audience = 'customer' | 'supplier' | 'admin';
 const navigation = {
@@ -32,8 +35,38 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
   const wishlist = useWishlist();
   const cartDrawer = useCartDrawer();
   const { lines, dispatch } = useSafeCart();
+  const queryClient = useContext(QueryClientContext);
+
+  const adminWorkspace = useSyncExternalStore(
+    (callback) => (audience === 'admin' && queryClient ? queryClient.getQueryCache().subscribe(callback) : () => {}),
+    () => {
+      if (audience !== 'admin' || !queryClient) return undefined;
+      const entries = queryClient.getQueriesData<AdminWorkspace>({ queryKey: ['MOCK', 'admin'] });
+      for (const [, data] of entries) {
+        if (data?.access === 'allowed') return data;
+      }
+      return undefined;
+    }
+  );
+
+  const adminCounts = useMemo(() => {
+    if (!adminWorkspace || adminWorkspace.access !== 'allowed') return null;
+    const records = adminWorkspace.records;
+    return {
+      suppliers: records.filter((r) => r.kind === 'suppliers' && r.status === 'pending').length,
+      users: records.filter((r) => r.kind === 'users').length,
+      categories: records.filter((r) => r.kind === 'categories').length,
+      orders: records.filter((r) => r.kind === 'orders').length,
+      refunds: records.filter((r) => r.kind === 'refunds' && r.status === 'pending').length,
+      reviews: records.filter((r) => r.kind === 'reviews' && r.status === 'flagged').length,
+    };
+  }, [adminWorkspace]);
 
   const totalCartCount = lines.reduce((acc, line) => acc + line.quantity, 0);
+  const cartSubtotal = totalCartCount * 38;
+  const freeShippingThreshold = 60;
+  const freeShippingProgress = Math.min(100, Math.round((cartSubtotal / freeShippingThreshold) * 100));
+  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartSubtotal);
 
   // Group cart lines by store (OD-02 compliant)
   const storeGroups = lines.reduce<Record<string, CartLine[]>>((acc, line) => {
@@ -45,7 +78,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
   // Sticky header scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 120);
+      setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -117,7 +150,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               {/* Brand Logo */}
               <div className="shell__brand">
                 <Link to="/" className="brand-logo">
-                  Flower & Flora<span className="brand-dot">.</span>
+                  Flower & Flora<span className="brand-dot" aria-hidden="true">.</span>
                 </Link>
               </div>
 
@@ -133,10 +166,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <button type="submit" className="search-pill-submit" aria-label="Submit search">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
+                    <Search size={18} aria-hidden="true" />
                   </button>
                 </div>
               </form>
@@ -145,17 +175,12 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               <div className="header-actions">
                 {/* Account */}
                 <Link to="/account/orders" className="header-action-btn" aria-label="My Account">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
+                  <User size={20} aria-hidden="true" />
                 </Link>
 
                 {/* Wishlist */}
                 <Link to="/wishlist" className="header-action-btn" aria-label={`Wishlist with ${wishlist.count} items`}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
+                  <Heart size={20} aria-hidden="true" />
                   {wishlist.count > 0 && (
                     <span className="badge-count wishlist-badge">{wishlist.count}</span>
                   )}
@@ -169,11 +194,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                   aria-expanded={cartDrawer.isOpen}
                   onClick={cartDrawer.toggle}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
+                  <ShoppingBag size={20} aria-hidden="true" />
                   <span className="badge-count cart-badge">{totalCartCount}</span>
                 </button>
 
@@ -192,27 +213,123 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               </div>
             </div>
 
-            {/* Tier 3: Primary Navigation Bar (Customer mode) */}
-            <div className="primary-nav-bar">
-              <nav className="primary-nav-bar__inner" aria-label="Main marketplace navigation">
-                <NavLink end to="/" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  HOME
-                </NavLink>
-                <NavLink to="/products" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  SHOP / PRODUCTS
-                </NavLink>
-                <NavLink to="/shops" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  SHOPS / STORES
-                </NavLink>
-                <NavLink to="/wishlist" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  WISHLIST
-                </NavLink>
-                <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  ABOUT US
-                </NavLink>
-                <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
-                  CONTACT US
-                </NavLink>
+            {/* Tier 3: Primary Navigation Bar & Mobile Drawer (Customer mode) */}
+            <div className={`primary-nav-wrapper ${expanded ? 'is-drawer-open' : ''}`}>
+              <div
+                className={`mobile-drawer-overlay ${expanded ? 'is-visible' : ''}`}
+                aria-hidden={!expanded}
+                onClick={() => setExpanded(false)}
+              />
+              <nav
+                id={navigationId}
+                className={`primary-nav-bar ${expanded ? 'is-open' : ''}`}
+                aria-label="Marketplace navigation"
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape' && expanded) {
+                    setExpanded(false);
+                    toggle.current?.focus();
+                  }
+                }}
+              >
+                {/* Mobile Drawer Header (shown only on mobile when drawer is open) */}
+                <div className="mobile-drawer-header">
+                  <span className="brand-logo">
+                    Flower & Flora<span className="brand-dot" aria-hidden="true">.</span>
+                  </span>
+                </div>
+
+                <div className="primary-nav-bar__links">
+                  <NavLink
+                    end
+                    to="/"
+                    aria-label="Home"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">HOME</span>
+                  </NavLink>
+                  <NavLink
+                    to="/products"
+                    aria-label="Products"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">SHOP / PRODUCTS</span>
+                  </NavLink>
+                  <NavLink
+                    to="/shops"
+                    aria-label="Shops"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">SHOPS / STORES</span>
+                  </NavLink>
+                  <NavLink
+                    to="/cart"
+                    aria-label="Cart"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">CART</span>
+                    {totalCartCount > 0 && <span className="nav-badge-pill">{totalCartCount}</span>}
+                  </NavLink>
+                  <NavLink
+                    to="/about"
+                    aria-label="About Us"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">ABOUT US</span>
+                  </NavLink>
+                  <NavLink
+                    to="/contact"
+                    aria-label="Contact Us"
+                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">CONTACT US</span>
+                  </NavLink>
+                  <NavLink
+                    to="/account/orders"
+                    aria-label="Orders"
+                    className={({ isActive }) => `nav-link mobile-only-nav-link ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setExpanded(false);
+                      document.getElementById('main')?.focus();
+                    }}
+                  >
+                    <span aria-hidden="true">ORDERS</span>
+                  </NavLink>
+                </div>
+
+                {/* Mobile Drawer Footer (shown only on mobile) */}
+                <div className="mobile-drawer-footer">
+                  <Link to="/supplier" className="mobile-portal-link" onClick={() => setExpanded(false)}>
+                    Supplier Portal
+                  </Link>
+                  <span className="utility-divider" aria-hidden="true">|</span>
+                  <Link to="/admin" className="mobile-portal-link" onClick={() => setExpanded(false)}>
+                    Admin Access
+                  </Link>
+                </div>
               </nav>
             </div>
           </header>
@@ -221,75 +338,69 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
 
       {/* Main Body */}
       <div className="shell__body">
-        {/* Workspace Side Navigation (for supplier & admin) and mobile drawer */}
-        <nav
-          id={navigationId}
-          className={`shell__nav ${expanded ? 'is-open' : ''}`}
-          aria-label={`${config.title} navigation`}
-          onKeyDown={(event) => {
-            if (event.key === 'Escape' && expanded) {
-              setExpanded(false);
-              toggle.current?.focus();
-            }
-          }}
-        >
-          <span className="shell__nav-label">{workspace ? 'Workspace' : 'Explore'}</span>
-          <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-            {config.homeLabel}
-          </NavLink>
+        {/* Workspace Side Navigation (for supplier & admin only) */}
+        {workspace && (
+          <nav
+            id={navigationId}
+            className={`shell__nav ${expanded ? 'is-open' : ''}`}
+            aria-label={`${config.title} navigation`}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape' && expanded) {
+                setExpanded(false);
+                toggle.current?.focus();
+              }
+            }}
+          >
+            <span className="shell__nav-label">Workspace</span>
+            <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+              {audience === 'admin' && <LayoutDashboard size={16} aria-hidden="true" className="shell__nav-icon" />}
+              <span>{config.homeLabel}</span>
+            </NavLink>
 
-          {!workspace && (
-            <>
-              <NavLink to="/shops" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Shops</NavLink>
-              <NavLink to="/products" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Products</NavLink>
-              <NavLink to="/cart" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Cart</NavLink>
-              <NavLink to="/wishlist" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Wishlist</NavLink>
-              <NavLink to="/about" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>About Us</NavLink>
-              <NavLink to="/contact" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Contact Us</NavLink>
-              <NavLink to="/account/orders" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>Orders</NavLink>
-            </>
-          )}
+            {audience === 'supplier' && (
+              <>
+                {([
+                  ['/supplier/register', 'Registration'],
+                  ['/supplier/profile', 'Store profile'],
+                  ['/supplier/products', 'Products'],
+                  ['/supplier/inventory', 'Inventory'],
+                  ['/supplier/orders', 'Orders'],
+                  ['/supplier/sales', 'Sales'],
+                ] as const).map(([to, label]) => (
+                  <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+                    {label}
+                  </NavLink>
+                ))}
+              </>
+            )}
 
-          {audience === 'supplier' && (
-            <>
-              {([
-                ['/supplier/register', 'Registration'],
-                ['/supplier/profile', 'Store profile'],
-                ['/supplier/products', 'Products'],
-                ['/supplier/inventory', 'Inventory'],
-                ['/supplier/orders', 'Orders'],
-                ['/supplier/sales', 'Sales'],
-              ] as const).map(([to, label]) => (
-                <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-                  {label}
-                </NavLink>
-              ))}
-            </>
-          )}
+            {audience === 'admin' && (
+              <>
+                <span className="shell__nav-section-title">Marketplace Oversight</span>
+                {([
+                  ['/admin/suppliers', 'Suppliers', Store, adminCounts?.suppliers],
+                  ['/admin/users', 'Users', Users, adminCounts?.users],
+                  ['/admin/categories', 'Categories', FolderTree, adminCounts?.categories],
+                  ['/admin/orders', 'Orders', ShoppingBag, adminCounts?.orders],
+                  ['/admin/refunds', 'Refund requests', Receipt, adminCounts?.refunds],
+                  ['/admin/reviews', 'Feedback', MessageSquare, adminCounts?.reviews],
+                ] as const).map(([to, label, Icon, count]) => (
+                  <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
+                    <Icon size={16} aria-hidden="true" className="shell__nav-icon" />
+                    <span>{label}</span>
+                    {count !== undefined && count > 0 && (
+                      <span className="nav-badge-pill admin-nav-badge">{count}</span>
+                    )}
+                  </NavLink>
+                ))}
+              </>
+            )}
 
-          {audience === 'admin' && (
-            <>
-              {([
-                ['/admin/suppliers', 'Suppliers'],
-                ['/admin/users', 'Users'],
-                ['/admin/categories', 'Categories'],
-                ['/admin/orders', 'Orders'],
-                ['/admin/refunds', 'Refund requests'],
-                ['/admin/reviews', 'Feedback'],
-              ] as const).map(([to, label]) => (
-                <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-                  {label}
-                </NavLink>
-              ))}
-            </>
-          )}
-
-          {workspace && (
             <Link to="/" onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
               Return to marketplace
             </Link>
-          )}
-        </nav>
+          </nav>
+        )}
 
         <main id="main" tabIndex={-1}>
           {children}
@@ -323,18 +434,28 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                 aria-label="Close cart drawer"
                 onClick={cartDrawer.close}
               >
-                ×
+                <X size={20} aria-hidden="true" />
               </button>
+            </div>
+
+            {/* Free Shipping Progress Bar */}
+            <div className="cart-drawer__shipping-bar">
+              <p className="shipping-progress-text">
+                {remainingForFreeShipping > 0 ? (
+                  <>Spend <strong>${remainingForFreeShipping.toFixed(2)}</strong> more to qualify for <strong>FREE DELIVERY</strong>!</>
+                ) : (
+                  <>🎉 You have unlocked <strong>FREE DELIVERY</strong>!</>
+                )}
+              </p>
+              <div className="shipping-progress-track" role="progressbar" aria-valuenow={freeShippingProgress} aria-valuemin={0} aria-valuemax={100}>
+                <div className="shipping-progress-fill" style={{ width: `${freeShippingProgress}%` }} />
+              </div>
             </div>
 
             <div className="cart-drawer__body">
               {lines.length === 0 ? (
                 <div className="cart-drawer__empty">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
+                  <ShoppingBag size={48} strokeWidth={1.5} aria-hidden="true" />
                   <p>Your sample cart is currently empty.</p>
                   <Link to="/products" className="cart-drawer__browse-btn" onClick={cartDrawer.close}>
                     Browse Floral Products
@@ -348,10 +469,15 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                   {Object.entries(storeGroups).map(([storeSlug, storeLines]) => (
                     <div key={storeSlug} className="cart-drawer__store-group">
                       <div className="cart-drawer__store-header">
-                        <span className="store-badge-label">Florist Store:</span>
-                        <Link to={`/shops/${storeSlug}`} onClick={cartDrawer.close} className="store-name-link">
-                          {storeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
-                        </Link>
+                        <div className="cart-drawer__store-title-wrap">
+                          <span className="store-badge-label">Florist Store:</span>
+                          <Link to={`/shops/${storeSlug}`} onClick={cartDrawer.close} className="store-name-link">
+                            {storeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
+                          </Link>
+                        </div>
+                        <span className="store-group-subtotal">
+                          ${(storeLines.reduce((acc, l) => acc + l.quantity, 0) * 38).toFixed(2)}
+                        </span>
                       </div>
                       <ul className="cart-drawer__items-list">
                         {storeLines.map((line) => (
@@ -364,7 +490,12 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                               >
                                 {line.productSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
                               </Link>
-                              <span className="cart-drawer__item-price">$38.00</span>
+                              <span className="cart-drawer__item-price">
+                                ${(line.quantity * 38).toFixed(2)}
+                                {line.quantity > 1 && (
+                                  <span className="unit-price-sub"> (${(38).toFixed(2)} ea)</span>
+                                )}
+                              </span>
                             </div>
                             <div className="cart-drawer__item-stepper">
                               <button
@@ -379,7 +510,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                                   }
                                 }}
                               >
-                                -
+                                <Minus size={14} aria-hidden="true" />
                               </button>
                               <span className="stepper-val">{line.quantity}</span>
                               <button
@@ -391,7 +522,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                                   dispatch(cartActions.update({ ...line, quantity: Math.min(99, line.quantity + 1) }));
                                 }}
                               >
-                                +
+                                <Plus size={14} aria-hidden="true" />
                               </button>
                               <button
                                 type="button"
@@ -422,6 +553,10 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
 
             {lines.length > 0 && (
               <div className="cart-drawer__footer">
+                <div className="cart-drawer__subtotal-row">
+                  <span>Subtotal:</span>
+                  <span className="cart-drawer__subtotal-val">${cartSubtotal.toFixed(2)}</span>
+                </div>
                 <Link to="/cart" className="view-cart-full-btn" onClick={cartDrawer.close}>
                   View Full Cart & Review All Stores
                 </Link>
@@ -510,6 +645,41 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
               </div>
             </div>
           </footer>
+
+          {/* Sticky Bottom Mobile Dock (Customer mode) */}
+          <nav className="mobile-bottom-dock" aria-label="Quick mobile dock">
+            <NavLink end to="/" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <span className="dock-icon" aria-hidden="true">🌿</span>
+              <span className="dock-label">Home</span>
+            </NavLink>
+            <NavLink to="/products" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <Search size={18} aria-hidden="true" />
+              <span className="dock-label">Shop</span>
+            </NavLink>
+            <NavLink to="/wishlist" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <div className="dock-icon-wrap">
+                <Heart size={18} aria-hidden="true" />
+                {wishlist.count > 0 && <span className="dock-badge">{wishlist.count}</span>}
+              </div>
+              <span className="dock-label">Wishlist</span>
+            </NavLink>
+            <button
+              type="button"
+              className="dock-item dock-btn"
+              aria-label={`Open cart with ${totalCartCount} items`}
+              onClick={cartDrawer.open}
+            >
+              <div className="dock-icon-wrap">
+                <ShoppingBag size={18} aria-hidden="true" />
+                {totalCartCount > 0 && <span className="dock-badge">{totalCartCount}</span>}
+              </div>
+              <span className="dock-label">Cart</span>
+            </button>
+            <NavLink to="/account/orders" className={({ isActive }) => `dock-item ${isActive ? 'is-active' : ''}`}>
+              <User size={18} aria-hidden="true" />
+              <span className="dock-label">Account</span>
+            </NavLink>
+          </nav>
         </>
       )}
     </div>

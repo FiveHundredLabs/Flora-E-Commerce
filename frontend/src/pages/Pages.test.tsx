@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { WishlistPage } from './WishlistPage';
 import { AboutPage } from './AboutPage';
 import { ContactPage } from './ContactPage';
-import { CartProvider, cartActions, useCartDispatch, closeCartDrawer } from '../features/commerce';
+import { CartProvider, cartActions, useCartDispatch, closeCartDrawer, AddSampleProduct } from '../features/commerce';
 import { Shell } from '../shared/components/layout/Shell';
 import { ProductCard } from '../features/discovery/ProductCard';
 
@@ -95,9 +95,53 @@ describe('New Brand & Discovery Pages', () => {
       await user.click(screen.getByRole('button', { name: /close/i }));
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
+
+    it('dismisses the video preview modal on Escape key press', async () => {
+      const user = userEvent.setup();
+      render(
+        <MemoryRouter>
+          <AboutPage />
+        </MemoryRouter>
+      );
+      await user.click(screen.getByRole('button', { name: /documentary/i }));
+      expect(screen.getByRole('dialog', { name: /Documentary/i })).toBeVisible();
+      await user.keyboard('{Escape}');
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
   });
 
   describe('ContactPage', () => {
+    it('validates required fields, shows error feedback, and then submits successfully', async () => {
+      const user = userEvent.setup();
+      render(
+        <MemoryRouter>
+          <ContactPage />
+        </MemoryRouter>
+      );
+
+      // Attempt to submit empty form
+      await user.click(screen.getByRole('button', { name: /Send Message/i }));
+      expect(screen.getByText('Please provide your full name.')).toBeVisible();
+      expect(screen.getByText('Please provide your email address.')).toBeVisible();
+      expect(screen.getByText('Please tell us how we can help you.')).toBeVisible();
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+
+      // Enter invalid email
+      await user.type(screen.getByLabelText(/Your Full Name/i), 'Ruwan Silva');
+      await user.type(screen.getByLabelText(/Email Address/i), 'invalid-email');
+      await user.type(screen.getByLabelText(/How can we help you/i), 'Inquiry about blooms.');
+      await user.click(screen.getByRole('button', { name: /Send Message/i }));
+      expect(screen.getByText('Please enter a valid email address.')).toBeVisible();
+
+      // Correct email and submit
+      await user.clear(screen.getByLabelText(/Email Address/i));
+      await user.type(screen.getByLabelText(/Email Address/i), 'ruwan@example.com');
+      await user.click(screen.getByRole('button', { name: /Send Message/i }));
+
+      expect(screen.getByRole('status')).toHaveTextContent('Thank You, Ruwan Silva!');
+      expect(screen.getByText(/Your message has been safely received/)).toBeVisible();
+    });
+
     it('renders contact channels and submits an inquiry message', async () => {
       const user = userEvent.setup();
       render(
@@ -154,6 +198,63 @@ describe('New Brand & Discovery Pages', () => {
       // Close modal
       await user.click(screen.getByRole('button', { name: 'Close quick view' }));
       expect(screen.queryByRole('heading', { level: 2, name: 'Morning Bouquet' })).not.toBeInTheDocument();
+    });
+
+    it('switches between primary and secondary thumbnails in Quick View modal', async () => {
+      const user = userEvent.setup();
+      const sampleProduct = {
+        slug: 'morning-bouquet',
+        storeSlug: 'willow-stem',
+        name: 'Morning Bouquet',
+        category: 'bouquets' as const,
+        description: 'Open blooms and fresh eucalyptus.',
+      };
+
+      render(
+        <MemoryRouter>
+          <CartProvider>
+            <ProductCard product={sampleProduct} storeName="Willow & Stem" />
+          </CartProvider>
+        </MemoryRouter>
+      );
+
+      await user.click(screen.getByRole('button', { name: 'Quick view Morning Bouquet' }));
+      expect(screen.getByRole('button', { name: 'Thumbnail 1' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Thumbnail 2' })).toBeVisible();
+
+      // Click thumbnail 2
+      await user.click(screen.getByRole('button', { name: 'Thumbnail 2' }));
+      expect(screen.getByRole('button', { name: 'Thumbnail 2' })).toHaveClass('is-active');
+
+      // Click thumbnail 1
+      await user.click(screen.getByRole('button', { name: 'Thumbnail 1' }));
+      expect(screen.getByRole('button', { name: 'Thumbnail 1' })).toHaveClass('is-active');
+    });
+  });
+
+  describe('AddSampleProduct (PDP Buy Controls)', () => {
+    it('renders Add to Cart and BUY IT NOW buttons, supports quantity and updates cart', async () => {
+      const user = userEvent.setup();
+      render(
+        <MemoryRouter>
+          <CartProvider>
+            <AddSampleProduct
+              productSlug="morning-bouquet"
+              storeSlug="willow-stem"
+              name="Morning Bouquet"
+              quantityToAdd={3}
+            />
+          </CartProvider>
+        </MemoryRouter>
+      );
+
+      const addBtn = screen.getByRole('button', { name: 'Add to sample cart' });
+      const directCheckoutBtn = screen.getByRole('button', { name: 'Direct shop checkout' });
+      expect(addBtn).toBeVisible();
+      expect(directCheckoutBtn).toBeVisible();
+
+      await user.click(addBtn);
+      expect(screen.getByRole('status')).toHaveTextContent('Added 3 × Morning Bouquet to your sample cart.');
     });
   });
 

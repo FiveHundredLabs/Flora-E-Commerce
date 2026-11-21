@@ -16,7 +16,6 @@ export function Filters({
 }) {
   const [draft, setDraft] = useState(values);
   const [error, setError] = useState<string>();
-  const [priceRange, setPriceRange] = useState(120);
   const input = useRef<HTMLInputElement>(null);
   const { q, category, location, sort } = values;
 
@@ -45,6 +44,7 @@ export function Filters({
           apply({ ...draft, q: parsed.data });
         }}
       >
+        {/* Search Widget */}
         <div className="filter-widget">
           <h2 className="widget-title">Search Catalog</h2>
           <TextField
@@ -58,8 +58,9 @@ export function Filters({
           />
         </div>
 
+        {/* Collections / Categories Widget */}
         <div className="filter-widget">
-          <h2 className="widget-title">Categories</h2>
+          <h2 className="widget-title">Collections</h2>
           <SelectField
             label="Category"
             value={draft.category}
@@ -70,20 +71,9 @@ export function Filters({
               <option key={value} value={value}>{categoryNames[value]}</option>
             ))}
           </SelectField>
-          <div className="category-quick-chips">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`category-chip ${draft.category === cat ? 'is-active' : ''}`}
-                onClick={() => setDraft({ ...draft, category: draft.category === cat ? '' : cat })}
-              >
-                {categoryNames[cat]}
-              </button>
-            ))}
-          </div>
         </div>
 
+        {/* Location Widget */}
         <div className="filter-widget">
           <h2 className="widget-title">Location</h2>
           <SelectField
@@ -98,6 +88,7 @@ export function Filters({
           </SelectField>
         </div>
 
+        {/* Sort Options Widget */}
         <div className="filter-widget">
           <h2 className="widget-title">Sort Options</h2>
           <SelectField
@@ -110,48 +101,7 @@ export function Filters({
           </SelectField>
         </div>
 
-        <div className="filter-widget">
-          <h2 className="widget-title">Price Range</h2>
-          <div className="price-slider-wrap">
-            <div className="price-slider-labels">
-              <span>$10</span>
-              <span className="price-slider-current">Up to ${priceRange}</span>
-              <span>$250</span>
-            </div>
-            <input
-              type="range"
-              min={10}
-              max={250}
-              step={5}
-              value={priceRange}
-              aria-label="Price range filter"
-              className="fiama-range-slider"
-              onChange={(e) => setPriceRange(Number(e.target.value))}
-            />
-          </div>
-        </div>
-
-        <div className="filter-widget">
-          <h2 className="widget-title">Color Palette</h2>
-          <div className="color-swatches" role="group" aria-label="Color options">
-            {[
-              { name: 'Botanical Green', color: '#244C3A' },
-              { name: 'Sage Green', color: '#6F967B' },
-              { name: 'Golden Ochre', color: '#D9A85F' },
-              { name: 'Soft Cream', color: '#F5F3E9' },
-              { name: 'Blush Rose', color: '#D48C8C' },
-            ].map((swatch) => (
-              <span
-                key={swatch.name}
-                className="color-swatch-circle"
-                style={{ backgroundColor: swatch.color }}
-                title={swatch.name}
-                aria-label={swatch.name}
-              />
-            ))}
-          </div>
-        </div>
-
+        {/* Filter Action Buttons */}
         <div className="catalog-filter-actions">
           <Button type="submit" variant="primary">Apply filters</Button>
           <Button
