@@ -1,10 +1,12 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
-import { Search, User, Heart, ShoppingBag, X, Plus, Minus } from 'lucide-react';
+import { QueryClientContext } from '@tanstack/react-query';
+import { Search, User, Heart, ShoppingBag, X, Plus, Minus, Store, Users, FolderTree, Receipt, MessageSquare, LayoutDashboard } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Content';
 import { useWishlist } from '../../../features/discovery';
 import { useCartDrawer, cartActions, useCartDispatch, useCartSelector, type CartLine } from '../../../features/commerce';
+import type { AdminWorkspace } from '../../../features/admin/model';
 
 type Audience = 'customer' | 'supplier' | 'admin';
 const navigation = {
@@ -33,6 +35,32 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
   const wishlist = useWishlist();
   const cartDrawer = useCartDrawer();
   const { lines, dispatch } = useSafeCart();
+  const queryClient = useContext(QueryClientContext);
+
+  const adminWorkspace = useSyncExternalStore(
+    (callback) => (audience === 'admin' && queryClient ? queryClient.getQueryCache().subscribe(callback) : () => {}),
+    () => {
+      if (audience !== 'admin' || !queryClient) return undefined;
+      const entries = queryClient.getQueriesData<AdminWorkspace>({ queryKey: ['MOCK', 'admin'] });
+      for (const [, data] of entries) {
+        if (data?.access === 'allowed') return data;
+      }
+      return undefined;
+    }
+  );
+
+  const adminCounts = useMemo(() => {
+    if (!adminWorkspace || adminWorkspace.access !== 'allowed') return null;
+    const records = adminWorkspace.records;
+    return {
+      suppliers: records.filter((r) => r.kind === 'suppliers' && r.status === 'pending').length,
+      users: records.filter((r) => r.kind === 'users').length,
+      categories: records.filter((r) => r.kind === 'categories').length,
+      orders: records.filter((r) => r.kind === 'orders').length,
+      refunds: records.filter((r) => r.kind === 'refunds' && r.status === 'pending').length,
+      reviews: records.filter((r) => r.kind === 'reviews' && r.status === 'flagged').length,
+    };
+  }, [adminWorkspace]);
 
   const totalCartCount = lines.reduce((acc, line) => acc + line.quantity, 0);
   const cartSubtotal = totalCartCount * 38;
@@ -258,18 +286,6 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
                     {totalCartCount > 0 && <span className="nav-badge-pill">{totalCartCount}</span>}
                   </NavLink>
                   <NavLink
-                    to="/wishlist"
-                    aria-label="Wishlist"
-                    className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
-                    onClick={() => {
-                      setExpanded(false);
-                      document.getElementById('main')?.focus();
-                    }}
-                  >
-                    <span aria-hidden="true">WISHLIST</span>
-                    {wishlist.count > 0 && <span className="nav-badge-pill">{wishlist.count}</span>}
-                  </NavLink>
-                  <NavLink
                     to="/about"
                     aria-label="About Us"
                     className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
@@ -337,7 +353,8 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
           >
             <span className="shell__nav-label">Workspace</span>
             <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-              {config.homeLabel}
+              {audience === 'admin' && <LayoutDashboard size={16} aria-hidden="true" className="shell__nav-icon" />}
+              <span>{config.homeLabel}</span>
             </NavLink>
 
             {audience === 'supplier' && (
@@ -359,16 +376,21 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
 
             {audience === 'admin' && (
               <>
+                <span className="shell__nav-section-title">Marketplace Oversight</span>
                 {([
-                  ['/admin/suppliers', 'Suppliers'],
-                  ['/admin/users', 'Users'],
-                  ['/admin/categories', 'Categories'],
-                  ['/admin/orders', 'Orders'],
-                  ['/admin/refunds', 'Refund requests'],
-                  ['/admin/reviews', 'Feedback'],
-                ] as const).map(([to, label]) => (
+                  ['/admin/suppliers', 'Suppliers', Store, adminCounts?.suppliers],
+                  ['/admin/users', 'Users', Users, adminCounts?.users],
+                  ['/admin/categories', 'Categories', FolderTree, adminCounts?.categories],
+                  ['/admin/orders', 'Orders', ShoppingBag, adminCounts?.orders],
+                  ['/admin/refunds', 'Refund requests', Receipt, adminCounts?.refunds],
+                  ['/admin/reviews', 'Feedback', MessageSquare, adminCounts?.reviews],
+                ] as const).map(([to, label, Icon, count]) => (
                   <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>
-                    {label}
+                    <Icon size={16} aria-hidden="true" className="shell__nav-icon" />
+                    <span>{label}</span>
+                    {count !== undefined && count > 0 && (
+                      <span className="nav-badge-pill admin-nav-badge">{count}</span>
+                    )}
                   </NavLink>
                 ))}
               </>
