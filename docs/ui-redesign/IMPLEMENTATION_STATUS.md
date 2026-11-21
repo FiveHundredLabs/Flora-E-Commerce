@@ -1,6 +1,6 @@
 # Redesign implementation ledger
 
-Updated 2026-11-21. **Phases 00 and 01 complete; Phase 02 ready.** Route rows below still describe legacy feature screens unless their assigned redesign phase is complete. See [audit and migration plan](REPOSITORY_AUDIT.md), [Phase 00 verification](PHASE_00_VERIFICATION.md), and [Phase 01 foundation evidence](PHASE_01_FOUNDATION.md). Paths are relative to `frontend/src`; the canonical production route registry is `app/App.tsx`.
+Updated 2026-11-21. **Phases 00–02 complete; Phase 03 ready.** Route rows below still describe legacy feature content unless its assigned redesign phase is complete; public routes now share the completed Phase 02 shell. See [audit and migration plan](REPOSITORY_AUDIT.md), [Phase 00 verification](PHASE_00_VERIFICATION.md), [Phase 01 foundation evidence](PHASE_01_FOUNDATION.md), and [Phase 02 public-shell evidence](PHASE_02_PUBLIC_NAVIGATION.md). Paths are relative to `frontend/src`; the canonical production route registry is `app/App.tsx`.
 
 ## Access, integration and status keys
 
@@ -59,7 +59,8 @@ Updated 2026-11-21. **Phases 00 and 01 complete; Phase 02 ready.** Route rows be
 
 - 00: audit, component/route inventory, issue register, migration decisions and baseline evidence completed; no runtime edits.
 - 01: semantic tokens, shared primitives, public/dashboard frames, internal preview and responsive/keyboard/contrast checks completed. Evidence: `PHASE_01_FOUNDATION.md`.
-- 02–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
+- 02: public header, navigation, search entry, truthful footer, cart-count binding, metadata and mobile drawer completed. Evidence: `PHASE_02_PUBLIC_NAVIGATION.md`.
+- 03–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
 - 13: cross-route responsive/accessibility/performance polish pending.
 - 14: final regression/artifact verification pending; live release blocked by contracts/hosting.
 

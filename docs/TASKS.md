@@ -204,3 +204,9 @@ FE task acceptance or unblock FE-0701 live integrations.
   `ui-redesign/PHASE_01_FOUNDATION.md`. Existing feature pages
   retain legacy composition for their scheduled phases. Live API/auth/media/provider
   work remains blocked.
+- **UI-R02 — COMPLETE within public-shell scope:** truthful responsive header/footer,
+  existing-route navigation, fixture-backed category hierarchy, validated `/products?q=`
+  search, active states, metadata, Redux cart count and keyboard-safe mobile/cart drawers
+  delivered. The focused Chrome suite passed 10/10 across 320–1440px; the full suite's
+  only remaining known failure is the pre-existing admin fixture reload assertion.
+  Evidence and deferred contracts: `ui-redesign/PHASE_02_PUBLIC_NAVIGATION.md`.
