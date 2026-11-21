@@ -1,5 +1,11 @@
 # Flower & Flora — Frontend Agentic Starter Pack
 
+The Botanical Editorial redesign is tracked in
+[`docs/ui-redesign/IMPLEMENTATION_STATUS.md`](docs/ui-redesign/IMPLEMENTATION_STATUS.md).
+Phase 00 audits the current source, including changes beyond the historical phase
+reports below; see its [migration plan](docs/ui-redesign/REPOSITORY_AUDIT.md) and
+[verification evidence](docs/ui-redesign/PHASE_00_VERIFICATION.md). Phase 01 is pending.
+
 Spec-driven development workspace for **React 19 + Vite + TypeScript**, operated with **OpenAI Codex** and **Google Antigravity**.
 
 > This workspace includes a validated frontend/design-system foundation, mock discovery, in-memory multi-store commerce, a fictional supplier workspace, and an isolated admin demo for sample labels, categories and oversight notes. Live backend, authentication, payment and delivery integrations remain pending. See `docs/FE-0401_CUSTOMER_COMMERCE.md`, `docs/FE-0501_SUPPLIER.md`, `docs/FE-0601_ADMIN.md` and `docs/OPEN_DECISIONS.md` for scope and remaining approvals.

@@ -1,5 +1,11 @@
 # Flower & Flora Design System & Modern UX Specification
 
+> Historical design specification. For the redesign authorized on 2026-11-21,
+> `ui-redesign/DESIGN_SYSTEM.md` and `ui-redesign/CODEX_MASTER_PROMPT.md` supersede
+> conflicting visual and content directions below. Do not implement subscriptions,
+> fabricated social proof, prices, discounts or delivery guarantees from this legacy
+> reference. See `ui-redesign/REPOSITORY_AUDIT.md` for the migration boundaries.
+
 ## 1. Vision & Modern Architectural Philosophy
 
 Flower & Flora is a modern, high-end multi-supplier marketplace for luxury floristry, fresh bouquets, and botanical lifestyle products. This design specification translates the 5 reference screenshots from the **Florial** Shopify theme (`https://wpbingo-florial.myshopify.com/`) into an ultra-modern, production-quality frontend grounded in our approved **Botanical Green (Fresh & Natural)** palette.
