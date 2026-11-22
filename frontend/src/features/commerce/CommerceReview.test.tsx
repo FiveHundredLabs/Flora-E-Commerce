@@ -68,18 +68,19 @@ it('detaches old checkout navigation on store change but still reconciles its la
   }));
   const view = mount('/checkout?store=alpha', { ...service, place });
   const user = userEvent.setup();
-  await user.click(screen.getByRole('radio', { name: 'Delivery' }));
-  await user.selectOptions(screen.getByRole('combobox'), 'pickme');
+  expect(screen.getByRole('button', { name: 'Delivery unavailable' })).toBeDisabled();
+  expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
   await user.click(screen.getByRole('button', { name: 'Create sample order' }));
   act(() => view.navigate('/checkout?store=beta'));
-  expect(screen.getByRole('heading', { name: 'Beta Shop' })).toBeVisible();
-  expect(screen.getByRole('radio', { name: 'Store pickup' })).toBeChecked();
+  expect(screen.getByRole('heading', { name: /^Beta Shop$/ })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Pickup unavailable' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Delivery unavailable' })).toBeDisabled();
   expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Create sample order' })).toBeEnabled();
   await act(async () => { finish?.(); });
   await waitFor(() => expect(view.store.getState().cart.lines.map((line) => line.storeSlug)).toEqual(['beta']));
   await waitFor(() => expect(view.client.isMutating()).toBe(0));
-  expect(screen.getByRole('heading', { name: 'Beta Shop' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: /^Beta Shop$/ })).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'Sample order', level: 1 })).not.toBeInTheDocument();
 });
 

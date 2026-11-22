@@ -236,3 +236,11 @@ FE task acceptance or unblock FE-0701 live integrations.
   unit/component tests, production build and the six-width axe/overflow matrix
   passed. Evidence and contract blockers:
   `ui-redesign/PHASE_05_PRODUCT_EXPERIENCE.md`.
+- **UI-R06 — COMPLETE within local commerce-contract scope:** `/cart` now groups
+  lines by owning supplier with quantity/remove controls and one checkout action per
+  store; `/checkout?store=<slug>` persistently reviews only that store and preserves
+  other groups after acknowledgement. Missing price, currency, tax, stock, identity,
+  address, pickup, provider quote and PayHere contracts are explicitly unavailable,
+  not simulated. Typecheck, lint, 210 unit/component tests, production build, the
+  32-scenario six-width Chrome/axe matrix and the corrected critical multi-store flow
+  passed. Evidence and blockers: `ui-redesign/PHASE_06_CART_CHECKOUT.md`.
