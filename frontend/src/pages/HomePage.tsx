@@ -71,6 +71,7 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
 
   return <div className="editorial-home">
     <section className="editorial-hero" aria-labelledby="home-hero-title">
+      <div className="editorial-hero__image"><img src={heroImage} alt="Garden flowers and foliage arranged in a deep green ceramic vessel" width="1672" height="941" fetchPriority="high" /></div>
       <div className="editorial-hero__copy">
         <p className="editorial-kicker">A multi-supplier floral marketplace</p>
         <h1 id="home-hero-title">Flowers, thoughtfully gathered.</h1>
@@ -78,7 +79,7 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
         <div className="editorial-actions"><Link to="/products" className="button button--solid">Explore flowers</Link><Link to="/shops" className="button button--outline">Discover shops</Link></div>
         <p className="editorial-hero__note">Development preview — no live prices, purchases, payments or delivery quotes.</p>
       </div>
-      <div className="editorial-hero__image"><img src={heroImage} alt="Garden flowers and foliage arranged in a deep green ceramic vessel" width="1672" height="941" fetchPriority="high" /></div>
+      <a className="editorial-hero__continue" href="#home-categories-title">Continue to discover <span aria-hidden="true">↓</span></a>
     </section>
 
     <AsyncRegion title="Marketplace discoveries" state={catalog.isPending || (catalog.isFetching && !catalog.data) ? { status: 'loading' } : catalog.isError || !catalog.data ? { status: 'error', onRetry: () => { void catalog.refetch(); } } : catalog.data.products.length === 0 && catalog.data.stores.length === 0 ? { status: 'empty', message: 'The sample marketplace does not have catalog records yet.' } : { status: 'ready', children: <CatalogHome catalog={catalog.data} /> }} />

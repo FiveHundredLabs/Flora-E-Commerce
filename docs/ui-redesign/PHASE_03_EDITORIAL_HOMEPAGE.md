@@ -91,3 +91,20 @@ Rollup annotation positions inside Zod. Neither warning was introduced as a runt
 Phase 04 can begin against the existing typed discovery adapter and registered route model.
 It must preserve the explicit fixture labeling and must not reintroduce invented commerce
 facts through the legacy `ProductCard`.
+
+## Full-viewport hero follow-up — 2026-11-22
+
+- Reworked the first banner from a capped split card into a full-width photographic hero
+  that fills the visible viewport beneath the responsive public header.
+- Reused the approved local hero asset and its natural left-side negative space; no new
+  dependency, image, commercial claim or route was introduced.
+- Added responsive cream overlays and focal positioning for readable copy over the image,
+  corrected the narrow headline wrapping, and added a keyboard-accessible in-page
+  continuation link to the fixture-backed category section.
+- Added browser assertions for exact viewport width, minimum visible-screen height and the
+  continuation target. The homepage test setup now dismisses the separate cold-load intro
+  before measuring and capturing the homepage itself.
+- Follow-up validation: typecheck passed; lint passed; 223/223 unit and component tests
+  passed; production build passed; and the six-width homepage Chrome/axe matrix passed
+  8/8 at 320, 360, 390, 768, 1024 and 1440px, including forced colors, reduced motion and
+  200% body text. The existing Rollup annotation and large-chunk warnings remain unchanged.
