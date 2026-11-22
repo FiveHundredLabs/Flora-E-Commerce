@@ -27,7 +27,7 @@ for (const path of ['/', '/supplier', '/admin']) {
         await expect(menu).toBeFocused();
         await expect(nav).toBeHidden();
         await menu.click();
-        await nav.getByRole('link').first().click();
+        await nav.locator(`a[href]:not([href="${path}"])`).first().click();
         await expect(page.getByRole('main')).toBeFocused();
         await expect(nav).toBeHidden();
       } else {

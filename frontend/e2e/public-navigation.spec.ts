@@ -26,7 +26,7 @@ test('desktop navigation, category links, search, reset and no-results state use
   await navigation.getByText('Categories').hover();
   await navigation.getByRole('link', { name: 'Plants' }).click();
   await expect(page).toHaveURL(/\/products\?category=plants$/);
-  await expect(page.getByRole('link', { name: 'Plants' })).toHaveAttribute('aria-current', 'page');
+  await expect(navigation.getByRole('link', { name: 'Plants', exact: true })).toHaveAttribute('aria-current', 'page');
   const search = page.getByRole('search').getByRole('searchbox', { name: 'Search flowers and botanical products' });
   await search.fill('not-a-sample-product');
   await page.getByRole('search').getByRole('button', { name: 'Search', exact: true }).click();

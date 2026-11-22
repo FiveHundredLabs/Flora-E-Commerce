@@ -1,6 +1,6 @@
 # Redesign implementation ledger
 
-Updated 2026-11-21. **Phases 00–02 complete; Phase 03 ready.** Route rows below still describe legacy feature content unless its assigned redesign phase is complete; public routes now share the completed Phase 02 shell. See [audit and migration plan](REPOSITORY_AUDIT.md), [Phase 00 verification](PHASE_00_VERIFICATION.md), [Phase 01 foundation evidence](PHASE_01_FOUNDATION.md), and [Phase 02 public-shell evidence](PHASE_02_PUBLIC_NAVIGATION.md). Paths are relative to `frontend/src`; the canonical production route registry is `app/App.tsx`.
+Updated 2026-11-22. **Phases 00–03 complete; Phase 04 ready.** Route rows below still describe legacy feature content unless its assigned redesign phase is complete; public routes share the Phase 02 shell and `/` now uses the Phase 03 editorial composition. See [audit and migration plan](REPOSITORY_AUDIT.md), [Phase 00 verification](PHASE_00_VERIFICATION.md), [Phase 01 foundation evidence](PHASE_01_FOUNDATION.md), [Phase 02 public-shell evidence](PHASE_02_PUBLIC_NAVIGATION.md), and [Phase 03 homepage evidence](PHASE_03_EDITORIAL_HOMEPAGE.md). Paths are relative to `frontend/src`; the canonical production route registry is `app/App.tsx`.
 
 ## Access, integration and status keys
 
@@ -14,7 +14,7 @@ Updated 2026-11-21. **Phases 00–02 complete; Phase 03 ready.** Route rows belo
 
 | Route | Phase | Old component | API integration | New component | UX states | Tests | Screenshot status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| / | 03 | pages/HomePage.tsx | Static hardcoded fixtures | EditorialHome (planned) | Static; verify content/actions | Pages/App; foundation E2E | [360px](evidence/phase-00/home-360.png), [1440px](evidence/phase-00/home-1440.png): legacy baseline only |
+| / | 03 | pages/HomePage.tsx | D: useDiscovery | Editorial HomePage (implemented) | Loading/error/retry/empty/ready; truthful unavailable commerce fields | HomePage/App; editorial-homepage E2E | [320px](evidence/phase-03/editorial-home-320.png), [390px](evidence/phase-03/editorial-home-390.png), [768px](evidence/phase-03/editorial-home-768.png), [1024px](evidence/phase-03/editorial-home-1024.png), [1440px](evidence/phase-03/editorial-home-1440.png) |
 | /about | 03 ancillary | pages/AboutPage.tsx | Static; contact has no send API | AboutPage presentation (planned) | Contact validation/local submitted; no real send | Pages; add truthful-state E2E | Not captured; redesign pending |
 | /contact | 03 ancillary | pages/ContactPage.tsx | Static; contact has no send API | ContactPage presentation (planned) | Contact validation/local submitted; no real send | Pages; add truthful-state E2E | Not captured; redesign pending |
 | /shops | 04 | pages/DiscoveryPage.tsx → DiscoveryList (shops) | D: useDiscovery | Existing screen, new presentation | Loading/error/refresh/empty/missing; URL filters | Discovery/model; discovery + discovery-review E2E | Not captured; redesign pending |
@@ -60,7 +60,8 @@ Updated 2026-11-21. **Phases 00–02 complete; Phase 03 ready.** Route rows belo
 - 00: audit, component/route inventory, issue register, migration decisions and baseline evidence completed; no runtime edits.
 - 01: semantic tokens, shared primitives, public/dashboard frames, internal preview and responsive/keyboard/contrast checks completed. Evidence: `PHASE_01_FOUNDATION.md`.
 - 02: public header, navigation, search entry, truthful footer, cart-count binding, metadata and mobile drawer completed. Evidence: `PHASE_02_PUBLIC_NAVIGATION.md`.
-- 03–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
+- 03: editorial homepage, fixture-backed discovery sections, truthful commerce disclosures, responsive imagery and async states completed. Evidence: `PHASE_03_EDITORIAL_HOMEPAGE.md`. About/contact remain ancillary public-content work pending explicit phase scope.
+- 04–12: route migrations pending as assigned above; wishlist remains scheduled with customer work.
 - 13: cross-route responsive/accessibility/performance polish pending.
 - 14: final regression/artifact verification pending; live release blocked by contracts/hosting.
 

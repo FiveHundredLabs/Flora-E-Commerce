@@ -10,9 +10,9 @@ test('keyboard recovery and browser history announce route changes', async ({ pa
  await page.keyboard.press('Tab');
  await expect(page.getByRole('link', { name: 'Return home' })).toBeFocused();
  await page.keyboard.press('Enter');
- await expect(page.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
+ await expect(page.getByRole('heading', { name: 'Flowers, thoughtfully gathered.' })).toBeVisible();
  await expect(page.getByRole('main')).toBeFocused();
- await expect(page).toHaveTitle('Welcome to Flower & Flora | Flower & Flora');
+ await expect(page).toHaveTitle('Flower & Flora Marketplace | Flower & Flora');
  await page.goBack();
  await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible();
  await expect(page.getByRole('main')).toBeFocused();
@@ -45,7 +45,7 @@ test('home supports reduced motion and enlarged text at 320px', async ({ page })
  await page.emulateMedia({ reducedMotion: 'reduce' });
  await page.goto('/');
  await page.addStyleTag({ content: 'body { font-size: 200%; }' });
- await expect(page.getByRole('region', { name: 'Stores and products' })).toBeVisible();
+ await expect(page.getByRole('heading', { name: 'Flowers, thoughtfully gathered.' })).toBeVisible();
  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
  expect(results.violations).toEqual([]);

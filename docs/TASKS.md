@@ -210,3 +210,12 @@ FE task acceptance or unblock FE-0701 live integrations.
   delivered. The focused Chrome suite passed 10/10 across 320–1440px; the full suite's
   only remaining known failure is the pre-existing admin fixture reload assertion.
   Evidence and deferred contracts: `ui-redesign/PHASE_02_PUBLIC_NAVIGATION.md`.
+- **UI-R03 — COMPLETE within editorial-homepage scope:** `/` was replaced with a
+  responsive Botanical Editorial composition backed by the existing discovery query.
+  Categories, products and stores come from the development fixture; unavailable price,
+  stock, ratings, delivery and payment capabilities remain explicitly unavailable rather
+  than fabricated. Loading, empty, retryable error and ready states are covered, and three
+  local optimized editorial images replace homepage hotlinks. Typecheck, lint, 218
+  unit/component tests, build and the six-width accessibility/browser matrix passed.
+  Evidence, generated-asset provenance and remaining risks:
+  `ui-redesign/PHASE_03_EDITORIAL_HOMEPAGE.md`.

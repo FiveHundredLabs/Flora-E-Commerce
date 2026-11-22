@@ -11,7 +11,7 @@ test('missing preview assets return 404 instead of the SPA HTML fallback', async
 });
 
 test('CSP blocks native form submission without issuing a POST', async ({ page }) => {
-  await page.goto('/'); await expect(page.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
+  await page.goto('/'); await expect(page.getByRole('heading', { name: 'Flowers, thoughtfully gathered.' })).toBeVisible();
   const posts: string[] = []; page.on('request', (request) => { if (request.method() === 'POST') posts.push(request.url()); });
   const directive = await page.evaluate(() => new Promise<string>((resolve) => {
     document.addEventListener('securitypolicyviolation', (event) => { if (event.effectiveDirective === 'form-action') resolve(event.effectiveDirective); });
@@ -20,7 +20,7 @@ test('CSP blocks native form submission without issuing a POST', async ({ page }
   expect(directive).toBe('form-action'); expect(posts).toEqual([]);
   // A denied native navigation can leave Playwright's locator navigation wait pending.
   // Inspect the unchanged document directly after observing the actual CSP violation.
-  expect(await page.evaluate(() => document.querySelector('h1')?.textContent)).toBe('Welcome to Flower & Flora');
+  expect(await page.evaluate(() => document.querySelector('h1')?.textContent)).toBe('Flowers, thoughtfully gathered.');
 });
 
 test('preview refuses embedding from a document without its own CSP', async ({ page, baseURL }) => {
