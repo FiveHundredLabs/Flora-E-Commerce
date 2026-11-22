@@ -1,7 +1,7 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type KeyboardEvent, type ReactNode } from 'react';
 import { Link, NavLink } from 'react-router';
 import { QueryClientContext } from '@tanstack/react-query';
-import { FolderTree, LayoutDashboard, MessageSquare, Minus, Plus, Receipt, ShoppingBag, Store, Users, X } from 'lucide-react';
+import { Boxes, ClipboardList, FolderTree, LayoutDashboard, MessageSquare, Minus, PackageOpen, Plus, Receipt, ShoppingBag, Store, TrendingUp, UserRoundPlus, Users, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Content';
 import { useWishlist } from '../../../features/discovery';
@@ -116,8 +116,13 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
     <div className="shell__body">
       {workspace && <nav id={navigationId} className={`shell__nav ${expanded ? 'is-open' : ''}`} aria-label={`${config.title} navigation`} onKeyDown={(event) => { if (event.key === 'Escape' && expanded) { setExpanded(false); toggle.current?.focus(); } }}>
         <span className="shell__nav-label">Workspace</span>
-        <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>{audience === 'admin' && <LayoutDashboard size={16} aria-hidden="true" className="shell__nav-icon" />}<span>{config.homeLabel}</span></NavLink>
-        {audience === 'supplier' && ([['/supplier/register', 'Registration'], ['/supplier/profile', 'Store profile'], ['/supplier/products', 'Products'], ['/supplier/inventory', 'Inventory'], ['/supplier/orders', 'Orders'], ['/supplier/sales', 'Sales']] as const).map(([to, label]) => <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>{label}</NavLink>)}
+        <NavLink end to={config.home} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}>{workspace && <LayoutDashboard size={16} aria-hidden="true" className="shell__nav-icon" />}<span>{config.homeLabel}</span></NavLink>
+        {audience === 'supplier' && <>
+          <span className="shell__nav-section-title">Store setup</span>
+          {([['/supplier/register', 'Registration', UserRoundPlus], ['/supplier/profile', 'Store profile', Store]] as const).map(([to, label, Icon]) => <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}><Icon size={16} aria-hidden="true" className="shell__nav-icon" /><span>{label}</span></NavLink>)}
+          <span className="shell__nav-section-title">Operations</span>
+          {([['/supplier/products', 'Products', PackageOpen], ['/supplier/inventory', 'Inventory', Boxes], ['/supplier/orders', 'Orders', ClipboardList], ['/supplier/sales', 'Sales', TrendingUp]] as const).map(([to, label, Icon]) => <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}><Icon size={16} aria-hidden="true" className="shell__nav-icon" /><span>{label}</span></NavLink>)}
+        </>}
         {audience === 'admin' && <>
           <span className="shell__nav-section-title">Marketplace Oversight</span>
           {([['/admin/suppliers', 'Suppliers', Store, adminCounts?.suppliers], ['/admin/users', 'Users', Users, adminCounts?.users], ['/admin/categories', 'Categories', FolderTree, adminCounts?.categories], ['/admin/orders', 'Orders', ShoppingBag, adminCounts?.orders], ['/admin/refunds', 'Refund requests', Receipt, adminCounts?.refunds], ['/admin/reviews', 'Feedback', MessageSquare, adminCounts?.reviews]] as const).map(([to, label, Icon, count]) => <NavLink key={to} to={to} onClick={() => { setExpanded(false); document.getElementById('main')?.focus(); }}><Icon size={16} aria-hidden="true" className="shell__nav-icon" /><span>{label}</span>{count !== undefined && count > 0 && <span aria-hidden="true" className="nav-badge-pill admin-nav-badge">{count}</span>}</NavLink>)}

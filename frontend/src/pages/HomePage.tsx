@@ -14,7 +14,7 @@ function FixtureProduct({ product, store }: { product: Product; store?: Store })
   const visualKind = store?.categories[0] ?? 'bouquets';
   return <article className="editorial-product">
     <Link to={`/products/${product.slug}`} className="editorial-product__visual" aria-label={`View ${product.name}`}>
-      <Illustration category={visualKind} />
+      <Illustration category={visualKind} slug={product.slug} alt={product.name} />
     </Link>
     <div className="editorial-product__body">
       <span className="editorial-kicker">Sample catalog item</span>
@@ -27,7 +27,7 @@ function FixtureProduct({ product, store }: { product: Product; store?: Store })
 
 function FixtureStore({ store }: { store: Store }) {
   return <article className="editorial-store">
-    <div className="editorial-store__art"><Illustration category={store.categories[0] ?? 'bouquets'} /></div>
+    <div className="editorial-store__art"><Illustration category={store.categories[0] ?? 'bouquets'} slug={store.slug} alt={store.name} /></div>
     <div className="editorial-store__content">
       <p className="editorial-store__location"><MapPin size={15} aria-hidden="true" />{locationNames[store.location]}</p>
       <h3><Link to={`/shops/${store.slug}`}>{store.name}</Link></h3>

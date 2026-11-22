@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { AlertTriangle, Boxes, ClipboardList, PackageOpen, ShieldCheck, Store } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { z } from 'zod';
 import { AsyncRegion } from '../../shared/components/AsyncRegion';
@@ -33,8 +34,8 @@ function SupplierWorkspaceScreen({ screen, adapter }: { screen: SupplierScreenNa
     }
   // Instant retries may batch away the fetching transition; also observe settlement.
   }, [query.isFetching, query.isError, query.errorUpdatedAt]);
-  return <>
-    <div className="page-heading"><p className="eyebrow">Supplier demo</p><h1 ref={title} tabIndex={-1}>{titles[screen]}</h1><p>Explore store management with fictional data.</p></div>
+  return <div className="supplier-page">
+    <header className="supplier-page__header"><div><p className="supplier-kicker">Merchant workspace · local preview</p><h1 ref={title} tabIndex={-1}>{titles[screen]}</h1><p>Manage one fictional supplier store with the capabilities available in this session.</p></div><div className="supplier-page__identity"><Store size={20} aria-hidden="true" /><span>Single-store workspace</span><strong>No authenticated account</strong></div></header>
     <aside className="supplier-notice" aria-label="Sample supplier limitations"><Badge>Sample supplier · MOCK</Badge>
       <p>No account is created and nothing is published. All changes reset on refresh. Use fictional text only; do not enter personal information.</p>
     </aside>
@@ -50,30 +51,36 @@ function SupplierWorkspaceScreen({ screen, adapter }: { screen: SupplierScreenNa
     {screen === 'overview' && <><Button variant="secondary" onClick={() => setAboutOpen(true)}>About this workspace</Button>
       <Dialog open={aboutOpen} onClose={() => setAboutOpen(false)} title="About this workspace"
         description="This is a fictional supplier demo. Registration does not create an account or establish approval. Live authorization and integrations require approved contracts." /></>}
-  </>;
+  </div>;
 }
 
 function WorkspaceContent({ screen, data, adapter }: { screen: SupplierScreenName; data: AllowedWorkspace; adapter?: SupplierAdapter }) {
   const { productId } = useParams();
   const navigate = useNavigate();
   const version = { expectedRevision: data.revision };
-  if (screen === 'overview') return <>
-    <h3>{data.profile.name}</h3><p>{data.profile.description}</p>
-    <dl className="supplier-metrics"><div><dt>Sample products</dt><dd>{data.products.length}</dd></div><div><dt>Sample orders</dt><dd>{data.orders.length}</dd></div></dl>
-    <p><Link to="/supplier/register">Explore sample registration</Link></p><p><Link to="/supplier/products">Manage sample products</Link></p>
-    <p>Supplier approval and publishing policy are awaiting confirmation. This workspace grants no real permissions.</p>
-  </>;
+  if (screen === 'overview') {
+    const lowStock = data.products.flatMap((product) => product.variants).filter((variant) => variant.stock <= 3).length;
+    const actionableOrders = data.orders.filter((order) => order.canRecordNote).length;
+    return <div className="supplier-overview">
+      <section className="supplier-store-summary" aria-labelledby="supplier-store-title"><div><p className="supplier-kicker">Current fixture store</p><h2 id="supplier-store-title">{data.profile.name}</h2><p>{data.profile.description}</p></div><div className="supplier-status"><ShieldCheck size={19} aria-hidden="true" /><span>Workspace access</span><strong>Allowed by fixture</strong><small>Not an approval or authenticated role</small></div></section>
+      <dl className="supplier-metrics" aria-label="Current fixture counts"><div><dt><PackageOpen size={18} aria-hidden="true" /> Sample products</dt><dd><strong>{data.products.length}</strong><span>Unpublished records</span></dd></div><div><dt><ClipboardList size={18} aria-hidden="true" /> Sample orders</dt><dd><strong>{data.orders.length}</strong><span>Session fixtures</span></dd></div><div><dt><Boxes size={18} aria-hidden="true" /> Low sample counts</dt><dd><strong>{lowStock}</strong><span>Variants at 3 or fewer</span></dd></div></dl>
+      <section className="supplier-work-queue" aria-labelledby="work-queue-title"><div><p className="supplier-kicker">Practical queue</p><h2 id="work-queue-title">Items needing attention</h2></div><ul><li><AlertTriangle size={19} aria-hidden="true" /><div><strong>{lowStock} low-count {lowStock === 1 ? 'variant' : 'variants'}</strong><span>Derived only from sample stock counts.</span></div><Link to="/supplier/inventory">Review inventory</Link></li><li><ClipboardList size={19} aria-hidden="true" /><div><strong>{actionableOrders} editable order {actionableOrders === 1 ? 'note' : 'notes'}</strong><span>No status transition or provider booking.</span></div><Link to="/supplier/orders">Review orders</Link></li></ul></section>
+      <div className="supplier-overview__links"><Link to="/supplier/profile">Edit sample store profile</Link><Link to="/supplier/products">Manage sample products</Link><Link to="/supplier/register">Explore sample registration</Link></div>
+      <p className="supplier-boundary">Supplier approval and publishing policy are awaiting confirmation. These counts are not KPIs, sales totals or real operational permissions.</p>
+    </div>;
+  }
   if (screen === 'registration' || screen === 'profile') {
     const registration = screen === 'registration';
     const values = registration ? data.registration : data.profile;
-    return <>
-      <p>{registration ? 'Preview a separate fictional supplier application. No credentials, contact details, account creation or approval request are sent.' : 'Edit the fictional store profile. These changes do not update the public sample marketplace.'}</p>
-      {registration && data.registration && <p>A sample application is saved in this session. It has no real approval status.</p>}
+    return <div className="supplier-editor-layout"><section className="supplier-editor-copy"><p className="supplier-kicker">{registration ? 'Onboarding boundary' : 'Store identity'}</p><h2>{registration ? 'Application preview' : data.profile.name}</h2>
+      <p>{registration ? 'Preview a separate fictional supplier application. No credentials, contact details, account creation or approval request are sent.' : 'Edit the fictional store identity fields supported by the current fixture. Changes do not update the public marketplace.'}</p>
+      <ul><li>One supplier workspace represents one store.</li><li>Logo, cover, location, contact, categories and fulfilment settings are not connected.</li><li>Approval and publishing behavior remain undecided.</li></ul></section><section className="supplier-editor-card" aria-label={registration ? 'Sample application editor' : 'Sample profile editor'}>
+      {registration && data.registration && <p className="supplier-saved-note">A sample application is saved in this session. It has no real approval status.</p>}
       <SampleForm key={screen} adapter={adapter} schema={profileInput} fields={[
         { name: 'name', label: 'Sample store name', value: values?.name }, { name: 'description', label: 'Sample store description', value: values?.description },
       ]} command={(input) => ({ type: registration ? 'register' : 'profile', ...version, data: input })}
       label={registration ? 'Save sample application' : 'Save sample profile'} />
-    </>;
+      <p className="supplier-form-note">Inputs are validated locally, then acknowledged by the in-memory adapter. Refreshing resets changes.</p></section></div>;
   }
   if (screen === 'products') return <>
     <p><Link to="/supplier/products/new">Add sample product</Link></p>

@@ -253,3 +253,11 @@ FE task acceptance or unblock FE-0701 live integrations.
   production build, six-width Chrome/axe coverage, customer interactions and focused
   forced-colors feedback checks passed. Evidence and blockers:
   `ui-redesign/PHASE_07_CUSTOMER_ACCOUNT.md`.
+- **UI-R08 — COMPLETE within supplier-fixture foundation scope:** the supplier
+  workspace now has an operational desktop sidebar/mobile drawer, explicit one-store
+  identity, fixture-derived overview counts and attention queue, and redesigned
+  registration/profile editors using the existing Zod and revision-checked mutations.
+  No supplier account, approval status, media, location, contact, categories or
+  fulfilment setting was fabricated. Typecheck, lint, 223 tests, production build,
+  45 verified supplier browser scenarios and the six-width Chrome/axe foundation
+  matrix passed. Evidence and blockers: `ui-redesign/PHASE_08_SUPPLIER_WORKSPACE.md`.

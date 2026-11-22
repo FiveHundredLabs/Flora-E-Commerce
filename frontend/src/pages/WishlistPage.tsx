@@ -32,7 +32,7 @@ export function WishlistPage() {
     </section> : <>
       <ul className="wishlist-grid" aria-label="Saved products">
         {wishlist.items.map((item) => <li key={`${item.storeSlug}/${item.productSlug}`}>
-          <div className="wishlist-card__visual" aria-label="Product image unavailable"><Illustration category="bouquets" /></div>
+          <div className="wishlist-card__visual" aria-label={item.name}><Illustration category="bouquets" slug={item.productSlug} alt={item.name} /></div>
           <div className="wishlist-card__body"><p className="customer-eyebrow">Saved product</p><h2><Link to={`/products/${item.productSlug}`}>{item.name}</Link></h2>
             <p>From <Link to={`/shops/${item.storeSlug}`}>{item.storeSlug.replace(/-/g, ' ')}</Link></p>
             <p className="wishlist-card__unavailable">Price, stock and product options are not connected.</p>

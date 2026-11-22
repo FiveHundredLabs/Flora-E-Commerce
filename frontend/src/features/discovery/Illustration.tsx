@@ -1,12 +1,19 @@
+import { useState } from 'react';
 import type { categories } from './model';
+import { botanicalProducts, getStorePhoto } from './assets';
+
 type IllustrationKind = typeof categories[number];
 
 /**
- * Modern High-Resolution Photorealistic Botanical Vector Visual
- * Original decorative vector study, 100% offline, CSP-compliant.
+ * Botanical Visual Component:
+ * Displays verified high-resolution photography when available for products and stores,
+ * with automatic, graceful fallback to responsive SVG botanical vector graphics.
  */
 export function Illustration({
   category,
+  slug,
+  alt,
+  secondary = false,
   className = '',
 }: {
   category: IllustrationKind;
@@ -15,11 +22,44 @@ export function Illustration({
   secondary?: boolean;
   className?: string;
 }) {
+  const [hasError, setHasError] = useState(false);
+
+  let photoUrl: string | undefined;
+  let photoAlt: string | undefined;
+
+  if (slug && !hasError) {
+    const productPhoto = botanicalProducts[slug];
+    if (productPhoto) {
+      photoUrl = secondary && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary;
+      photoAlt = alt ?? productPhoto.alt;
+    } else {
+      const storePhoto = getStorePhoto(slug);
+      if (storePhoto) {
+        photoUrl = storePhoto.primary;
+        photoAlt = alt ?? storePhoto.alt;
+      }
+    }
+  }
+
+  if (photoUrl) {
+    return (
+      <img
+        src={photoUrl}
+        alt={photoAlt ?? `${category} botanical sample visual`}
+        className={`catalog-art catalog-photo catalog-photo--${category} ${className}`}
+        loading="lazy"
+        onError={() => setHasError(true)}
+      />
+    );
+  }
+
   return (
     <svg
       className={`catalog-art catalog-art--${category} ${className}`}
       viewBox="0 0 320 240"
-      aria-hidden="true"
+      aria-hidden={alt ? undefined : 'true'}
+      aria-label={alt}
+      role={alt ? 'img' : undefined}
       focusable="false"
     >
       <defs>
