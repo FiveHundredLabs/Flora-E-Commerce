@@ -12,7 +12,7 @@ test('feedback confirmation describes only the saved version, not later edits', 
   await input.fill('Unsaved fictional changes');
   await expect(page.getByText('Sample feedback saved for this session only.')).toHaveCount(0);
   await page.getByRole('link', { name: 'Back to sample orders' }).click();
-  await page.getByRole('link', { name: 'sample-delivered', exact: true }).click();
+  await page.getByRole('link', { name: 'Fern House', exact: true }).click();
   await expect(input).toHaveValue('Saved fictional feedback');
 });
 

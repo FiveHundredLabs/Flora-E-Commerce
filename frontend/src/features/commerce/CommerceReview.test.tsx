@@ -130,7 +130,7 @@ it.each(['/account/orders', '/account/orders/delivered'])('distinguishes pending
   expect(screen.queryByText('private read details')).not.toBeInTheDocument();
   await userEvent.setup().click(screen.getByRole('button', { name: 'Try again' }));
   if (path.endsWith('delivered')) await screen.findByRole('textbox', { name: 'Sample feedback' });
-  else await screen.findByRole('link', { name: 'delivered' });
+  else await screen.findByRole('link', { name: 'Alpha Shop' });
   expect(orders).toHaveBeenCalledTimes(2);
 });
 
@@ -154,14 +154,14 @@ it.each([
   const service = createMockCommerceAdapter([]);
   mount('/account/orders', { ...service, orders: async () => value });
   expect(await screen.findByRole('alert')).toHaveTextContent('We couldn’t load');
-  expect(screen.queryByRole('link', { name: 'delivered' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Alpha Shop' })).not.toBeInTheDocument();
 });
 
 it.each([
   { delivered: false, canReview: true }, { delivered: true, canReview: false },
 ])('keeps feedback unavailable for delivered=$delivered capability=$canReview', async (flags) => {
   mount('/account/orders/delivered', createMockCommerceAdapter([{ ...delivered, ...flags }]));
-  expect(await screen.findByText(/Feedback is not available for this sample order/)).toBeVisible();
+  expect(await screen.findByText(/Feedback is unavailable/)).toBeVisible();
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
 });
 

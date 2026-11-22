@@ -24,9 +24,9 @@ describe('New Brand & Discovery Pages', () => {
           </CartProvider>
         </MemoryRouter>
       );
-      expect(screen.getByRole('heading', { name: /My Wishlist \(0\)/ })).toBeVisible();
-      expect(screen.getByText('Your wishlist is currently empty')).toBeVisible();
-      expect(screen.getByRole('link', { name: 'Explore Floral Catalog' })).toHaveAttribute('href', '/products');
+      expect(screen.getByRole('heading', { name: 'Saved flowers' })).toBeVisible();
+      expect(screen.getByText('Nothing saved yet')).toBeVisible();
+      expect(screen.getByRole('link', { name: 'Explore products' })).toHaveAttribute('href', '/products');
     });
 
     it('renders saved items from local storage, removes an item, and adds to cart', async () => {
@@ -48,17 +48,16 @@ describe('New Brand & Discovery Pages', () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByRole('heading', { name: /My Wishlist \(1\)/ })).toBeVisible();
+      expect(screen.getByText('1 item saved in this browser.')).toBeVisible();
       expect(screen.getByRole('link', { name: 'Morning Bouquet' })).toBeVisible();
-      expect(screen.getByText('$38.00')).toBeVisible();
-      expect(screen.getByText('In Stock')).toBeVisible();
+      expect(screen.getByText('Price, stock and product options are not connected.')).toBeVisible();
 
       // Add to cart
-      await user.click(screen.getByRole('button', { name: 'Add to Cart' }));
+      await user.click(screen.getByRole('button', { name: 'Add to sample cart' }));
 
       // Remove from wishlist
       await user.click(screen.getByRole('button', { name: 'Remove Morning Bouquet from wishlist' }));
-      expect(screen.getByText('Your wishlist is currently empty')).toBeVisible();
+      expect(screen.getByText('Nothing saved yet')).toBeVisible();
     });
 
     it('recovers gracefully when localStorage contains corrupted or non-array JSON', () => {
@@ -70,7 +69,7 @@ describe('New Brand & Discovery Pages', () => {
           </CartProvider>
         </MemoryRouter>
       );
-      expect(screen.getByText('Your wishlist is currently empty')).toBeVisible();
+      expect(screen.getByText('Nothing saved yet')).toBeVisible();
     });
   });
 

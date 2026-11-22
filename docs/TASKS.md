@@ -244,3 +244,12 @@ FE task acceptance or unblock FE-0701 live integrations.
   not simulated. Typecheck, lint, 210 unit/component tests, production build, the
   32-scenario six-width Chrome/axe matrix and the corrected critical multi-store flow
   passed. Evidence and blockers: `ui-redesign/PHASE_06_CART_CHECKOUT.md`.
+- **UI-R07 — COMPLETE within browser/session customer scope:** `/wishlist`,
+  `/account/orders` and `/account/orders/:orderId` now provide responsive Botanical
+  Editorial saved-item, order-history, receipt and capability-gated text-feedback
+  experiences. Fabricated wishlist price/stock claims were removed. Authentication,
+  profile/settings, dates, totals, event timelines, tracking and refunds remain clearly
+  unavailable because no approved contracts or routes exist. Typecheck, lint, 210 tests,
+  production build, six-width Chrome/axe coverage, customer interactions and focused
+  forced-colors feedback checks passed. Evidence and blockers:
+  `ui-redesign/PHASE_07_CUSTOMER_ACCOUNT.md`.

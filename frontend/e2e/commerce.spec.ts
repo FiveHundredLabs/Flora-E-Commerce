@@ -52,7 +52,7 @@ test('sample delivered feedback validates, saves locally and ignores payment que
   await page.getByRole('button', { name: 'Save sample feedback' }).click();
   await expect(page.getByText('Sample feedback saved for this session only.')).toBeVisible();
   await page.getByRole('link', { name: 'Back to sample orders' }).click();
-  await page.getByRole('link', { name: 'sample-delivered', exact: true }).click();
+  await page.getByRole('link', { name: 'Fern House', exact: true }).click();
   await expect(comment).toHaveValue('A fictional review for the sample session.');
 });
 
