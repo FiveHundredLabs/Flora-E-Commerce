@@ -8,11 +8,13 @@ export function AddSampleProduct({
   storeSlug,
   name,
   quantityToAdd = 1,
+  showDirectCheckout = true,
 }: {
   productSlug: string;
   storeSlug: string;
   name: string;
   quantityToAdd?: number;
+  showDirectCheckout?: boolean;
 }) {
   const dispatch = useCartDispatch();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export function AddSampleProduct({
         >
           Add to sample cart
         </Button>
-        <Button
+        {showDirectCheckout && <Button
           type="button"
           variant="secondary"
           className="pdp-buy-now-btn"
@@ -61,7 +63,7 @@ export function AddSampleProduct({
           onClick={handleDirectCheckout}
         >
           Direct shop checkout
-        </Button>
+        </Button>}
       </div>
       <p>Sample cart only. No stock reservation or price is implied.</p>
       {currentQuantity >= 99 && <p>Sample quantity limit reached (99).</p>}

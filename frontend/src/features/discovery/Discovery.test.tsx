@@ -9,11 +9,11 @@ import type { Catalog, Kind } from './model';
 
 const clients: QueryClient[] = [];
 afterEach(() => { for (const client of clients.splice(0)) client.clear(); });
-function mount(kind: Kind, entry = `/${kind}`, detail = false, adapter: DiscoveryAdapter = mockDiscoveryAdapter) {
+function mount(kind: Kind, entry = `/${kind}`, detail = false, adapter: DiscoveryAdapter = mockDiscoveryAdapter, renderProductAction?: Parameters<typeof DiscoveryDetail>[0]['renderProductAction']) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
   clients.push(client);
   const view = render(<MemoryRouter initialEntries={[entry]}><QueryClientProvider client={client}>
-    <Routes><Route path={detail ? `/${kind}/:slug` : `/${kind}`} element={detail ? <DiscoveryDetail kind={kind} adapter={adapter} /> : <DiscoveryList kind={kind} adapter={adapter} />} /></Routes>
+    <Routes><Route path={detail ? `/${kind}/:slug` : `/${kind}`} element={detail ? <DiscoveryDetail kind={kind} adapter={adapter} renderProductAction={renderProductAction} /> : <DiscoveryList kind={kind} adapter={adapter} />} /></Routes>
   </QueryClientProvider></MemoryRouter>);
   return { ...view, client };
 }
@@ -75,10 +75,22 @@ it('renders a truthful shop profile and only products owned by that shop', async
 it('keeps the Phase 05 product route compatible without fabricated commerce facts', async () => {
   mount('products', '/products/little-fern', true);
   expect(await screen.findByRole('heading', { name: 'Little Fern', level: 1 })).toBeVisible();
-  expect(screen.getByRole('link', { name: 'Fern House' })).toHaveAttribute('href', '/shops/fern-house');
-  expect(screen.getByText('Price unavailable')).toBeVisible();
-  expect(screen.getByText('Availability not connected')).toBeVisible();
+  expect(screen.getAllByRole('link', { name: 'Fern House' }).every(link => link.getAttribute('href') === '/shops/fern-house')).toBe(true);
+  expect(screen.getAllByText('Price unavailable')[0]).toBeVisible();
+  expect(screen.getAllByText('Availability not connected')[0]).toBeVisible();
   expect(screen.queryByRole('button', { name: /cart|buy/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument();
+  expect(screen.getByText(/Variants, SKU, wrapping, add-ons, inventory/)).toBeVisible();
+});
+
+it('passes the selected sample quantity to the supported cart action and shows only same-store related items', async () => {
+  const user = userEvent.setup();
+  mount('products', '/products/morning-bouquet', true, mockDiscoveryAdapter, (product, quantity) => <output aria-label="Cart reference">{product.storeSlug}/{product.slug}/{quantity}</output>);
+  expect(await screen.findByLabelText('Cart reference')).toHaveTextContent('willow-stem/morning-bouquet/1');
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Sample quantity' }), '3');
+  expect(screen.getByLabelText('Cart reference')).toHaveTextContent('willow-stem/morning-bouquet/3');
+  expect(screen.getByRole('link', { name: 'Gathered Stems' })).toBeVisible();
+  expect(screen.queryByRole('link', { name: 'Little Fern' })).not.toBeInTheDocument();
 });
 
 it.each(['shops', 'products'] as const)('renders a genuine empty %s catalog', async (kind) => {

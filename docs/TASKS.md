@@ -228,3 +228,11 @@ FE task acceptance or unblock FE-0701 live integrations.
   evidence and environment notes are recorded in
   `ui-redesign/PHASE_04_SHOP_DISCOVERY.md`. Live APIs, pagination, supplier media,
   ratings, stock, fulfilment and contact data remain blocked on approved contracts.
+- **UI-R05 — COMPLETE within product/cart-fixture scope:** `/products/:slug` now
+  provides a responsive luxury product composition, supplier breadcrumbs, truthful
+  unavailable price/options, bounded sample quantity, exact store/product cart
+  ownership and same-store related products. No variants, inventory, SKU, add-ons,
+  fulfilment or server rejection behavior was fabricated. Typecheck, lint, 210
+  unit/component tests, production build and the six-width axe/overflow matrix
+  passed. Evidence and contract blockers:
+  `ui-redesign/PHASE_05_PRODUCT_EXPERIENCE.md`.

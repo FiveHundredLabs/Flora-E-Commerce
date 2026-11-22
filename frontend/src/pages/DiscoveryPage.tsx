@@ -12,6 +12,7 @@ export function DiscoveryPage({ kind, detail = false }: { kind: 'shops' | 'produ
           storeSlug={product.storeSlug}
           name={product.name}
           quantityToAdd={qty}
+          showDirectCheckout={false}
         />
       )}
     />
