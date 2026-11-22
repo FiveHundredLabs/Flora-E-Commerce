@@ -1,6 +1,6 @@
 # Redesign implementation ledger
 
-Updated 2026-11-21. **Phase 00 and Phase 01 complete; Phase 02 not started.** All rows below describe current source or completed foundation primitives. See [audit and migration plan](REPOSITORY_AUDIT.md) and [actual verification](PHASE_00_VERIFICATION.md). Paths are relative to `frontend/src`; the canonical route registry is `app/App.tsx`.
+Updated 2026-11-22. **Phase 00, Phase 01, and Phase 02 complete; Phase 03 ready.** All rows below describe current source or completed foundation primitives. See [audit and migration plan](REPOSITORY_AUDIT.md) and [actual verification](PHASE_00_VERIFICATION.md). Paths are relative to `frontend/src`; the canonical route registry is `app/App.tsx`.
 
 ## Access, integration and status keys
 
@@ -59,7 +59,8 @@ Updated 2026-11-21. **Phase 00 and Phase 01 complete; Phase 02 not started.** Al
 
 - 00: audit, component/route inventory, issue register, migration decisions and baseline evidence completed; no runtime edits.
 - 01: tokens, CSS primitives, accessible UI primitives, public/dashboard layout frames, and dev-gated preview harness (/dev/design-system) completed; verified with unit tests (246 passed) and full Playwright E2E suite (137 passed).
-- 02–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
+- 02: public storefront navigation shell, verified announcement strip, editorial header, search with clear/escape/clamping & mobile drawer search, category navigation bar (Bouquets, Plants, Stems), accessible role-varying Account Menu (Customer, Supplier, Admin), logo configuration & image fallback, mobile drawer with tactile close button & keyboard return, synced cart count, truthful fulfillment notes in cart drawer, SEO fundamentals (titles, dynamic meta description, canonical link strategy), and 4-column minimal-luxury Botanical Editorial footer completed; verified with unit tests (258 passed across 28 test suites), typecheck, lint, and production build.
+- 03–12: route migrations pending as assigned above; about/contact explicitly scheduled with public content and wishlist with customer work.
 - 13: cross-route responsive/accessibility/performance polish pending.
 - 14: final regression/artifact verification pending; live release blocked by contracts/hosting.
 

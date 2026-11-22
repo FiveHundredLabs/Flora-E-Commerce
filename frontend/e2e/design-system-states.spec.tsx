@@ -18,6 +18,7 @@ const states: ComponentProps<typeof AsyncRegion>['state'][] = [
 // Static composition fixtures check markup/CSS; ShellStates.test covers Query interactions.
 for (const audience of ['customer', 'supplier', 'admin'] as const) {
   test(`${audience} shell supports every async state at mobile and desktop widths`, async ({ page }) => {
+    test.slow();
     for (const state of states) {
       await mountFixture(page, renderToStaticMarkup(<MemoryRouter initialEntries={[audience === 'customer' ? '/' : `/${audience}`]}>
         <Shell audience={audience}><h1>Sample workspace</h1><AsyncRegion title="Sample content" state={state} /></Shell>

@@ -7,6 +7,7 @@ export type PublicShellProps = {
   announcement?: ReactNode;
   brandName?: string;
   brandTagline?: string;
+  logoSrc?: string;
   navigation?: ReactNode;
   actions?: ReactNode;
   search?: ReactNode;
@@ -20,6 +21,7 @@ export function PublicShell({
   announcement,
   brandName = 'Flower & Flora',
   brandTagline = 'Botanical Studio & Marketplace',
+  logoSrc,
   navigation,
   actions,
   search,
@@ -29,6 +31,7 @@ export function PublicShell({
   className = '',
 }: PublicShellProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -80,8 +83,19 @@ export function PublicShell({
             </button>
 
             <Link to="/" className="public-shell__logo" aria-label={`${brandName} home`}>
-              <span className="public-shell__logo-text">{brandName}</span>
-              <span className="public-shell__logo-dot" aria-hidden="true">.</span>
+              {logoSrc && !logoError ? (
+                <img
+                  src={logoSrc}
+                  alt={brandName}
+                  className="public-shell__logo-img"
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <>
+                  <span className="public-shell__logo-text">{brandName}</span>
+                  <span className="public-shell__logo-dot" aria-hidden="true">.</span>
+                </>
+              )}
             </Link>
             {brandTagline && (
               <span className="public-shell__tagline" aria-hidden="true">
@@ -150,15 +164,19 @@ export function PublicShell({
               <div className="public-shell__footer-col">
                 <h4 className="public-shell__footer-heading">Marketplace</h4>
                 <ul className="public-shell__footer-links">
+                  <li><Link to="/products">Shop Flowers</Link></li>
                   <li><Link to="/shops">Browse Florists</Link></li>
-                  <li><Link to="/products">Browse Bouquets</Link></li>
-                  <li><Link to="/about">About Us</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
+                  <li><Link to="/products?category=bouquets">Bouquets</Link></li>
+                  <li><Link to="/products?category=plants">Plants</Link></li>
+                  <li><Link to="/products?category=stems">Stems</Link></li>
                 </ul>
               </div>
               <div className="public-shell__footer-col">
-                <h4 className="public-shell__footer-heading">Portals</h4>
+                <h4 className="public-shell__footer-heading">Care &amp; Portals</h4>
                 <ul className="public-shell__footer-links">
+                  <li><Link to="/account/orders">Track Orders</Link></li>
+                  <li><Link to="/about">About Us</Link></li>
+                  <li><Link to="/contact">Contact</Link></li>
                   <li><Link to="/supplier">Supplier Workspace</Link></li>
                   <li><Link to="/admin">Admin Workspace</Link></li>
                 </ul>
