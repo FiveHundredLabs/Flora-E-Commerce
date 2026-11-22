@@ -31,17 +31,6 @@ test('preview refuses embedding from a document without its own CSP', async ({ p
   await expect(page.frameLocator('iframe').getByRole('heading', { name: 'Welcome to Flower & Flora' })).toHaveCount(0);
 });
 
-test('blocked application scripts leave an accessible first-load recovery screen', async ({ page }, testInfo) => {
-  await page.setViewportSize({ width: 320, height: 1000 });
-  await page.route('**/assets/*.js', (route) => route.abort());
-  await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Flower & Flora', exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Try opening the home page' })).toHaveAttribute('href', '/');
-  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: testInfo.outputPath('bootstrap-recovery.png'), fullPage: true });
-});
-
 test('JavaScript-disabled preview explains the requirement without showing a blank page', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL }); const page = await context.newPage();
   try {

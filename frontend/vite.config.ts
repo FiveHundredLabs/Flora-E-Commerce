@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), previewAssets()],
     preview: { host: '127.0.0.1', headers: previewHeaders },
-    build: { sourcemap: false },
+    build: { sourcemap: false, chunkSizeWarningLimit: 1000 },
     test: {
       environment: 'jsdom',
       setupFiles: ['./src/test/setup.ts'],

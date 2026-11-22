@@ -1,0 +1,21 @@
+/* Keep the very first frame intentional while the emblem begins to unfold. */
+.intro-leaf {
+  opacity: .18;
+  transform: scale(.12, .32);
+}
+
+.intro-copy h1 {
+  opacity: .1;
+}
+
+@keyframes introLeafLeft {
+  0% { opacity: .18; transform: rotate(22deg) scale(.1, .35); }
+  65% { opacity: 1; transform: rotate(-3deg) scale(1.03); }
+  100% { opacity: .94; transform: rotate(0) scale(1); }
+}
+
+@keyframes introLeafRight {
+  0% { opacity: .18; transform: rotate(-22deg) scale(.1, .35); }
+  65% { opacity: 1; transform: rotate(3deg) scale(1.03); }
+  100% { opacity: .9; transform: rotate(0) scale(1); }
+}
