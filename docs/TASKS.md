@@ -219,3 +219,12 @@ FE task acceptance or unblock FE-0701 live integrations.
   unit/component tests, build and the six-width accessibility/browser matrix passed.
   Evidence, generated-asset provenance and remaining risks:
   `ui-redesign/PHASE_03_EDITORIAL_HOMEPAGE.md`.
+- **UI-R04 — COMPLETE within discovery-fixture scope:** `/shops`, `/shops/:slug`
+  and `/products` now use responsive Botanical Editorial discovery layouts with
+  URL-driven shop category/location and product store/location filtering. Product
+  categories were removed, unsupported commerce/store facts remain explicitly
+  unavailable, and async/cancellation/error/empty behavior remains Query-owned.
+  Typecheck, lint, 209 unit/component tests and the production build passed; browser
+  evidence and environment notes are recorded in
+  `ui-redesign/PHASE_04_SHOP_DISCOVERY.md`. Live APIs, pagination, supplier media,
+  ratings, stock, fulfilment and contact data remain blocked on approved contracts.

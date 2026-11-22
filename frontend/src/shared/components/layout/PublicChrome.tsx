@@ -100,13 +100,13 @@ export function PublicHeader({ cartCount, wishlistCount, cartOpen, onCartToggle,
 
   const primaryLinks = (mobile = false) => <>
     <NavLink end to="/" className="public-nav__link public-nav__home">Home</NavLink>
-    <NavLink to="/products" aria-label="Products" className="public-nav__link">Shop flowers</NavLink>
-    <NavLink to="/shops" aria-label="Shops" className="public-nav__link">Explore shops</NavLink>
+    <NavLink to="/products" className="public-nav__link">Products</NavLink>
+    <NavLink to="/shops" className="public-nav__link">Shops</NavLink>
     <div className="public-nav__categories" aria-label="Shop by category">
       <span>Categories</span>
       <div>{categories.map((category) => {
-        const active = location.pathname === '/products' && new URLSearchParams(location.search).get('category') === category;
-        return <Link key={category} to={`/products?category=${category}`} aria-current={active ? 'page' : undefined} onClick={() => mobile && closeMenu()}>{categoryNames[category]}</Link>;
+        const active = location.pathname === '/shops' && new URLSearchParams(location.search).get('category') === category;
+        return <Link key={category} to={`/shops?category=${category}`} aria-current={active ? 'page' : undefined} onClick={() => mobile && closeMenu()}>{categoryNames[category]}</Link>;
       })}</div>
     </div>
     <NavLink to="/about" className="public-nav__link">About</NavLink>

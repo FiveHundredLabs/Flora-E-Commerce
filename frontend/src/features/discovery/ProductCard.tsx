@@ -4,7 +4,7 @@ import { Eye, Heart, ShoppingBag, Plus, Minus, ArrowUpRight } from 'lucide-react
 import { Badge } from '../../shared/components/ui/Content';
 import { Illustration } from './Illustration';
 import { QuickViewModal } from './QuickViewModal';
-import { categoryNames, type Product } from './model';
+import { type Product } from './model';
 import { useWishlist } from './wishlist';
 import { cartActions, useCartDispatch, openCartDrawer } from '../commerce';
 
@@ -52,7 +52,7 @@ export function ProductCard({
       productSlug: product.slug,
       storeSlug: product.storeSlug,
       name: product.name,
-      category: product.category,
+      category: 'catalog-item',
     });
   };
 
@@ -68,10 +68,10 @@ export function ProductCard({
         <div className="product-card-thumb">
           <Link to={productUrl} className="product-image-link" tabIndex={-1} aria-hidden="true">
             <div className="product-image-primary">
-              <Illustration category={product.category} slug={product.slug} />
+              <Illustration category="bouquets" slug={product.slug} />
             </div>
             <div className="product-image-secondary" aria-hidden="true">
-              <Illustration category={product.category} slug={product.slug} secondary />
+              <Illustration category="bouquets" slug={product.slug} secondary />
             </div>
           </Link>
 
@@ -132,7 +132,7 @@ export function ProductCard({
 
         <div className="product-card-body">
           <div className="product-category-row">
-            <span className="product-category-badge">{categoryNames[product.category]}</span>
+            <span className="product-category-badge">Sample catalog item</span>
             {storeName && (
               <span className="product-store-attribution">
                 Crafted by: <Link to={storeUrl} className="store-link" aria-label={`View ${storeName} shop`}>{storeName}</Link>

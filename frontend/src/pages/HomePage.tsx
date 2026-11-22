@@ -11,12 +11,13 @@ const storyImage = '/assets/editorial-home-story.webp';
 const campaignImage = '/assets/editorial-home-campaign.webp';
 
 function FixtureProduct({ product, store }: { product: Product; store?: Store }) {
+  const visualKind = store?.categories[0] ?? 'bouquets';
   return <article className="editorial-product">
     <Link to={`/products/${product.slug}`} className="editorial-product__visual" aria-label={`View ${product.name}`}>
-      <Illustration category={product.category} />
+      <Illustration category={visualKind} />
     </Link>
     <div className="editorial-product__body">
-      <span className="editorial-kicker">{categoryNames[product.category]}</span>
+      <span className="editorial-kicker">Sample catalog item</span>
       <h3><Link to={`/products/${product.slug}`}>{product.name}</Link></h3>
       {store && <Link className="editorial-product__store" to={`/shops/${store.slug}`}>{store.name}</Link>}
       <div className="editorial-product__meta"><Price /><StatusTag>Availability not connected</StatusTag></div>
@@ -45,7 +46,7 @@ function CatalogHome({ catalog }: { catalog: Catalog }) {
   return <>
     <section className="editorial-section editorial-categories" aria-labelledby="home-categories-title">
       <header className="editorial-section__header"><div><p className="editorial-kicker">Browse the sample marketplace</p><h2 id="home-categories-title">Begin with an inspiration</h2></div><p>These groupings come from the current supplier-store fixture. They are not a finalized production taxonomy.</p></header>
-      {storeCategories.length > 0 ? <div className="editorial-category-grid">{storeCategories.map((category, index) => <Link key={category} to={`/products?category=${category}`} className="editorial-category"><span aria-hidden="true">0{index + 1}</span><strong>{categoryNames[category]}</strong><small>View sample products</small></Link>)}</div> : <div className="editorial-empty"><h3>Categories are not available yet.</h3><p>Explore the available supplier stores instead.</p><Link to="/shops" className="button button--outline">Explore shops</Link></div>}
+      {storeCategories.length > 0 ? <div className="editorial-category-grid">{storeCategories.map((category, index) => <Link key={category} to={`/shops?category=${category}`} className="editorial-category"><span aria-hidden="true">0{index + 1}</span><strong>{categoryNames[category]}</strong><small>View matching stores</small></Link>)}</div> : <div className="editorial-empty"><h3>Categories are not available yet.</h3><p>Explore the available supplier stores instead.</p><Link to="/shops" className="button button--outline">Explore shops</Link></div>}
     </section>
 
     <section className="editorial-section editorial-featured" aria-labelledby="home-featured-title">

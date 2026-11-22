@@ -1,4 +1,5 @@
-import type { Product } from './model';
+import type { categories } from './model';
+type IllustrationKind = typeof categories[number];
 
 /**
  * Modern High-Resolution Photorealistic Botanical Vector Visual
@@ -8,7 +9,7 @@ export function Illustration({
   category,
   className = '',
 }: {
-  category: Product['category'];
+  category: IllustrationKind;
   slug?: string;
   alt?: string;
   secondary?: boolean;

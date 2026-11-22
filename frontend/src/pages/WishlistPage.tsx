@@ -6,7 +6,6 @@ import { Button } from '../shared/components/ui/Button';
 import { useWishlist } from '../features/discovery/wishlist';
 import { Illustration } from '../features/discovery/Illustration';
 import { cartActions, useCartDispatch, openCartDrawer } from '../features/commerce';
-import type { Product } from '../features/discovery/model';
 
 export function WishlistPage() {
   const wishlist = useWishlist();
@@ -81,7 +80,7 @@ export function WishlistPage() {
                     </td>
                     <td className="col-thumb">
                       <Link to={`/products/${item.productSlug}`} className="wishlist-thumb-link">
-                        <Illustration category={(item.category as Product['category']) ?? 'bouquets'} />
+                        <Illustration category="bouquets" />
                       </Link>
                     </td>
                     <td className="col-name">

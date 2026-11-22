@@ -25,13 +25,13 @@ test('desktop navigation, category links, search, reset and no-results state use
   await expect(navigation.getByRole('link', { name: 'Shops' })).toHaveAttribute('href', '/shops');
   await navigation.getByText('Categories').hover();
   await navigation.getByRole('link', { name: 'Plants' }).click();
-  await expect(page).toHaveURL(/\/products\?category=plants$/);
+  await expect(page).toHaveURL(/\/shops\?category=plants$/);
   await expect(navigation.getByRole('link', { name: 'Plants', exact: true })).toHaveAttribute('aria-current', 'page');
   const search = page.getByRole('search').getByRole('searchbox', { name: 'Search flowers and botanical products' });
   await search.fill('not-a-sample-product');
   await page.getByRole('search').getByRole('button', { name: 'Search', exact: true }).click();
   await expect(page).toHaveURL(/q=not-a-sample-product/);
-  await expect(page.getByText('No matches for your search filters.')).toBeVisible();
+  await expect(page.getByText(/No products match/)).toBeVisible();
   await page.getByRole('search').getByRole('button', { name: 'Clear search' }).click();
   await expect(page).toHaveURL(/\/products$/);
   await expect(search).toHaveValue('');

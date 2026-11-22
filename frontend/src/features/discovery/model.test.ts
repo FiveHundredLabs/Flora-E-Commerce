@@ -8,6 +8,11 @@ describe('provisional discovery URL rules', () => {
     expect(readFilters(writeFilters(values))).toEqual({ filters: values, invalid: false });
     expect(writeFilters(defaultFilters).toString()).toBe('');
   });
+  it('accepts shop categories but rejects them on product routes', () => {
+    const params = new URLSearchParams('category=plants');
+    expect(readFilters(params, 'shops')).toEqual({ filters: { ...defaultFilters, category: 'plants' }, invalid: false });
+    expect(readFilters(params, 'products')).toEqual({ filters: defaultFilters, invalid: true });
+  });
   it.each(['sort=price', 'category=unknown', 'location=unknown', 'q=a&q=b', `q=${'a'.repeat(101)}`])('handles invalid or duplicate parameters: %s', (search) => {
     expect(readFilters(new URLSearchParams(search))).toEqual({ filters: defaultFilters, invalid: true });
   });
@@ -18,7 +23,7 @@ describe('provisional discovery URL rules', () => {
 
 it('filters products through their store location and uses stable alphabetical ordering', async () => {
   const catalog = await mockDiscoveryAdapter.load();
-  const products = selectProducts(catalog, { ...defaultFilters, category: 'plants', location: 'kandy', sort: 'name-desc' });
+  const products = selectProducts(catalog, { ...defaultFilters, store: 'fern-house', location: 'kandy', sort: 'name-desc' });
   expect(products.map((product) => product.name)).toEqual(['Little Fern', 'Leafy Companion']);
   expect(selectStores(catalog, { ...defaultFilters, q: 'WILLOW' }).map((store) => store.slug)).toEqual(['willow-stem']);
   expect(selectProducts(catalog, defaultFilters, 'willow-stem').every((product) => product.storeSlug === 'willow-stem')).toBe(true);

@@ -9,14 +9,14 @@ const fixture: unknown = {
     { slug: 'garden-notes', name: 'Garden Notes', location: 'kandy', categories: ['stems', 'bouquets'], description: 'A fictional flower shop inspired by the shapes of a garden.' },
   ],
   products: [
-    { slug: 'morning-bouquet', storeSlug: 'willow-stem', name: 'Morning Bouquet', category: 'bouquets', description: 'An illustrated sample bouquet of open blooms and soft foliage. This is not an item offered for sale.' },
-    { slug: 'gathered-stems', storeSlug: 'willow-stem', name: 'Gathered Stems', category: 'stems', description: 'A sample arrangement of individual garden stems, shown for catalog exploration.' },
-    { slug: 'little-fern', storeSlug: 'fern-house', name: 'Little Fern', category: 'plants', description: 'A fictional leafy plant for a little corner of green.' },
-    { slug: 'leafy-companion', storeSlug: 'fern-house', name: 'Leafy Companion', category: 'plants', description: 'A sample potted plant with a simple, sculptural shape.' },
-    { slug: 'quiet-blooms', storeSlug: 'petal-room', name: 'Quiet Blooms', category: 'bouquets', description: 'A fictional bouquet inspired by gentle flower shapes.' },
-    { slug: 'table-garden', storeSlug: 'petal-room', name: 'Table Garden', category: 'plants', description: 'A sample small potted garden, illustrated rather than photographed.' },
-    { slug: 'garden-stems', storeSlug: 'garden-notes', name: 'Garden Stems', category: 'stems', description: 'A fictional selection of stems with an open garden feel.' },
-    { slug: 'afternoon-flowers', storeSlug: 'garden-notes', name: 'Afternoon Flowers', category: 'bouquets', description: 'An illustrated sample bouquet for exploring the marketplace.' },
+    { slug: 'morning-bouquet', storeSlug: 'willow-stem', name: 'Morning Bouquet', description: 'An illustrated sample bouquet of open blooms and soft foliage. This is not an item offered for sale.' },
+    { slug: 'gathered-stems', storeSlug: 'willow-stem', name: 'Gathered Stems', description: 'A sample arrangement of individual garden stems, shown for catalog exploration.' },
+    { slug: 'little-fern', storeSlug: 'fern-house', name: 'Little Fern', description: 'A fictional leafy plant for a little corner of green.' },
+    { slug: 'leafy-companion', storeSlug: 'fern-house', name: 'Leafy Companion', description: 'A sample potted plant with a simple, sculptural shape.' },
+    { slug: 'quiet-blooms', storeSlug: 'petal-room', name: 'Quiet Blooms', description: 'A fictional bouquet inspired by gentle flower shapes.' },
+    { slug: 'table-garden', storeSlug: 'petal-room', name: 'Table Garden', description: 'A sample small potted garden, illustrated rather than photographed.' },
+    { slug: 'garden-stems', storeSlug: 'garden-notes', name: 'Garden Stems', description: 'A fictional selection of stems with an open garden feel.' },
+    { slug: 'afternoon-flowers', storeSlug: 'garden-notes', name: 'Afternoon Flowers', description: 'An illustrated sample bouquet for exploring the marketplace.' },
   ],
 };
 

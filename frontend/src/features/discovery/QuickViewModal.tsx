@@ -4,7 +4,7 @@ import { X, Minus, Plus, Heart } from 'lucide-react';
 import { Badge } from '../../shared/components/ui/Content';
 import { Button } from '../../shared/components/ui/Button';
 import { Illustration } from './Illustration';
-import { categoryNames, type Product } from './model';
+import { type Product } from './model';
 import { useWishlist } from './wishlist';
 import { getProductPhoto } from './assets';
 import { cartActions, useCartDispatch, openCartDrawer } from '../commerce';
@@ -91,7 +91,7 @@ export function QuickViewModal({
           <div className="quickview-media">
             <div className="quickview-image-wrap">
               <Illustration
-                category={product.category}
+                category="bouquets"
                 slug={product.slug}
                 secondary={activeThumb === 2 && Boolean(getProductPhoto(product.slug).secondary)}
               />
@@ -104,7 +104,7 @@ export function QuickViewModal({
                 aria-label="Thumbnail 1"
                 onClick={() => setActiveThumb(1)}
               >
-                <Illustration category={product.category} slug={product.slug} />
+                <Illustration category="bouquets" slug={product.slug} />
               </button>
               {getProductPhoto(product.slug).secondary && (
                 <button
@@ -113,7 +113,7 @@ export function QuickViewModal({
                   aria-label="Thumbnail 2"
                   onClick={() => setActiveThumb(2)}
                 >
-                  <Illustration category={product.category} slug={product.slug} secondary />
+                  <Illustration category="bouquets" slug={product.slug} secondary />
                 </button>
               )}
             </div>
@@ -121,7 +121,7 @@ export function QuickViewModal({
 
           <div className="quickview-details">
             <div className="quickview-meta-top">
-              <Badge tone="subtle">{categoryNames[product.category]}</Badge>
+              <Badge tone="subtle">Sample catalog item</Badge>
               {storeName && (
                 <span className="quickview-store">
                   Crafted by: <Link to={`/shops/${product.storeSlug}`} onClick={onClose}>{storeName}</Link>
@@ -210,7 +210,7 @@ export function QuickViewModal({
                   productSlug: product.slug,
                   storeSlug: product.storeSlug,
                   name: product.name,
-                  category: product.category,
+                  category: 'catalog-item',
                 })}
               >
                 <Heart size={18} fill={inWishlist ? 'currentColor' : 'none'} aria-hidden="true" />
