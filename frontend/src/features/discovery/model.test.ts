@@ -9,8 +9,8 @@ describe('provisional discovery URL rules', () => {
     expect(writeFilters(defaultFilters).toString()).toBe('');
   });
   it('accepts shop categories but rejects them on product routes', () => {
-    const params = new URLSearchParams('category=plants');
-    expect(readFilters(params, 'shops')).toEqual({ filters: { ...defaultFilters, category: 'plants' }, invalid: false });
+    const params = new URLSearchParams('category=gift-sets');
+    expect(readFilters(params, 'shops')).toEqual({ filters: { ...defaultFilters, category: 'gift-sets' }, invalid: false });
     expect(readFilters(params, 'products')).toEqual({ filters: defaultFilters, invalid: true });
   });
   it.each(['sort=price', 'category=unknown', 'location=unknown', 'q=a&q=b', `q=${'a'.repeat(101)}`])('handles invalid or duplicate parameters: %s', (search) => {
@@ -26,6 +26,7 @@ it('filters products through their store location and uses stable alphabetical o
   const products = selectProducts(catalog, { ...defaultFilters, store: 'fern-house', location: 'kandy', sort: 'name-desc' });
   expect(products.map((product) => product.name)).toEqual(['Little Fern', 'Leafy Companion']);
   expect(selectStores(catalog, { ...defaultFilters, q: 'WILLOW' }).map((store) => store.slug)).toEqual(['willow-stem']);
+  expect(selectStores(catalog, { ...defaultFilters, category: 'orchids' }).map((store) => store.slug)).toEqual(['everleaf-studio', 'fern-house', 'orchid-lane']);
   expect(selectProducts(catalog, defaultFilters, 'willow-stem').every((product) => product.storeSlug === 'willow-stem')).toBe(true);
   expect(selectProducts(catalog, { ...defaultFilters, q: 'no-match' })).toEqual([]);
 });
@@ -43,5 +44,5 @@ it('honors cancellation and returns independently parsed fixture data', async ()
   await expect(mockDiscoveryAdapter.load(controller.signal)).rejects.toMatchObject({ name: 'AbortError' });
   const first = await mockDiscoveryAdapter.load();
   first.stores.splice(0);
-  expect((await mockDiscoveryAdapter.load()).stores).toHaveLength(4);
+  expect((await mockDiscoveryAdapter.load()).stores).toHaveLength(10);
 });

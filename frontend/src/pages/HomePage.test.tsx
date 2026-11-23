@@ -13,7 +13,7 @@ function renderHome(adapter: DiscoveryAdapter) {
 
 const catalog = {
   stores: [{ slug: 'sample-store', name: 'Sample Store', location: 'colombo' as const, categories: ['bouquets' as const], description: 'A clearly fictional store.' }],
-  products: [{ slug: 'sample-product', storeSlug: 'sample-store', name: 'Sample Product', category: 'bouquets' as const, description: 'A fictional catalog item.' }],
+  products: [{ slug: 'sample-product', storeSlug: 'sample-store', name: 'Sample Product', description: 'A fictional catalog item.' }],
 };
 
 describe('editorial homepage', () => {
@@ -23,6 +23,14 @@ describe('editorial homepage', () => {
     expect(screen.getByRole('heading', { name: 'Sample Store' })).toBeVisible();
     expect(screen.getByText('Price unavailable')).toBeVisible();
     expect(screen.getByText('Availability not connected')).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Categories' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Browse Bouquets stores' })).toHaveAttribute('href', '/shops?category=bouquets');
+    const storesHeading = screen.getByRole('heading', { name: 'Our Shops' });
+    const productsHeading = screen.getByRole('heading', { name: 'A closer look at the catalog' });
+    expect(storesHeading.compareDocumentPosition(productsHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByText('Browse the sample marketplace')).not.toBeInTheDocument();
+    expect(screen.queryByText('Begin with an inspiration')).not.toBeInTheDocument();
+    expect(screen.queryByText(/not a finalized production taxonomy/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/SALE -20%|\$38\.00|4\.9|free delivery|freshness guaranteed/i)).not.toBeInTheDocument();
   });
 

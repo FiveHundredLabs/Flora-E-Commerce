@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { ArrowUpRight, MapPin } from 'lucide-react';
 import { AsyncRegion } from '../shared/components/AsyncRegion';
 import { Price, StatusTag } from '../shared/components/ui/Feedback';
-import { Illustration, categoryNames, locationNames, useDiscovery, type Catalog, type DiscoveryAdapter, type Product, type Store } from '../features/discovery';
+import { Illustration, categories, categoryNames, locationNames, useDiscovery, type Catalog, type DiscoveryAdapter, type Product, type Store } from '../features/discovery';
 import './home-editorial.css';
 
 const heroImage = '/assets/editorial-home-hero.webp';
@@ -39,25 +39,25 @@ function FixtureStore({ store }: { store: Store }) {
 }
 
 function CatalogHome({ catalog }: { catalog: Catalog }) {
-  const storeCategories = [...new Set(catalog.stores.flatMap((store) => store.categories))];
+  const availableCategories = new Set(catalog.stores.flatMap((store) => store.categories));
+  const storeCategories = categories.filter((category) => availableCategories.has(category));
   const featuredProducts = catalog.products.slice(0, 4);
-  const featuredStores = catalog.stores.slice(0, 3);
+  const homepageStores = catalog.stores.slice(0, 10);
 
   return <>
     <section className="editorial-section editorial-categories" aria-labelledby="home-categories-title">
-      <header className="editorial-section__header"><div><p className="editorial-kicker">Browse the sample marketplace</p><h2 id="home-categories-title">Begin with an inspiration</h2></div><p>These groupings come from the current supplier-store fixture. They are not a finalized production taxonomy.</p></header>
-      {storeCategories.length > 0 ? <div className="editorial-category-grid">{storeCategories.map((category, index) => <Link key={category} to={`/shops?category=${category}`} className="editorial-category"><span aria-hidden="true">0{index + 1}</span><strong>{categoryNames[category]}</strong><small>View matching stores</small></Link>)}</div> : <div className="editorial-empty"><h3>Categories are not available yet.</h3><p>Explore the available supplier stores instead.</p><Link to="/shops" className="button button--outline">Explore shops</Link></div>}
+      <header className="editorial-categories__header"><h2 id="home-categories-title">Categories</h2></header>
+      {storeCategories.length > 0 ? <ul className="editorial-category-rail" aria-label="Shop categories">{storeCategories.map((category) => <li key={category}><Link to={`/shops?category=${category}`} className="editorial-category" aria-label={`Browse ${categoryNames[category]} stores`}><span className="editorial-category__visual" aria-hidden="true"><Illustration category={category} /></span><strong>{categoryNames[category]}</strong></Link></li>)}</ul> : <div className="editorial-empty"><h3>Categories are not available yet.</h3><p>Explore the available supplier stores instead.</p><Link to="/shops" className="button button--outline">Explore shops</Link></div>}
+    </section>
+
+    <section className="editorial-section editorial-florists" aria-labelledby="home-florists-title">
+      <header className="editorial-florists__header"><h2 id="home-florists-title">Our Shops</h2></header>
+      {homepageStores.length > 0 ? <div className="editorial-store-grid">{homepageStores.map((store) => <FixtureStore key={store.slug} store={store} />)}</div> : <div className="editorial-empty"><h3>No supplier stores are available.</h3><p>Try the store directory again when catalog data is available.</p></div>}
     </section>
 
     <section className="editorial-section editorial-featured" aria-labelledby="home-featured-title">
       <header className="editorial-section__header"><div><p className="editorial-kicker">Recent discoveries</p><h2 id="home-featured-title">A closer look at the catalog</h2></div><div><p>Fictional development records are shown without invented price, stock, ratings or promotions.</p><Link to="/products" className="editorial-inline-link">View all sample products <ArrowUpRight size={15} aria-hidden="true" /></Link></div></header>
       {featuredProducts.length > 0 ? <div className="editorial-product-grid">{featuredProducts.map((product) => <FixtureProduct key={product.slug} product={product} store={catalog.stores.find((store) => store.slug === product.storeSlug)} />)}</div> : <div className="editorial-empty"><h3>No sample products are available.</h3><p>There is nothing to display from the current catalog fixture.</p></div>}
-    </section>
-
-    <section className="editorial-section editorial-florists" aria-labelledby="home-florists-title">
-      <header className="editorial-section__header"><div><p className="editorial-kicker">Discover supplier stores</p><h2 id="home-florists-title">Different practices, one place to browse</h2></div><p>Store names, descriptions, locations and category labels below come directly from the current development fixture.</p></header>
-      {featuredStores.length > 0 ? <div className="editorial-store-grid">{featuredStores.map((store) => <FixtureStore key={store.slug} store={store} />)}</div> : <div className="editorial-empty"><h3>No supplier stores are available.</h3><p>Try the store directory again when catalog data is available.</p></div>}
-      {catalog.stores.length > featuredStores.length && <Link to="/shops" className="button button--outline editorial-centered-action">Explore every sample store</Link>}
     </section>
   </>;
 }

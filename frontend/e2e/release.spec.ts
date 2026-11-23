@@ -4,6 +4,7 @@ test('production preview applies security headers and labels the release as mock
   const response = await request.get('/admin/orders/sample-order'); expect(response.ok()).toBe(true);
   const headers = response.headers();
   expect(headers['content-security-policy']).toContain("connect-src 'none'");
+  expect(headers['content-security-policy']).toContain("img-src 'self' data: https://images.unsplash.com");
   expect(headers['content-security-policy']).toContain("script-src 'self'");
   expect(headers['content-security-policy']).toContain("frame-ancestors 'none'");
   expect(headers['x-content-type-options']).toBe('nosniff'); expect(headers['x-frame-options']).toBe('DENY');

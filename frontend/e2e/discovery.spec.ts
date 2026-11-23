@@ -9,7 +9,7 @@ test('shop category, location and sort filters persist through history', async (
   await expect(page).toHaveURL(/category=plants&location=kandy$/);
   await page.getByRole('combobox', { name: 'Sort by' }).selectOption('name-desc');
   await expect(page).toHaveURL(/category=plants&location=kandy&sort=name-desc$/);
-  await expect(page.getByText('1 store found')).toBeVisible();
+  await expect(page.getByText('3 stores found')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Fern House', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('combobox', { name: 'Shop category' })).toHaveValue('plants');
@@ -43,7 +43,7 @@ for (const width of [320, 360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/shops');
     await expect(page.getByRole('heading', { name: 'Independent floral stores' })).toBeVisible();
-    await expect(page.getByText('4 stores found')).toBeVisible();
+    await expect(page.getByText('10 stores found')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath(`shops-${width}.png`), fullPage: true });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { categories } from './model';
-import { botanicalProducts, getStorePhoto } from './assets';
+import { botanicalProducts, getCategoryPhoto, getStorePhoto } from './assets';
 
 type IllustrationKind = typeof categories[number];
 
@@ -27,17 +27,23 @@ export function Illustration({
   let photoUrl: string | undefined;
   let photoAlt: string | undefined;
 
-  if (slug && !hasError) {
-    const productPhoto = botanicalProducts[slug];
-    if (productPhoto) {
-      photoUrl = secondary && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary;
-      photoAlt = alt ?? productPhoto.alt;
-    } else {
-      const storePhoto = getStorePhoto(slug);
-      if (storePhoto) {
-        photoUrl = storePhoto.primary;
-        photoAlt = alt ?? storePhoto.alt;
+  if (!hasError) {
+    if (slug) {
+      const productPhoto = botanicalProducts[slug];
+      if (productPhoto) {
+        photoUrl = secondary && productPhoto.secondary ? productPhoto.secondary : productPhoto.primary;
+        photoAlt = alt ?? productPhoto.alt;
+      } else {
+        const storePhoto = getStorePhoto(slug);
+        if (storePhoto) {
+          photoUrl = storePhoto.primary;
+          photoAlt = alt ?? storePhoto.alt;
+        }
       }
+    } else {
+      const categoryPhoto = getCategoryPhoto(category);
+      photoUrl = categoryPhoto?.primary;
+      photoAlt = categoryPhoto?.alt;
     }
   }
 

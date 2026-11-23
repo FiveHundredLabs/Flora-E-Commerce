@@ -23,8 +23,10 @@ it('filters shops by their multi-category and location metadata', async () => {
   expect(screen.getByRole('combobox', { name: 'Shop category' })).toHaveValue('plants');
   expect(screen.getByRole('combobox', { name: 'Location' })).toHaveValue('kandy');
   expect(await screen.findByRole('link', { name: 'Fern House' })).toBeVisible();
+  expect(screen.getByRole('link', { name: 'Moss & Petal' })).toBeVisible();
+  expect(screen.getByRole('link', { name: 'Orchid Lane' })).toBeVisible();
   expect(screen.queryByRole('link', { name: 'Willow & Stem' })).not.toBeInTheDocument();
-  expect(screen.getByText('1 store found')).toBeVisible();
+  expect(screen.getByText('3 stores found')).toBeVisible();
 });
 
 it('filters products by owning store and location without a product category control', async () => {

@@ -1,9 +1,18 @@
 import { z } from 'zod';
 
 // MOCK UI vocabulary only. Replace with approved DTOs before live integration.
-export const categories = ['bouquets', 'plants', 'stems'] as const;
+export const categories = ['bouquets', 'plants', 'stems', 'roses', 'orchids', 'gift-sets', 'wedding-flowers', 'dried-flowers'] as const;
 export const locations = ['colombo', 'kandy'] as const;
-export const categoryNames = { bouquets: 'Bouquets', plants: 'Plants', stems: 'Stems' };
+export const categoryNames = {
+  bouquets: 'Bouquets',
+  plants: 'Plants',
+  stems: 'Stems',
+  roses: 'Roses',
+  orchids: 'Orchids',
+  'gift-sets': 'Gift Sets',
+  'wedding-flowers': 'Wedding Flowers',
+  'dried-flowers': 'Dried Flowers',
+} satisfies Record<typeof categories[number], string>;
 export const locationNames = { colombo: 'Colombo', kandy: 'Kandy' };
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 export const storeSchema = z.object({

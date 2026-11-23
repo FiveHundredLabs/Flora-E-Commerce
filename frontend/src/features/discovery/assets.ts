@@ -14,12 +14,14 @@ export interface BotanicalStorePhoto {
   primary: string;
   thumbnail: string;
   alt: string;
+  source?: string;
 }
 
 export interface BotanicalCategoryPhoto {
   primary: string;
   thumbnail: string;
   alt: string;
+  source?: string;
 }
 
 /**
@@ -104,14 +106,52 @@ export const botanicalStores: Record<string, BotanicalStorePhoto> = {
     alt: 'Sun-drenched glasshouse plant nursery filled with lush potted ferns, tropical hanging greenery, and verdant botanical displays',
   },
   'petal-room': {
-    primary: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80',
-    thumbnail: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=400&q=80',
-    alt: 'Minimalist pastel flower boutique featuring clean contemporary architectural lines, neutral display plinths, and curated delicate blooms',
+    primary: 'https://images.unsplash.com/photo-1740297224094-8adce5e1286c?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1740297224094-8adce5e1286c?auto=format&fit=crop&w=400&q=80',
+    alt: 'Flower boutique display filled with roses, leafy plants, and arranged blooms',
+    source: 'https://unsplash.com/photos/a-display-of-flowers-in-a-flower-shop-AZ7tXcQcchg',
   },
   'garden-notes': {
-    primary: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=1200&q=80',
-    thumbnail: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=400&q=80',
-    alt: 'Artisanal florist potting workbench with weathered terracotta planters, fresh botanical cuttings, pruning shears, and garden stems',
+    primary: 'https://images.unsplash.com/photo-1791736666714-dd9210aeb424?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1791736666714-dd9210aeb424?auto=format&fit=crop&w=400&q=80',
+    alt: 'Contemporary flower shop interior with bouquets arranged in vases and on tables',
+    source: 'https://unsplash.com/photos/flower-shop-interior-with-floral-bouquets-Qk5ZKKPJ5H8',
+  },
+  'cedar-bloom': {
+    primary: 'https://images.unsplash.com/photo-1785721073831-565f8d0f094f?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1785721073831-565f8d0f094f?auto=format&fit=crop&w=400&q=80',
+    alt: 'Warm florist studio display with dried flowers and softly textured botanical stems',
+    source: 'https://unsplash.com/photos/dried-flowers-next-to-a-framed-hc7zUpHeH8A',
+  },
+  'orchid-lane': {
+    primary: 'https://images.unsplash.com/photo-1699618584607-2a6c0d5cc3f0?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1699618584607-2a6c0d5cc3f0?auto=format&fit=crop&w=400&q=80',
+    alt: 'White orchids cascading among green foliage inside a bright greenhouse',
+    source: 'https://unsplash.com/photos/a-large-white-flower-in-a-green-house-Heq_G_tzd1w',
+  },
+  'moss-petal': {
+    primary: 'https://images.unsplash.com/photo-1776996876078-ffb079c26f6e?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1776996876078-ffb079c26f6e?auto=format&fit=crop&w=400&q=80',
+    alt: 'Lush greenhouse aisle filled with tropical foliage, potted plants, and flowers',
+    source: 'https://unsplash.com/photos/lush-greenhouse-filled-with-diverse-plants-and-flowers-AUgafD40Ckw',
+  },
+  'rosewood-florals': {
+    primary: 'https://images.unsplash.com/photo-1767824122857-9a1521db58d3?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1767824122857-9a1521db58d3?auto=format&fit=crop&w=400&q=80',
+    alt: 'Rich red rose bouquet wrapped with delicate white filler flowers',
+    source: 'https://unsplash.com/photos/a-person-holding-a-bouquet-of-red-roses-xP0RKsjaY0U',
+  },
+  'wildflower-atelier': {
+    primary: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80',
+    alt: 'Loose meadow flowers and delicate botanical stems arranged in clear glass vessels',
+    source: 'https://unsplash.com/s/photos/wildflowers',
+  },
+  'everleaf-studio': {
+    primary: 'https://images.unsplash.com/photo-1600437731118-e87ada85832a?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1600437731118-e87ada85832a?auto=format&fit=crop&w=400&q=80',
+    alt: 'Light-filled plant shop with potted greenery arranged on natural wood shelving',
+    source: 'https://unsplash.com/s/photos/plant-shop',
   },
 };
 
@@ -133,6 +173,36 @@ export const botanicalCategories: Record<string, BotanicalCategoryPhoto> = {
     primary: 'https://images.unsplash.com/photo-1600437731118-e87ada85832a?auto=format&fit=crop&w=1200&q=80',
     thumbnail: 'https://images.unsplash.com/photo-1600437731118-e87ada85832a?auto=format&fit=crop&w=400&q=80',
     alt: 'Light-filled botanical shop display with architectural indoor houseplants, cascading ferns, and ceramic pots on blonde wood shelving',
+  },
+  roses: {
+    primary: 'https://images.unsplash.com/photo-1767824122857-9a1521db58d3?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1767824122857-9a1521db58d3?auto=format&fit=crop&w=400&q=80',
+    alt: 'Hand-held bouquet of deep red roses with delicate white filler flowers',
+    source: 'https://unsplash.com/photos/a-person-holding-a-bouquet-of-red-roses-xP0RKsjaY0U',
+  },
+  orchids: {
+    primary: 'https://images.unsplash.com/photo-1694422485768-db8dbc366b80?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1694422485768-db8dbc366b80?auto=format&fit=crop&w=400&q=80',
+    alt: 'Cascading pink orchids displayed inside a sunlit glass greenhouse',
+    source: 'https://unsplash.com/photos/un-bouquet-de-fleurs-qui-sont-a-linterieur-dun-batiment-PRnaoz8KPv8',
+  },
+  'gift-sets': {
+    primary: 'https://images.unsplash.com/photo-1581264692636-3cf6f29655c2?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1581264692636-3cf6f29655c2?auto=format&fit=crop&w=400&q=80',
+    alt: 'Red roses and small white flowers presented in an elegant gift box',
+    source: 'https://unsplash.com/s/photos/flower-gift',
+  },
+  'wedding-flowers': {
+    primary: 'https://images.unsplash.com/photo-1737498205256-52157504a8ed?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1737498205256-52157504a8ed?auto=format&fit=crop&w=400&q=80',
+    alt: 'Bride holding a white rose wedding bouquet with eucalyptus and baby’s breath',
+    source: 'https://unsplash.com/photos/a-bride-holding-a-bouquet-of-white-flowers-nG0NTufuJWY',
+  },
+  'dried-flowers': {
+    primary: 'https://images.unsplash.com/photo-1728931935943-0d7b67f99f23?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1728931935943-0d7b67f99f23?auto=format&fit=crop&w=400&q=80',
+    alt: 'Blue and purple dried flowers arranged as a botanical flat lay',
+    source: 'https://unsplash.com/photos/a-collection-of-dried-flowers-on-a-white-surface-1ICCvx5wRnA',
   },
 };
 
