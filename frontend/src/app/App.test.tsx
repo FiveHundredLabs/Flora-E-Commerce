@@ -10,10 +10,9 @@ describe('foundation routes', () => {
     return render(<QueryClientProvider client={client}><MemoryRouter initialEntries={initialEntries}><App /></MemoryRouter></QueryClientProvider>);
   }
 
-  it('clearly labels the sample catalog entry points', () => {
+  it('clearly labels the catalog entry points', () => {
     renderApp();
     expect(screen.getByRole('heading', { name: 'Flowers, thoughtfully gathered.' })).toBeVisible();
-    expect(screen.getByText(/Development preview — no live prices/)).toBeVisible();
     expect(screen.getAllByRole('link', { name: 'Discover shops' })[0]).toHaveAttribute('href', '/shops');
   });
 

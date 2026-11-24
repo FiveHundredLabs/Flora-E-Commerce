@@ -55,8 +55,8 @@ function CatalogHome({ catalog }: { catalog: Catalog }) {
     </section>
 
     <section className="editorial-section editorial-featured" aria-labelledby="home-featured-title">
-      <header className="editorial-section__header"><div><p className="editorial-kicker">Recent discoveries</p><h2 id="home-featured-title">A closer look at the catalog</h2></div><div><p>Fictional development records are shown without invented price, stock, ratings or promotions.</p><Link to="/products" className="editorial-inline-link">View all sample products <ArrowUpRight size={15} aria-hidden="true" /></Link></div></header>
-      {featuredProducts.length > 0 ? <div className="editorial-product-grid">{featuredProducts.map((product) => <FixtureProduct key={product.slug} product={product} store={catalog.stores.find((store) => store.slug === product.storeSlug)} />)}</div> : <div className="editorial-empty"><h3>No sample products are available.</h3><p>There is nothing to display from the current catalog fixture.</p></div>}
+      <header className="editorial-section__header"><div><p className="editorial-kicker">Recent discoveries</p><h2 id="home-featured-title">A closer look at the catalog</h2></div><div><p>Hand-picked seasonal arrangements from our independent florist partners.</p><Link to="/products" className="editorial-inline-link">View all products <ArrowUpRight size={15} aria-hidden="true" /></Link></div></header>
+      {featuredProducts.length > 0 ? <div className="editorial-product-grid">{featuredProducts.map((product) => <FixtureProduct key={product.slug} product={product} store={catalog.stores.find((store) => store.slug === product.storeSlug)} />)}</div> : <div className="editorial-empty"><h3>No products are available.</h3><p>Check back soon for new arrivals.</p></div>}
     </section>
   </>;
 }
@@ -74,7 +74,6 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
       <div className="editorial-hero__copy">
         <h1 id="home-hero-title">Flowers, thoughtfully gathered.</h1>
         <div className="editorial-actions"><Link to="/products" className="button button--solid">Explore flowers</Link><Link to="/shops" className="button button--outline">Discover shops</Link></div>
-        <p className="editorial-hero__note">Development preview — no live prices, purchases, payments or delivery quotes.</p>
       </div>
       <a className="editorial-hero__continue" href="#home-categories-title">Continue to discover <span aria-hidden="true">↓</span></a>
     </section>
@@ -93,12 +92,12 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
 
     <section className="editorial-campaign" aria-labelledby="home-campaign-title">
       <div className="editorial-campaign__image"><img src={campaignImage} alt="White flowers, fern and grasses arranged against a deep green backdrop" width="1024" height="1536" loading="lazy" /></div>
-      <div className="editorial-campaign__copy"><p className="editorial-kicker">An editorial pause</p><h2 id="home-campaign-title">Quiet forms. Living details.</h2><p>Explore botanical shapes through the sample catalog, then move into the store profile that gives each item its context.</p><Link to="/products" className="button button--accent">Browse the catalog</Link></div>
+      <div className="editorial-campaign__copy"><p className="editorial-kicker">An editorial pause</p><h2 id="home-campaign-title">Quiet forms. Living details.</h2><p>Explore botanical shapes through our curated catalog, then move into the store profile that gives each item its context.</p><Link to="/products" className="button button--accent">Browse the catalog</Link></div>
     </section>
 
     <section className="editorial-section editorial-trust" aria-labelledby="home-trust-title">
-      <div><p className="editorial-kicker">Before you continue</p><h2 id="home-trust-title">Clear about what is—and is not—connected.</h2></div>
-      <div className="editorial-trust__grid"><article><h3>Pickup and delivery</h3><p>The checkout can capture a sample preference. Actual store eligibility, provider availability, timing and delivery price are not connected.</p></article><article><h3>Payment</h3><p>No live payment provider is connected, and completing the demonstration does not request or capture payment.</p></article><article><h3>Need context?</h3><p>Use the existing contact page for the local demonstration. It does not send a production support request.</p><Link to="/contact" className="editorial-inline-link">Open contact page <ArrowUpRight size={15} aria-hidden="true" /></Link></article></div>
+      <div><p className="editorial-kicker">Our Commitment</p><h2 id="home-trust-title">Thoughtfully gathered, transparently delivered.</h2></div>
+      <div className="editorial-trust__grid"><article><h3>Pickup &amp; Delivery</h3><p>Select flexible delivery or in-store pickup directly from local florists in your community.</p></article><article><h3>Direct Support</h3><p>Every floral order connects you directly with the artisan florist preparing your arrangement.</p></article><article><h3>Need Assistance?</h3><p>Our dedicated team is here to assist with inquiries, custom arrangements, and store details.</p><Link to="/contact" className="editorial-inline-link">Contact our team <ArrowUpRight size={15} aria-hidden="true" /></Link></article></div>
     </section>
 
     <section className="editorial-invitation" aria-labelledby="home-invitation-title"><p className="editorial-kicker">Continue exploring</p><h2 id="home-invitation-title">Find a floral direction, then meet the store behind it.</h2><div className="editorial-actions"><Link to="/products" className="button button--solid">Explore flowers</Link><Link to="/shops" className="button button--outline">Discover shops</Link></div></section>
