@@ -1,81 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
-
+/* Botanical Editorial foundation. Add licensed local brand fonts before changing this offline-safe stack. */
 :root {
-  /* Brand Palettes */
-  --color-forest-deep: #244c3a;
-  --color-sage-accent: #6f967b;
-  --color-mint-soft: #b7cdb5;
-  --color-cream-warm: #f5f3e9;
-  --color-gold-warm: #d9a85f;
-  --color-forest-text: #1a3629;
-  --color-forest-muted: #4e6b59;
-  --color-white: #ffffff;
-  --color-destructive: #b33a3a;
-  --color-destructive-foreground: #ffffff;
-  --color-success: #2d6a4f;
-
-  /* Semantic UI Tokens */
-  --background: var(--color-cream-warm);
-  --foreground: var(--color-forest-text);
-  --card: var(--color-white);
-  --card-foreground: var(--color-forest-text);
-  --primary: var(--color-forest-deep);
-  --primary-foreground: var(--color-white);
-  --secondary: var(--color-sage-accent);
-  --secondary-foreground: var(--color-white);
-  --accent: var(--color-gold-warm);
-  --accent-foreground: var(--color-white);
-  --muted: #e8ede4;
-  --muted-foreground: var(--color-forest-muted);
-  --border: #dbe3d8;
-  --border-strong: var(--color-mint-soft);
-  --input: #9cb59a;
-  --input-focus: var(--color-sage-accent);
-  --destructive: var(--color-destructive);
-  --destructive-foreground: var(--color-destructive-foreground);
-  --ring: var(--color-sage-accent);
-
-  /* Geometry & Radii */
-  --radius-none: 0px;
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-pill: 9999px;
-  --radius: var(--radius-none); /* Fiama signature sharp aesthetic */
-
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(36, 76, 58, 0.05);
-  --shadow-md: 0 5px 20px rgba(36, 76, 58, 0.08);
-  --shadow-lg: 0 16px 32px rgba(36, 76, 58, 0.12);
-  --shadow-hover: 0 8px 24px rgba(36, 76, 58, 0.14);
-  --shadow: var(--shadow-sm);
-
-  /* Spacing */
-  --space-1: .25rem;
-  --space-2: .5rem;
-  --space-3: .75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
-  --space-gutter: 30px;
-  --section-padding-y: 100px;
-
-  /* Typography */
-  --font-heading: 'Montserrat', system-ui, -apple-system, sans-serif;
-  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
-  --font-sans: var(--font-body);
-  --font-display: var(--font-heading);
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-  --text-hero: 4.25rem;
-
-  /* Layout */
-  --content-width: 1200px;
+  color-scheme: light;
+  --color-forest-deep:#244c3a; --color-sage-accent:#6f967b; --color-mint-soft:#b7cdb5;
+  --color-cream-warm:#f5f3e9; --color-gold-warm:#d9a85f; --color-forest-text:#1a3629;
+  --color-forest-muted:#435648; --color-white:#fff; --color-destructive:#963d36;
+  --color-destructive-foreground:#fff; --color-success:#245b3c;
+  --background:var(--color-cream-warm); --foreground:var(--color-forest-deep);
+  --card:#fff; --card-foreground:var(--foreground); --popover:#fff; --popover-foreground:var(--foreground);
+  --surface-soft:#fcfbf7; --primary:var(--color-forest-deep); --primary-foreground:var(--color-cream-warm);
+  --primary-hover:#183b2b; --secondary:var(--color-mint-soft); --secondary-foreground:var(--color-forest-text);
+  --accent:var(--color-gold-warm); --accent-foreground:var(--color-forest-text);
+  --muted:#e8ede4; --muted-foreground:var(--color-forest-muted); --border:#dfe4d9;
+  --border-strong:#718373; --input:var(--border-strong); --input-focus:var(--primary); --ring:var(--primary);
+  --destructive:var(--color-destructive); --destructive-foreground:#fff; --danger-soft:#fbefed;
+  --success:var(--color-success); --success-soft:#edf4ec; --warning:#775016; --warning-soft:#fbf2df;
+  --info:#43535a; --info-soft:#edf1f2;
+  --radius-none:0; --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-pill:9999px; --radius-circle:50%; --radius:var(--radius-md);
+  --shadow-sm:0 2px 8px rgb(26 54 41 / 4%); --shadow-md:0 8px 24px rgb(26 54 41 / 8%);
+  --shadow-lg:0 24px 64px rgb(26 54 41 / 16%); --shadow-hover:var(--shadow-md); --shadow:var(--shadow-sm);
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.5rem;
+  --space-6:2rem; --space-7:3rem; --space-8:4rem; --space-9:6rem;
+  --space-gutter:clamp(1.25rem,3vw,4rem); --section-padding-y:clamp(3rem,7vw,7.5rem);
+  --font-heading:'Cormorant Garamond',Georgia,'Times New Roman',serif; --font-body:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-sans:var(--font-body); --font-display:var(--font-heading);
+  --text-xs:.8125rem; --text-sm:.875rem; --text-base:1rem; --text-lg:1.125rem; --text-xl:1.25rem;
+  --text-2xl:1.5rem; --text-3xl:1.875rem; --text-4xl:2.25rem; --text-5xl:3rem; --text-hero:clamp(2rem,5vw,4.75rem);
+  --content-width:1320px; --content-wide:1440px; --motion-fast:160ms; --motion-normal:220ms;
 }

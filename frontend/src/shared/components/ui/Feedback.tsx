@@ -1,0 +1,12 @@
+import { useState, type ComponentProps, type ReactNode } from 'react';
+import { Button } from './Button';
+export type StatusTone='neutral'|'success'|'warning'|'danger'|'info';
+export function StatusTag({tone='neutral',children}:{tone?:StatusTone;children:ReactNode}){return <span className={`status-tag status-tag--${tone}`}>{children}</span>}
+export function Alert({title,children,tone='info'}:{title:string;children:ReactNode;tone?:StatusTone}){return <div className={`ui-alert status-surface--${tone}`} role={tone==='danger'?'alert':'status'}><strong>{title}</strong><div>{children}</div></div>}
+export function EmptyState({title,children,action}:{title:string;children:ReactNode;action?:ReactNode}){return <section className="empty-state"><h3>{title}</h3><p>{children}</p>{action}</section>}
+export function Skeleton({label='Loading content',className=''}:{label?:string;className?:string}){return <span className={`ui-skeleton ${className}`.trim()} role="status"><span className="sr-only">{label}</span></span>}
+export function Toast({message,onDismiss}:{message:string;onDismiss:()=>void}){return <div className="ui-toast"><span role="status">{message}</span><Button variant="quiet" aria-label="Dismiss notification" onClick={onDismiss}>Dismiss</Button></div>}
+export function Price({amount,currency,locale='en-LK'}:{amount?:number|null;currency?:string|null;locale?:string}){if(amount==null||!Number.isFinite(amount)||amount<0||!currency||!/^[A-Z]{3}$/.test(currency))return <span className="price-unavailable">Price unavailable</span>;try{return <span className="ui-price">{new Intl.NumberFormat(locale,{style:'currency',currency}).format(amount)}</span>}catch{return <span className="price-unavailable">Price unavailable</span>}}
+type ImageProps=Omit<ComponentProps<'img'>,'width'|'height'>&{width:number;height:number;alt:string};
+export function ImageWithFallback(props:ImageProps){return <ImageState key={props.src} {...props}/>}
+function ImageState({src,alt,width,height,className='',onError,...props}:ImageProps){const[failed,setFailed]=useState(false);return <div className={`ui-image ${className}`} style={{aspectRatio:`${width}/${height}`}}>{!src||failed?<div className="ui-image__fallback" role={alt?'img':undefined} aria-label={alt?`${alt} — image unavailable`:undefined}>Image unavailable</div>:<img {...props} src={src} alt={alt} width={width} height={height} onError={e=>{setFailed(true);onError?.(e)}}/>}</div>}

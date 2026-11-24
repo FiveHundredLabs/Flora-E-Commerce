@@ -16,15 +16,16 @@ test('multi-store cart checks out one shop and preserves the other', async ({ pa
   await expect(page.getByRole('link', { name: 'Skip to content' })).not.toBeInViewport();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath('multi-store-cart.png'), fullPage: true });
-  await page.getByRole('link', { name: 'Checkout Willow & Stem' }).click();
+  await page.getByRole('region', { name: 'Willow & Stem' })
+    .getByRole('link', { name: 'Checkout this store' }).click();
   const summary = page.getByRole('region', { name: 'Selected shop checkout' });
   await expect(summary.getByText('Morning Bouquet', { exact: true })).toBeVisible();
   await expect(summary.getByText('Little Fern', { exact: true })).toHaveCount(0);
-  await page.getByRole('radio', { name: 'Delivery', exact: true }).check();
-  await page.getByRole('button', { name: 'Create sample order' }).click();
-  await expect(page.getByRole('combobox', { name: 'Sample delivery provider' })).toBeFocused();
-  await page.getByRole('combobox', { name: 'Sample delivery provider' }).selectOption('uber-connect');
-  await expect(page.getByRole('combobox', { name: 'Sample delivery provider' })).not.toHaveAttribute('aria-invalid');
+  await expect(page.getByRole('button', { name: 'Pickup unavailable' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Delivery unavailable' })).toBeDisabled();
+  await expect(page.getByRole('combobox')).toHaveCount(0);
+  await expect(summary.getByText('Unavailable')).toHaveCount(3);
+  await expect(page.getByText('No payment intent will be created.')).toBeVisible();
   expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
   await page.setViewportSize({ width: 375, height: 1000 });
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -33,7 +34,7 @@ test('multi-store cart checks out one shop and preserves the other', async ({ pa
   await page.getByRole('button', { name: 'Create sample order' }).click();
   await expect(page).toHaveURL(/\/account\/orders\/sample-1$/);
   await expect(page.getByText('PayHere is not connected. No payment has been requested.')).toBeVisible();
-  await expect(page.getByText(/delivery preference — Uber Connect/)).toBeVisible();
+  await expect(page.getByText('Fulfilment: store pickup (sample only)')).toBeVisible();
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
   await nav.getByRole('link', { name: 'Cart', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Fern House' })).toBeVisible();
@@ -51,11 +52,11 @@ test('sample delivered feedback validates, saves locally and ignores payment que
   await page.getByRole('button', { name: 'Save sample feedback' }).click();
   await expect(page.getByText('Sample feedback saved for this session only.')).toBeVisible();
   await page.getByRole('link', { name: 'Back to sample orders' }).click();
-  await page.getByRole('link', { name: 'sample-delivered', exact: true }).click();
+  await page.getByRole('link', { name: 'Fern House', exact: true }).click();
   await expect(comment).toHaveValue('A fictional review for the sample session.');
 });
 
-for (const width of [375, 1440]) {
+for (const width of [320, 360, 390, 768, 1024, 1440]) {
   for (const path of ['/cart', '/checkout?store=missing', '/account/orders', '/account/orders/sample-delivered', '/account/orders/missing']) {
     test(`${path} commerce is accessible at ${width}px`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 1000 });

@@ -4,6 +4,7 @@ test('production preview applies security headers and labels the release as mock
   const response = await request.get('/admin/orders/sample-order'); expect(response.ok()).toBe(true);
   const headers = response.headers();
   expect(headers['content-security-policy']).toContain("connect-src 'none'");
+  expect(headers['content-security-policy']).toContain("img-src 'self' data: https://images.unsplash.com");
   expect(headers['content-security-policy']).toContain("script-src 'self'");
   expect(headers['content-security-policy']).toContain("frame-ancestors 'none'");
   expect(headers['x-content-type-options']).toBe('nosniff'); expect(headers['x-frame-options']).toBe('DENY');
@@ -14,13 +15,13 @@ test('production preview applies security headers and labels the release as mock
 });
 
 test('preview blocks inline scripts and browser connections while the app remains usable', async ({ page, request }) => {
-  await page.goto('/products'); await expect(page.getByRole('heading', { name: /products/i, level: 1 })).toBeVisible();
+  await page.goto('/products'); await expect(page.getByRole('heading', { name: /products|sample catalog/i, level: 1 })).toBeVisible();
   expect((await request.get('/')).ok()).toBe(true);
   await page.addScriptTag({ content: "document.documentElement.dataset.inlineExecuted = 'yes'" }).catch(() => undefined);
   expect(await page.locator('html').getAttribute('data-inline-executed')).toBeNull();
   expect(await page.evaluate(async () => { try { await fetch('/'); return false; } catch { return true; } })).toBe(true);
   await page.getByRole('navigation', { name: 'Marketplace navigation' }).getByRole('link', { name: 'Shops', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1, name: /shops/i })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /shops|floral stores/i })).toBeVisible();
 });
 
 test('deep links reload in the correct shell without credentials or persistent demo state', async ({ page, context }) => {

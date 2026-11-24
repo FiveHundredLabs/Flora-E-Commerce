@@ -1,0 +1,3 @@
+import{useId,type ComponentProps,type ReactNode}from'react';
+export function Table({caption,children}:{caption:string;children:ReactNode}){const hint=useId();return <><p id={hint} className="field__hint">Scroll horizontally to see all columns on smaller screens.</p><div className="ui-table-scroll" role="region" aria-label={caption} aria-describedby={hint} tabIndex={0}><table className="ui-table"><caption>{caption}</caption>{children}</table></div></>}
+export function TableHead(props:ComponentProps<'th'>){return <th scope="col" {...props}/>};export function TableCell(props:ComponentProps<'td'>){return <td {...props}/>}

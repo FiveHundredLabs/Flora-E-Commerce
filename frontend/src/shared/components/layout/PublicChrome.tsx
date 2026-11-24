@@ -1,0 +1,120 @@
+import { useEffect, useId, useState, type FormEvent, type RefObject } from 'react';
+import { Heart, Search, ShoppingBag, UserRound, X } from 'lucide-react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router';
+import { categories, categoryNames, searchSchema } from '../../../features/discovery';
+
+const brand = { name: 'Flower & Flora', home: '/' } as const;
+
+type HeaderProps = {
+  cartCount: number;
+  wishlistCount: number;
+  cartOpen: boolean;
+  onCartToggle: () => void;
+  cartButtonRef: RefObject<HTMLButtonElement | null>;
+};
+
+export function PublicHeader({ cartCount, wishlistCount, cartOpen, onCartToggle, cartButtonRef }: HeaderProps) {
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [searchError, setSearchError] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const navigationId = useId();
+
+  useEffect(() => {
+    const nextQuery = location.pathname === '/products' ? new URLSearchParams(location.search).get('q') ?? '' : '';
+    setQuery(nextQuery);
+    setSearchError('');
+    setMobileSearchOpen(false);
+  }, [location.pathname, location.search]);
+
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const result = searchSchema.safeParse(query);
+    if (!result.success || !result.data) {
+      setSearchError(result.success ? 'Enter a search term.' : 'Use 100 characters or fewer.');
+      return;
+    }
+    setSearchError('');
+    navigate(`/products?q=${encodeURIComponent(result.data)}`);
+  }
+
+  function clearSearch() {
+    setQuery('');
+    setSearchError('');
+    if (location.pathname === '/products' && new URLSearchParams(location.search).has('q')) navigate('/products');
+  }
+
+  const search = () => <form className="public-search" role="search" onSubmit={submitSearch} noValidate>
+    <label className="sr-only" htmlFor={`${navigationId}-desktop-search`}>Search flowers and botanical products</label>
+    <div className="public-search__control">
+      <Search size={18} aria-hidden="true" />
+      <input id={`${navigationId}-desktop-search`} type="search" maxLength={101} value={query} onChange={(event) => { setQuery(event.target.value); setSearchError(''); }} aria-invalid={searchError ? true : undefined} aria-describedby={searchError ? `${navigationId}-desktop-error` : undefined} placeholder="Search flowers and products" />
+      {query && <button type="button" className="public-search__clear" aria-label="Clear search" onClick={clearSearch}><X size={16} aria-hidden="true" /></button>}
+      <button type="submit" className="public-search__submit">Search</button>
+    </div>
+    {searchError && <p className="public-search__error" id={`${navigationId}-desktop-error`}>{searchError}</p>}
+  </form>;
+
+  const primaryLinks = () => <>
+    <NavLink end to="/" className="public-nav__link public-nav__home">Home</NavLink>
+    <NavLink to="/products" className="public-nav__link">Products</NavLink>
+    <NavLink to="/shops" className="public-nav__link">Shops</NavLink>
+    <div className="public-nav__categories" aria-label="Shop by category">
+      <span>Categories</span>
+      <div>{categories.map((category) => {
+        const active = location.pathname === '/shops' && new URLSearchParams(location.search).get('category') === category;
+        return <Link key={category} to={`/shops?category=${category}`} aria-current={active ? 'page' : undefined}>{categoryNames[category]}</Link>;
+      })}</div>
+    </div>
+    <NavLink to="/about" className="public-nav__link">About</NavLink>
+    <NavLink to="/contact" className="public-nav__link">Contact</NavLink>
+    <NavLink to="/cart" aria-label="Cart" className="public-nav__link">Cart</NavLink>
+  </>;
+
+  return <header className="public-header">
+    <div className="public-header__bar">
+      <Link to={brand.home} className="public-brand" aria-label={`${brand.name} home`}>{brand.name}<span aria-hidden="true">.</span></Link>
+      <nav className="public-nav public-nav--desktop" aria-label="Marketplace navigation">{primaryLinks()}</nav>
+      <div className="public-header__actions">
+        <button type="button" className="public-action public-action--search-toggle" aria-label="Toggle search form" aria-expanded={mobileSearchOpen} onClick={() => setMobileSearchOpen((open) => !open)}><Search size={20} aria-hidden="true" /><span>Search</span></button>
+        <Link to="/account/orders" className="public-action" aria-label="Sample orders"><UserRound size={20} aria-hidden="true" /><span>Orders</span></Link>
+        <Link to="/wishlist" className="public-action public-action--wishlist" aria-label={`Wishlist with ${wishlistCount} items`}><Heart size={20} aria-hidden="true" /><span>Wishlist</span>{wishlistCount > 0 && <b aria-hidden="true">{wishlistCount}</b>}</Link>
+        <button ref={cartButtonRef} type="button" className="public-action" aria-label={`Shopping cart with ${cartCount} items`} aria-expanded={cartOpen} onClick={onCartToggle}><ShoppingBag size={20} aria-hidden="true" /><span>Cart</span>{cartCount > 0 && <b aria-hidden="true">{cartCount}</b>}</button>
+      </div>
+    </div>
+    <div className={`public-header__search ${mobileSearchOpen ? 'is-mobile-expanded' : ''}`}>{search()}</div>
+  </header>;
+}
+
+export function PublicFooter() {
+  return <footer className="public-footer">
+    <div className="public-footer__inner">
+      <div className="public-footer__brand-block">
+        <Link to={brand.home} className="public-footer__brand">{brand.name}<span aria-hidden="true">.</span></Link>
+        <p>A curated marketplace connecting you directly with independent flower shops and artisan florists.</p>
+      </div>
+      <nav aria-label="Shop links">
+        <h2>Discover</h2>
+        <Link to="/products">Shop flowers</Link>
+        <Link to="/shops">Explore shops</Link>
+        <Link to="/wishlist">Wishlist</Link>
+      </nav>
+      <nav aria-label="Information links">
+        <h2>Information</h2>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
+        <Link to="/account/orders">Sample orders</Link>
+      </nav>
+      <nav aria-label="Supplier links">
+        <h2>For suppliers</h2>
+        <Link to="/supplier">Supplier workspace</Link>
+        <Link to="/supplier/register">Sample registration</Link>
+      </nav>
+    </div>
+    <div className="public-footer__bottom">
+      <span>© {new Date().getFullYear()} Flower & Flora Marketplace</span>
+      <span>Handcrafted • Locally sourced • Fresh delivery</span>
+    </div>
+  </footer>;
+}

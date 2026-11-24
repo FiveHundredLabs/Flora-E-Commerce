@@ -1,30 +1,73 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
-import { Badge } from '../../shared/components/ui/Content';
+import { ArrowUpRight, MapPin } from 'lucide-react';
+import { Price, StatusTag } from '../../shared/components/ui/Feedback';
 import { Illustration } from './Illustration';
-import { ProductCard } from './ProductCard';
 import { categoryNames, locationNames, type Catalog, type Product, type Store } from './model';
+import { cartActions, useCartDispatch, openCartDrawer } from '../commerce';
 
 export function ProductCards({
   products,
   catalog,
-  viewMode = '3-col',
+  enableQuickAdd = false,
 }: {
   products: Product[];
   catalog: Catalog;
-  viewMode?: '3-col' | '4-col' | 'list';
+  enableQuickAdd?: boolean;
 }) {
+  const { pathname, search } = useLocation();
+  const dispatch = useCartDispatch();
+  const [addedMap, setAddedMap] = useState<Record<string, boolean>>({});
+
+  const handleQuickAdd = (p: Product, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(cartActions.add({ productSlug: p.slug, storeSlug: p.storeSlug }));
+    setAddedMap((prev) => ({ ...prev, [p.slug]: true }));
+    openCartDrawer();
+    setTimeout(() => {
+      setAddedMap((prev) => ({ ...prev, [p.slug]: false }));
+    }, 1500);
+  };
+
   return (
-    <ul className={`catalog-grid catalog-grid--${viewMode}`}>
-      {products.map((product, idx) => {
-        const storeName = catalog.stores.find((s) => s.slug === product.storeSlug)?.name;
-        const badgeType = idx % 3 === 0 ? 'sale' : idx % 3 === 1 ? 'new' : 'stock';
+    <ul className="discovery-card-grid">
+      {products.map((p) => {
+        const store = catalog.stores.find((s) => s.slug === p.storeSlug);
+        const url = `/products/${p.slug}${pathname === '/products' ? search : ''}`;
         return (
-          <li key={product.slug} className="catalog-grid-item">
-            <ProductCard
-              product={product}
-              storeName={storeName}
-              badgeType={badgeType}
-            />
+          <li key={p.slug}>
+            <article className="discovery-product-card">
+              <Link className="discovery-card-art" to={url} aria-label={`View ${p.name}`}>
+                <Illustration
+                  category={store?.categories[0] ?? 'bouquets'}
+                  slug={p.slug}
+                  alt={p.name}
+                />
+              </Link>
+              <div className="discovery-card-body">
+                <p className="discovery-card-kicker">Sample catalog item</p>
+                <h2><Link to={url}>{p.name}</Link></h2>
+                {store && <p>From <Link to={`/shops/${store.slug}`}>{store.name}</Link></p>}
+                <p>{p.description}</p>
+                <div className="discovery-product-facts">
+                  <Price />
+                  <StatusTag>Availability not connected</StatusTag>
+                </div>
+                {enableQuickAdd && (
+                  <div className="discovery-card-order-action">
+                    <button
+                      type="button"
+                      className={`discovery-quick-add-btn ${addedMap[p.slug] ? 'discovery-quick-add-btn--added' : ''}`}
+                      onClick={(e) => handleQuickAdd(p, e)}
+                      aria-label={`Add ${p.name} to order`}
+                    >
+                      {addedMap[p.slug] ? '✓ Added to order' : '+ Add to order'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </article>
           </li>
         );
       })}
@@ -35,43 +78,36 @@ export function ProductCards({
 export function StoreCards({ stores }: { stores: Store[] }) {
   const { pathname, search } = useLocation();
   return (
-    <ul className="catalog-grid catalog-grid--stores">
-      {stores.map((store) => (
-        <li key={store.slug} className="store-card">
-          <div className="store-card__banner">
-            <Illustration category={store.categories[0] ?? 'bouquets'} />
-            <Badge tone="new" className="store-card__badge">Verified Florist</Badge>
-          </div>
-          <div className="store-card__content">
-            <div className="store-card__avatar" aria-hidden="true">
-              <span>{store.name.slice(0, 2).toUpperCase()}</span>
-            </div>
-            <h3 className="store-card__title">
-              <Link to={`/shops/${store.slug}${pathname === '/shops' ? search : ''}`}>
-                {store.name}
+    <ul className="discovery-card-grid">
+      {stores.map((s) => {
+        const url = `/shops/${s.slug}${pathname === '/shops' ? search : ''}`;
+        return (
+          <li key={s.slug}>
+            <article className="discovery-store-card">
+              <Link className="discovery-card-art" to={url} aria-label={`Visit ${s.name}`}>
+                <Illustration
+                  category={s.categories[0] ?? 'bouquets'}
+                  slug={s.slug}
+                  alt={s.name}
+                />
               </Link>
-            </h3>
-            <p className="store-card__location">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              {locationNames[store.location]} · Artisanal Florist
-            </p>
-            <p className="store-card__desc">{store.description}</p>
-            <div className="store-card__tags">
-              {store.categories.map((c) => (
-                <span key={c} className="store-tag">{categoryNames[c]}</span>
-              ))}
-            </div>
-            <div className="store-card__footer">
-              <Link to={`/shops/${store.slug}${pathname === '/shops' ? search : ''}`} className="store-visit-btn">
-                Visit Floral Studio →
-              </Link>
-            </div>
-          </div>
-        </li>
-      ))}
+              <div className="discovery-card-body">
+                <p className="discovery-location"><MapPin size={16} aria-hidden="true" />{locationNames[s.location]}</p>
+                <h2><Link to={url}>{s.name}</Link></h2>
+                <p>{s.description}</p>
+                <ul className="discovery-categories" aria-label={`Shop categories for ${s.name}`}>
+                  {s.categories.map((c) => <li key={c}>{categoryNames[c]}</li>)}
+                </ul>
+                <div className="discovery-store-card__actions">
+                  <Link className="discovery-text-link" to={url}>
+                    Browse shop &amp; flowers <ArrowUpRight size={15} aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          </li>
+        );
+      })}
     </ul>
   );
 }

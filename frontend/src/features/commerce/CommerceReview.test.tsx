@@ -68,18 +68,19 @@ it('detaches old checkout navigation on store change but still reconciles its la
   }));
   const view = mount('/checkout?store=alpha', { ...service, place });
   const user = userEvent.setup();
-  await user.click(screen.getByRole('radio', { name: 'Delivery' }));
-  await user.selectOptions(screen.getByRole('combobox'), 'pickme');
+  expect(screen.getByRole('button', { name: 'Delivery unavailable' })).toBeDisabled();
+  expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
   await user.click(screen.getByRole('button', { name: 'Create sample order' }));
   act(() => view.navigate('/checkout?store=beta'));
-  expect(screen.getByRole('heading', { name: 'Beta Shop' })).toBeVisible();
-  expect(screen.getByRole('radio', { name: 'Store pickup' })).toBeChecked();
+  expect(screen.getByRole('heading', { name: /^Beta Shop$/ })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Pickup unavailable' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Delivery unavailable' })).toBeDisabled();
   expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Create sample order' })).toBeEnabled();
   await act(async () => { finish?.(); });
   await waitFor(() => expect(view.store.getState().cart.lines.map((line) => line.storeSlug)).toEqual(['beta']));
   await waitFor(() => expect(view.client.isMutating()).toBe(0));
-  expect(screen.getByRole('heading', { name: 'Beta Shop' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: /^Beta Shop$/ })).toBeVisible();
   expect(screen.queryByRole('heading', { name: 'Sample order', level: 1 })).not.toBeInTheDocument();
 });
 
@@ -129,7 +130,7 @@ it.each(['/account/orders', '/account/orders/delivered'])('distinguishes pending
   expect(screen.queryByText('private read details')).not.toBeInTheDocument();
   await userEvent.setup().click(screen.getByRole('button', { name: 'Try again' }));
   if (path.endsWith('delivered')) await screen.findByRole('textbox', { name: 'Sample feedback' });
-  else await screen.findByRole('link', { name: 'delivered' });
+  else await screen.findByRole('link', { name: 'Alpha Shop' });
   expect(orders).toHaveBeenCalledTimes(2);
 });
 
@@ -153,14 +154,14 @@ it.each([
   const service = createMockCommerceAdapter([]);
   mount('/account/orders', { ...service, orders: async () => value });
   expect(await screen.findByRole('alert')).toHaveTextContent('We couldn’t load');
-  expect(screen.queryByRole('link', { name: 'delivered' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Alpha Shop' })).not.toBeInTheDocument();
 });
 
 it.each([
   { delivered: false, canReview: true }, { delivered: true, canReview: false },
 ])('keeps feedback unavailable for delivered=$delivered capability=$canReview', async (flags) => {
   mount('/account/orders/delivered', createMockCommerceAdapter([{ ...delivered, ...flags }]));
-  expect(await screen.findByText(/Feedback is not available for this sample order/)).toBeVisible();
+  expect(await screen.findByText(/Feedback is unavailable/)).toBeVisible();
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
 });
 

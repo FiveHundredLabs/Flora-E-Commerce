@@ -4,6 +4,19 @@ Status: **partially resolved by project-owner confirmation on 2026-11-14**. Conf
 
 ## Owner-confirmed decisions — 2026-11-14
 
+### Redesign clarification — 2026-11-21
+
+The owner invoked the new `ui-redesign` brief: Botanical Editorial presentation
+replaces the existing visual design across all three audiences. Its five fixed
+brand colors and design system govern this migration (OD-09 visual direction);
+official identity, logo, licensed assets and category labels remain unconfirmed.
+The brief specifies one store per supplier and many-to-many shop categories,
+with no product-category association. The current discovery mock still has a
+product category field; its explicit migration is scheduled for redesign Phase 04.
+These decisions do not approve endpoint schemas, authentication, supplier approval,
+refund rules or other live capabilities. Phase 00 findings and current demo drift
+are recorded in `ui-redesign/REPOSITORY_AUDIT.md`.
+
 Decision maker: project owner (user), through this project's conversation. Approval applies to the specific choices below, not every earlier proposal.
 
 - **OD-02 — resolved business behavior (C-02, C-03, S-03):** Customers may accumulate items from multiple stores in the cart. Checkout operates separately for each store. Moving to another store must not replace or discard existing cart items. A checkout includes only the selected store's items; unrelated store groups remain available for later checkout. There is no combined multi-store checkout requiring automatic order splitting. Backend order creation, payment reconciliation and cart-update contracts remain pending.

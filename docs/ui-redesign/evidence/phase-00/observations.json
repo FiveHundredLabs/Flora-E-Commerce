@@ -1,0 +1,44 @@
+[
+  {
+    "route": "/",
+    "width": 360,
+    "overflow": false,
+    "images": 15,
+    "brokenImages": 15
+  },
+  {
+    "route": "/supplier",
+    "width": 360,
+    "overflow": false,
+    "images": 0,
+    "brokenImages": 0
+  },
+  {
+    "route": "/admin",
+    "width": 360,
+    "overflow": false,
+    "images": 0,
+    "brokenImages": 0
+  },
+  {
+    "route": "/",
+    "width": 1440,
+    "overflow": false,
+    "images": 15,
+    "brokenImages": 15
+  },
+  {
+    "route": "/supplier",
+    "width": 1440,
+    "overflow": false,
+    "images": 0,
+    "brokenImages": 0
+  },
+  {
+    "route": "/admin",
+    "width": 1440,
+    "overflow": false,
+    "images": 0,
+    "brokenImages": 0
+  }
+]

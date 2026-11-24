@@ -1,9 +1,18 @@
 import { z } from 'zod';
 
 // MOCK UI vocabulary only. Replace with approved DTOs before live integration.
-export const categories = ['bouquets', 'plants', 'stems'] as const;
+export const categories = ['bouquets', 'plants', 'stems', 'roses', 'orchids', 'gift-sets', 'wedding-flowers', 'dried-flowers'] as const;
 export const locations = ['colombo', 'kandy'] as const;
-export const categoryNames = { bouquets: 'Bouquets', plants: 'Plants', stems: 'Stems' };
+export const categoryNames = {
+  bouquets: 'Bouquets',
+  plants: 'Plants',
+  stems: 'Stems',
+  roses: 'Roses',
+  orchids: 'Orchids',
+  'gift-sets': 'Gift Sets',
+  'wedding-flowers': 'Wedding Flowers',
+  'dried-flowers': 'Dried Flowers',
+} satisfies Record<typeof categories[number], string>;
 export const locationNames = { colombo: 'Colombo', kandy: 'Kandy' };
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 export const storeSchema = z.object({
@@ -11,7 +20,7 @@ export const storeSchema = z.object({
   location: z.enum(locations), categories: z.array(z.enum(categories)).min(1),
 });
 export const productSchema = z.object({
-  slug, storeSlug: slug, name: z.string().min(1), description: z.string().min(1), category: z.enum(categories),
+  slug, storeSlug: slug, name: z.string().min(1), description: z.string().min(1),
 });
 export const catalogSchema = z.object({ stores: z.array(storeSchema), products: z.array(productSchema) }).superRefine((catalog, context) => {
   const stores = new Set(catalog.stores.map((store) => store.slug));
@@ -29,12 +38,13 @@ const filterSchemas = {
   q: searchSchema,
   category: z.enum(['', ...categories]),
   location: z.enum(['', ...locations]),
+  store: z.union([z.literal(''), slug]),
   sort: z.enum(['name-asc', 'name-desc']),
 };
-export type Filters = { q: string; category: '' | typeof categories[number]; location: '' | typeof locations[number]; sort: 'name-asc' | 'name-desc' };
-export const defaultFilters: Filters = { q: '', category: '', location: '', sort: 'name-asc' };
+export type Filters = { q: string; category: '' | typeof categories[number]; location: '' | typeof locations[number]; store: string; sort: 'name-asc' | 'name-desc' };
+export const defaultFilters: Filters = { q: '', category: '', location: '', store: '', sort: 'name-asc' };
 
-export function readFilters(params: URLSearchParams): { filters: Filters; invalid: boolean } {
+export function readFilters(params: URLSearchParams, kind?: Kind): { filters: Filters; invalid: boolean } {
   let invalid = false;
   function field<K extends keyof Filters>(key: K): Filters[K] {
     const values = params.getAll(key);
@@ -42,7 +52,10 @@ export function readFilters(params: URLSearchParams): { filters: Filters; invali
     if (values.length > 1 || !result.success) { invalid = true; return defaultFilters[key]; }
     return result.data as Filters[K];
   }
-  return { filters: { q: field('q'), category: field('category'), location: field('location'), sort: field('sort') }, invalid };
+  const filters = { q: field('q'), category: field('category'), location: field('location'), store: field('store'), sort: field('sort') };
+  if (kind === 'products' && filters.category) { filters.category = ''; invalid = true; }
+  if (kind === 'shops' && filters.store) { filters.store = ''; invalid = true; }
+  return { filters, invalid };
 }
 
 export function writeFilters(filters: Filters): URLSearchParams {
@@ -64,7 +77,7 @@ export function selectProducts(catalog: Catalog, filters: Filters, storeSlug?: s
   const query = filters.q.toLowerCase();
   return catalog.products.filter((product) => (!storeSlug || product.storeSlug === storeSlug)
     && (!query || `${product.name} ${product.description}`.toLowerCase().includes(query))
-    && (!filters.category || product.category === filters.category)
+    && (!filters.store || product.storeSlug === filters.store)
     && (!filters.location || catalog.stores.find((store) => store.slug === product.storeSlug)?.location === filters.location))
     .sort((a, b) => filters.sort === 'name-desc' ? b.name.localeCompare(a.name, 'en') : a.name.localeCompare(b.name, 'en'));
 }

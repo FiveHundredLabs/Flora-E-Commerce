@@ -5,24 +5,28 @@ import { describe, it, expect } from 'vitest';
 import { App } from './App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 describe('foundation routes', () => {
-  it('clearly labels the sample catalog entry points', () => {
-    render(<MemoryRouter><App /></MemoryRouter>);
-    expect(screen.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
-    expect(screen.getByText(/All shops and products shown are fictional/)).toBeVisible();
-    expect(screen.getByRole('link', { name: 'Browse sample shops' })).toHaveAttribute('href', '/shops');
+  function renderApp(initialEntries: string[] = ['/']) {
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
+    return render(<QueryClientProvider client={client}><MemoryRouter initialEntries={initialEntries}><App /></MemoryRouter></QueryClientProvider>);
+  }
+
+  it('clearly labels the catalog entry points', () => {
+    renderApp();
+    expect(screen.getByRole('heading', { name: 'Flowers, thoughtfully gathered.' })).toBeVisible();
+    expect(screen.getAllByRole('link', { name: 'Discover shops' })[0]).toHaveAttribute('href', '/shops');
   });
 
   it('recovers from unknown routes using client navigation', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter initialEntries={['/missing']}><App /></MemoryRouter>);
+    renderApp(['/missing']);
     await user.click(screen.getByRole('link', { name: 'Return home' }));
-    expect(screen.getByRole('heading', { name: 'Welcome to Flower & Flora' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Flowers, thoughtfully gathered.' })).toBeVisible();
     expect(screen.getByRole('main')).toHaveFocus();
-    expect(document.title).toBe('Welcome to Flower & Flora | Flower & Flora');
+    expect(document.title).toBe('Flower & Flora Marketplace | Flower & Flora');
   });
 
   it('does not steal keyboard focus on initial entry', () => {
-    render(<MemoryRouter><App /></MemoryRouter>);
+    renderApp();
     expect(screen.getByRole('main')).not.toHaveFocus();
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main');
   });

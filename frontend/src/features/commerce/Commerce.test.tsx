@@ -42,15 +42,16 @@ it('renders empty cart and independently grouped stores with validated quantitie
   expect(screen.getByRole('region', { name: 'Beta Shop' })).toBeVisible();
 });
 
-it('checks out only one store, validates delivery intent and never treats query parameters as payment proof', async () => {
+it('checks out only one store, disables unsupported fulfilment choices and never implies payment', async () => {
   const store = filledCart(); const service = createMockCommerceAdapter([]); mount('/checkout?store=alpha', service, store);
   const checkout = screen.getByRole('region', { name: 'Selected shop checkout' });
   expect(within(checkout).queryByText('Sample Beta')).not.toBeInTheDocument();
-  const user = userEvent.setup(); await user.click(screen.getByRole('radio', { name: 'Delivery' }));
-  await user.click(screen.getByRole('button', { name: 'Create sample order' }));
-  expect(screen.getByRole('combobox')).toHaveFocus();
-  await user.selectOptions(screen.getByRole('combobox'), 'pickme');
-  expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid');
+  expect(screen.getByRole('button', { name: 'Pickup unavailable' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Delivery unavailable' })).toBeDisabled();
+  expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+  expect(screen.getByText('No payment intent will be created.')).toBeVisible();
+  expect(within(checkout).getAllByText('Unavailable')).toHaveLength(3);
+  const user = userEvent.setup();
   await user.click(screen.getByRole('button', { name: 'Create sample order' }));
   expect(await screen.findByText('PayHere is not connected. No payment has been requested.')).toBeVisible();
   expect(store.getState().cart.lines.map((line) => line.storeSlug)).toEqual(['beta']);
