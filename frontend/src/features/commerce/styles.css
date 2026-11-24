@@ -11,3 +11,41 @@
 @media(max-width:800px){.commerce-hero,.customer-hero{grid-template-columns:1fr}.commerce-hero>p:last-child,.customer-hero>p:last-child{grid-column:1;grid-row:auto}.commerce-notice{display:grid}.cart-item{grid-template-columns:5rem minmax(0,1fr)}.cart-item__remove{grid-column:2}.cart-store__footer,.checkout-layout,.checkout-unavailable-grid,.customer-empty,.wishlist-grid>li,.order-detail-grid{grid-template-columns:1fr}.cart-store__footer>div:last-child{text-align:left}.checkout-summary{position:static;grid-row:1}.cart-store__header{align-items:start}.commerce-page,.customer-page{width:calc(100% - 2rem)}.wishlist-card__visual{min-height:15rem;border-inline-end:0;border-block-end:1px solid var(--border)}}
 @media(max-width:420px){.cart-item{grid-template-columns:1fr}.cart-item__visual{width:5rem}.cart-item__remove{grid-column:1;justify-self:start}.cart-quantity__controls{display:grid;grid-template-columns:auto 5rem auto}.cart-quantity__controls .button:last-child{grid-column:1/-1}.checkout-step{padding:1rem}.checkout-step>header>span{flex:0 0 auto}.order-list>li{grid-template-columns:auto 1fr}.order-card__link{grid-column:1/-1}.wishlist-card__actions .button{width:100%;justify-content:center}}
 @media(forced-colors:active){.commerce-feedback textarea[aria-invalid='true'],.cart-store,.checkout-step,.checkout-summary,.wishlist-grid>li,.order-list>li,.order-detail-card,.feedback-card{border:2px solid CanvasText}}
+
+/* Compact, touch-safe cart composition for narrow storefront viewports. */
+@media(max-width:520px){
+  .commerce-cart-page{padding-top:1rem}
+  .commerce-cart-page .commerce-hero{gap:.65rem;padding:.75rem 0 1.25rem;align-items:start}
+  .commerce-cart-page .commerce-hero .commerce-eyebrow{margin:0}
+  .commerce-cart-page .commerce-hero h1{font-size:clamp(2.5rem,12vw,3.25rem);line-height:.94}
+  .commerce-cart-page .commerce-hero>p:last-child{margin:.15rem 0 0;font-size:.95rem;line-height:1.45}
+  .commerce-cart-page .commerce-notice{gap:.45rem;margin:.75rem 0 1rem;padding:.7rem 0}
+  .commerce-cart-page .commerce-notice .badge{justify-self:start;font-size:.72rem}
+  .commerce-cart-page .commerce-notice p{font-size:.82rem;line-height:1.4}
+  .commerce-cart-page .commerce-empty{padding:1.25rem}
+  .commerce-cart-page .commerce-empty .button{width:100%;justify-content:center}
+  .commerce-cart-page .cart-store-list{gap:1rem}
+  .commerce-cart-page .cart-store{border-radius:.7rem;overflow:hidden}
+  .commerce-cart-page .cart-store__header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.75rem;align-items:start;padding:1rem}
+  .commerce-cart-page .cart-store__header .commerce-eyebrow{margin-bottom:.35rem;font-size:.65rem}
+  .commerce-cart-page .cart-store__header h2{font-size:1.7rem;line-height:1.05}
+  .commerce-cart-page .cart-store__header>p{margin:0;font-size:.82rem;white-space:nowrap}
+  .commerce-cart-page .cart-item{grid-template-columns:4.5rem minmax(0,1fr);grid-template-rows:auto auto;gap:.6rem .75rem;padding:1rem}
+  .commerce-cart-page .cart-item__visual{grid-column:1;grid-row:1;width:100%;font-size:2rem}
+  .commerce-cart-page .cart-item__content{grid-column:2;grid-row:1 / span 2;min-width:0}
+  .commerce-cart-page .cart-item__content .commerce-eyebrow{margin-bottom:.25rem;font-size:.6rem;letter-spacing:.09em}
+  .commerce-cart-page .cart-item__content h3{margin:.15rem 0;font-size:1.25rem;line-height:1.15;overflow-wrap:anywhere}
+  .commerce-cart-page .cart-item__content>p{margin:.35rem 0;font-size:.8rem;line-height:1.4}
+  .commerce-cart-page .cart-item__remove{grid-column:1;grid-row:2;align-self:start;justify-self:stretch;min-width:0;padding:.35rem;font-size:.72rem;gap:.25rem}
+  .commerce-cart-page .cart-quantity{margin-top:.75rem}
+  .commerce-cart-page .cart-quantity__label{margin-bottom:.3rem;font-size:.82rem}
+  .commerce-cart-page .cart-quantity__controls{display:grid;grid-template-columns:44px minmax(48px,1fr) 44px;gap:.25rem}
+  .commerce-cart-page .cart-quantity .field{width:auto;min-width:0}
+  .commerce-cart-page .cart-quantity input{width:100%;min-height:44px;padding:.25rem}
+  .commerce-cart-page .cart-quantity__controls .button:last-child{grid-column:1/-1;width:100%}
+  .commerce-cart-page .cart-quantity .field__error{width:auto;font-size:.78rem;line-height:1.35}
+  .commerce-cart-page .cart-store__footer{gap:1rem;padding:1rem}
+  .commerce-cart-page .cart-store__footer strong{font-size:1.2rem}
+  .commerce-cart-page .cart-store__footer p{font-size:.82rem;line-height:1.4}
+  .commerce-cart-page .cart-store__footer .button{width:100%;justify-content:center}
+}

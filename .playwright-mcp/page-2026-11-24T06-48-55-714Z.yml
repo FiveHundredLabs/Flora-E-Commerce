@@ -1,0 +1,240 @@
+- generic [ref=f5e3]:
+  - link "Skip to content" [ref=f5e4] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f5e5]:
+    - generic [ref=f5e6]:
+      - link "Flower & Flora home" [ref=f5e7] [cursor=pointer]:
+        - /url: /
+        - text: Flower & Flora.
+      - generic [ref=f5e8]:
+        - button "Toggle search form" [ref=f5e9] [cursor=pointer]:
+          - generic [ref=f5e13]: Search
+        - link "Sample orders" [ref=f5e14] [cursor=pointer]:
+          - /url: /account/orders
+          - generic [ref=f5e18]: Orders
+        - button "Shopping cart with 0 items" [ref=f5e19] [cursor=pointer]:
+          - generic [ref=f5e23]: Cart
+  - main [ref=f5e25]:
+    - generic [ref=f5e26]:
+      - generic [ref=f5e27]:
+        - navigation "Breadcrumb" [ref=f5e28]:
+          - list [ref=f5e29]:
+            - listitem [ref=f5e30]:
+              - link "Home" [ref=f5e31] [cursor=pointer]:
+                - /url: /
+              - generic [aria-hidden] [ref=f5e32]: /
+            - listitem [ref=f5e33]:
+              - generic [ref=f5e34]: Products
+        - paragraph [ref=f5e35]: Marketplace discovery
+        - heading "Explore the sample catalog" [level=1] [ref=f5e36]
+        - paragraph [ref=f5e37]: Browse fictional product records with their owning store kept visible. Products are not assigned shop categories.
+      - complementary "Development catalog notice" [ref=f5e38]:
+        - strong [ref=f5e39]: Development fixture
+        - generic [ref=f5e40]: Fictional records; no live prices, stock, ratings, delivery, payment or purchases.
+      - generic [ref=f5e41]:
+        - button "Filters" [ref=f5e42] [cursor=pointer]
+        - region "Catalog products" [ref=f5e44]:
+          - generic [ref=f5e45]:
+            - generic [ref=f5e46]:
+              - paragraph [ref=f5e47]: Directory results
+              - heading "Catalog products" [level=2] [ref=f5e48]
+            - generic [ref=f5e49]:
+              - text: Sort by
+              - combobox "Sort by" [ref=f5e50]:
+                - 'option "Name: A–Z" [selected]'
+                - 'option "Name: Z–A"'
+          - status [ref=f5e51]: 8 products found
+          - region "Product results" [ref=f5e53]:
+            - heading "Product results" [level=2] [ref=f5e54]
+            - list [ref=f5e55]:
+              - listitem [ref=f5e56]:
+                - article [ref=f5e57]:
+                  - link "View Afternoon Flowers" [ref=f5e58] [cursor=pointer]:
+                    - /url: /products/afternoon-flowers
+                    - img "Afternoon Flowers" [ref=f5e59]
+                  - generic [ref=f5e60]:
+                    - paragraph [ref=f5e61]: Sample catalog item
+                    - heading [level=2] [ref=f5e62]:
+                      - link "Afternoon Flowers" [ref=f5e63] [cursor=pointer]:
+                        - /url: /products/afternoon-flowers
+                    - paragraph [ref=f5e64]:
+                      - text: From
+                      - link "Garden Notes" [ref=f5e65] [cursor=pointer]:
+                        - /url: /shops/garden-notes
+                    - paragraph [ref=f5e66]: An illustrated sample bouquet for exploring the marketplace.
+                    - generic [ref=f5e67]:
+                      - generic [ref=f5e68]: Price unavailable
+                      - generic [ref=f5e69]: Availability not connected
+              - listitem [ref=f5e70]:
+                - article [ref=f5e71]:
+                  - link "View Garden Stems" [ref=f5e72] [cursor=pointer]:
+                    - /url: /products/garden-stems
+                    - img "Garden Stems" [ref=f5e73]
+                  - generic [ref=f5e74]:
+                    - paragraph [ref=f5e75]: Sample catalog item
+                    - heading [level=2] [ref=f5e76]:
+                      - link "Garden Stems" [ref=f5e77] [cursor=pointer]:
+                        - /url: /products/garden-stems
+                    - paragraph [ref=f5e78]:
+                      - text: From
+                      - link "Garden Notes" [ref=f5e79] [cursor=pointer]:
+                        - /url: /shops/garden-notes
+                    - paragraph [ref=f5e80]: A fictional selection of stems with an open garden feel.
+                    - generic [ref=f5e81]:
+                      - generic [ref=f5e82]: Price unavailable
+                      - generic [ref=f5e83]: Availability not connected
+              - listitem [ref=f5e84]:
+                - article [ref=f5e85]:
+                  - link "View Gathered Stems" [ref=f5e86] [cursor=pointer]:
+                    - /url: /products/gathered-stems
+                    - img "Gathered Stems" [ref=f5e87]
+                  - generic [ref=f5e88]:
+                    - paragraph [ref=f5e89]: Sample catalog item
+                    - heading [level=2] [ref=f5e90]:
+                      - link "Gathered Stems" [ref=f5e91] [cursor=pointer]:
+                        - /url: /products/gathered-stems
+                    - paragraph [ref=f5e92]:
+                      - text: From
+                      - link "Willow & Stem" [ref=f5e93] [cursor=pointer]:
+                        - /url: /shops/willow-stem
+                    - paragraph [ref=f5e94]: A sample arrangement of individual garden stems, shown for catalog exploration.
+                    - generic [ref=f5e95]:
+                      - generic [ref=f5e96]: Price unavailable
+                      - generic [ref=f5e97]: Availability not connected
+              - listitem [ref=f5e98]:
+                - article [ref=f5e99]:
+                  - link "View Leafy Companion" [ref=f5e100] [cursor=pointer]:
+                    - /url: /products/leafy-companion
+                    - img "Leafy Companion" [ref=f5e101]
+                  - generic [ref=f5e102]:
+                    - paragraph [ref=f5e103]: Sample catalog item
+                    - heading [level=2] [ref=f5e104]:
+                      - link "Leafy Companion" [ref=f5e105] [cursor=pointer]:
+                        - /url: /products/leafy-companion
+                    - paragraph [ref=f5e106]:
+                      - text: From
+                      - link "Fern House" [ref=f5e107] [cursor=pointer]:
+                        - /url: /shops/fern-house
+                    - paragraph [ref=f5e108]: A sample potted plant with a simple, sculptural shape.
+                    - generic [ref=f5e109]:
+                      - generic [ref=f5e110]: Price unavailable
+                      - generic [ref=f5e111]: Availability not connected
+              - listitem [ref=f5e112]:
+                - article [ref=f5e113]:
+                  - link "View Little Fern" [ref=f5e114] [cursor=pointer]:
+                    - /url: /products/little-fern
+                    - img "Little Fern" [ref=f5e115]
+                  - generic [ref=f5e116]:
+                    - paragraph [ref=f5e117]: Sample catalog item
+                    - heading [level=2] [ref=f5e118]:
+                      - link "Little Fern" [ref=f5e119] [cursor=pointer]:
+                        - /url: /products/little-fern
+                    - paragraph [ref=f5e120]:
+                      - text: From
+                      - link "Fern House" [ref=f5e121] [cursor=pointer]:
+                        - /url: /shops/fern-house
+                    - paragraph [ref=f5e122]: A fictional leafy plant for a little corner of green.
+                    - generic [ref=f5e123]:
+                      - generic [ref=f5e124]: Price unavailable
+                      - generic [ref=f5e125]: Availability not connected
+              - listitem [ref=f5e126]:
+                - article [ref=f5e127]:
+                  - link "View Morning Bouquet" [ref=f5e128] [cursor=pointer]:
+                    - /url: /products/morning-bouquet
+                    - img "Morning Bouquet" [ref=f5e129]
+                  - generic [ref=f5e130]:
+                    - paragraph [ref=f5e131]: Sample catalog item
+                    - heading [level=2] [ref=f5e132]:
+                      - link "Morning Bouquet" [ref=f5e133] [cursor=pointer]:
+                        - /url: /products/morning-bouquet
+                    - paragraph [ref=f5e134]:
+                      - text: From
+                      - link "Willow & Stem" [ref=f5e135] [cursor=pointer]:
+                        - /url: /shops/willow-stem
+                    - paragraph [ref=f5e136]: An illustrated sample bouquet of open blooms and soft foliage. This is not an item offered for sale.
+                    - generic [ref=f5e137]:
+                      - generic [ref=f5e138]: Price unavailable
+                      - generic [ref=f5e139]: Availability not connected
+              - listitem [ref=f5e140]:
+                - article [ref=f5e141]:
+                  - link "View Quiet Blooms" [ref=f5e142] [cursor=pointer]:
+                    - /url: /products/quiet-blooms
+                    - img "Quiet Blooms" [ref=f5e143]
+                  - generic [ref=f5e144]:
+                    - paragraph [ref=f5e145]: Sample catalog item
+                    - heading [level=2] [ref=f5e146]:
+                      - link "Quiet Blooms" [ref=f5e147] [cursor=pointer]:
+                        - /url: /products/quiet-blooms
+                    - paragraph [ref=f5e148]:
+                      - text: From
+                      - link "The Petal Room" [ref=f5e149] [cursor=pointer]:
+                        - /url: /shops/petal-room
+                    - paragraph [ref=f5e150]: A fictional bouquet inspired by gentle flower shapes.
+                    - generic [ref=f5e151]:
+                      - generic [ref=f5e152]: Price unavailable
+                      - generic [ref=f5e153]: Availability not connected
+              - listitem [ref=f5e154]:
+                - article [ref=f5e155]:
+                  - link "View Table Garden" [ref=f5e156] [cursor=pointer]:
+                    - /url: /products/table-garden
+                    - img "Table Garden" [ref=f5e157]
+                  - generic [ref=f5e158]:
+                    - paragraph [ref=f5e159]: Sample catalog item
+                    - heading [level=2] [ref=f5e160]:
+                      - link "Table Garden" [ref=f5e161] [cursor=pointer]:
+                        - /url: /products/table-garden
+                    - paragraph [ref=f5e162]:
+                      - text: From
+                      - link "The Petal Room" [ref=f5e163] [cursor=pointer]:
+                        - /url: /shops/petal-room
+                    - paragraph [ref=f5e164]: A sample small potted garden, illustrated rather than photographed.
+                    - generic [ref=f5e165]:
+                      - generic [ref=f5e166]: Price unavailable
+                      - generic [ref=f5e167]: Availability not connected
+  - navigation "Mobile Navigation" [ref=f5e168]:
+    - link "Home" [ref=f5e169] [cursor=pointer]:
+      - /url: /
+    - link "Products" [ref=f5e175] [cursor=pointer]:
+      - /url: /products
+      - generic [ref=f5e180]: Flowers
+    - link "Florist Shops" [ref=f5e181] [cursor=pointer]:
+      - /url: /shops
+      - generic [ref=f5e187]: Shops
+    - link "Wishlist with 0 items" [ref=f5e188] [cursor=pointer]:
+      - /url: /wishlist
+      - generic [ref=f5e192]: Wishlist
+    - link "Shopping cart with 0 items" [ref=f5e193] [cursor=pointer]:
+      - /url: /cart
+      - generic [ref=f5e198]: Cart
+  - contentinfo [ref=f5e199]:
+    - generic [ref=f5e200]:
+      - generic [ref=f5e201]:
+        - link "Flower & Flora" [ref=f5e202] [cursor=pointer]:
+          - /url: /
+          - text: Flower & Flora.
+        - paragraph [ref=f5e203]: A curated marketplace connecting you directly with independent flower shops and artisan florists.
+      - navigation "Shop links" [ref=f5e204]:
+        - heading "Discover" [level=2] [ref=f5e205]
+        - link "Shop flowers" [ref=f5e206] [cursor=pointer]:
+          - /url: /products
+        - link "Explore shops" [ref=f5e207] [cursor=pointer]:
+          - /url: /shops
+        - link "Wishlist" [ref=f5e208] [cursor=pointer]:
+          - /url: /wishlist
+      - navigation "Information links" [ref=f5e209]:
+        - heading "Information" [level=2] [ref=f5e210]
+        - link "About" [ref=f5e211] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=f5e212] [cursor=pointer]:
+          - /url: /contact
+        - link "Sample orders" [ref=f5e213] [cursor=pointer]:
+          - /url: /account/orders
+      - navigation "Supplier links" [ref=f5e214]:
+        - heading "For suppliers" [level=2] [ref=f5e215]
+        - link "Supplier workspace" [ref=f5e216] [cursor=pointer]:
+          - /url: /supplier
+        - link "Sample registration" [ref=f5e217] [cursor=pointer]:
+          - /url: /supplier/register
+    - generic [ref=f5e218]:
+      - generic [ref=f5e219]: © 2026 Flower & Flora Marketplace
+      - generic [ref=f5e220]: Handcrafted • Locally sourced • Fresh delivery

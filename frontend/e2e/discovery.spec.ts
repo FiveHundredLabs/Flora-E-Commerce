@@ -65,3 +65,14 @@ test('mobile filter dialog applies and clears filters then returns focus', async
   await expect(trigger).toBeFocused();
   await expect(page).toHaveURL(/\/shops$/);
 });
+
+for (const width of [320, 360, 390]) {
+  test(`product discovery exposes controls near the first fold at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto('/products');
+    await expect(page.getByRole('heading', { name: 'Explore the sample catalog' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeInViewport();
+    await expect(page.getByRole('heading', { name: 'Catalog products' })).toBeInViewport();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+}

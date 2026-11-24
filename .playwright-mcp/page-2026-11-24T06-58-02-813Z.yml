@@ -1,0 +1,108 @@
+- generic [ref=f6e3]:
+  - link "Skip to content" [ref=f6e4] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f6e5]:
+    - generic [ref=f6e6]:
+      - link "Flower & Flora home" [ref=f6e7] [cursor=pointer]:
+        - /url: /
+        - text: Flower & Flora.
+      - generic [ref=f6e8]:
+        - button "Toggle search form" [ref=f6e9] [cursor=pointer]:
+          - generic [ref=f6e13]: Search
+        - link "Sample orders" [ref=f6e14] [cursor=pointer]:
+          - /url: /account/orders
+          - generic [ref=f6e18]: Orders
+        - button "Shopping cart with 1 items" [ref=f6e326] [cursor=pointer]:
+          - generic [ref=f6e23]: Cart
+          - generic [aria-hidden] [ref=f6e327]: "1"
+  - main [active] [ref=f6e25]:
+    - main [ref=f6e362]:
+      - generic [ref=f6e363]:
+        - paragraph [ref=f6e364]: Store-separated checkout
+        - heading "Sample cart" [level=1] [ref=f6e365]
+        - paragraph [ref=f6e366]: 1 item across 1 store. Each store checks out independently.
+      - generic [ref=f6e367]:
+        - generic [ref=f6e368]: Sample commerce · MOCK
+        - paragraph [ref=f6e369]: No real orders, charges, reservations or delivery bookings. Cart, orders and feedback reset when this page is refreshed.
+      - region "Willow & Stem" [ref=f6e371]:
+        - generic [ref=f6e372]:
+          - generic [ref=f6e373]:
+            - paragraph [ref=f6e374]: Supplier store
+            - heading [level=2] [ref=f6e379]:
+              - link "Willow & Stem" [ref=f6e380] [cursor=pointer]:
+                - /url: /shops/willow-stem
+          - paragraph [ref=f6e381]: 1 item
+        - list [ref=f6e382]:
+          - listitem [ref=f6e383]:
+            - img "Product image unavailable" [ref=f6e384]: M
+            - generic [ref=f6e385]:
+              - paragraph [ref=f6e386]: Sample catalog item
+              - heading [level=3] [ref=f6e387]:
+                - link "Morning Bouquet" [ref=f6e388] [cursor=pointer]:
+                  - /url: /products/morning-bouquet
+              - paragraph [ref=f6e389]: Variant, add-on, unit price and stock data are not connected.
+              - generic [ref=f6e390]:
+                - generic [ref=f6e391]: Quantity
+                - generic [ref=f6e392]:
+                  - button "Decrease quantity of Morning Bouquet" [disabled] [ref=f6e393]
+                  - generic [ref=f6e395]:
+                    - generic [ref=f6e396]: Quantity for Morning Bouquet
+                    - spinbutton "Quantity for Morning Bouquet" [ref=f6e397]: "1"
+                  - button "Increase quantity of Morning Bouquet" [ref=f6e398] [cursor=pointer]
+                  - button "Update quantity for Morning Bouquet" [ref=f6e400] [cursor=pointer]: Update
+            - button "Remove Morning Bouquet" [ref=f6e401] [cursor=pointer]: Remove
+        - generic [ref=f6e405]:
+          - generic [ref=f6e406]:
+            - generic [ref=f6e407]: Store subtotal
+            - strong [ref=f6e408]: Unavailable
+            - paragraph [ref=f6e409]: No verified prices, tax, fees or totals exist in the current contract.
+          - link "Checkout this store" [ref=f6e411] [cursor=pointer]:
+            - /url: /checkout?store=willow-stem
+  - navigation "Mobile Navigation" [ref=f6e39]:
+    - link "Home" [ref=f6e40] [cursor=pointer]:
+      - /url: /
+    - link "Products" [ref=f6e46] [cursor=pointer]:
+      - /url: /products
+      - generic [ref=f6e51]: Flowers
+    - link "Florist Shops" [ref=f6e52] [cursor=pointer]:
+      - /url: /shops
+      - generic [ref=f6e58]: Shops
+    - link "Wishlist with 0 items" [ref=f6e59] [cursor=pointer]:
+      - /url: /wishlist
+      - generic [ref=f6e63]: Wishlist
+    - link "Shopping cart with 1 items" [ref=f6e329] [cursor=pointer]:
+      - /url: /cart
+      - generic [aria-hidden] [ref=f6e330]: "1"
+      - generic [ref=f6e69]: Cart
+  - contentinfo [ref=f6e70]:
+    - generic [ref=f6e71]:
+      - generic [ref=f6e72]:
+        - link "Flower & Flora" [ref=f6e73] [cursor=pointer]:
+          - /url: /
+          - text: Flower & Flora.
+        - paragraph [ref=f6e74]: A curated marketplace connecting you directly with independent flower shops and artisan florists.
+      - navigation "Shop links" [ref=f6e75]:
+        - heading "Discover" [level=2] [ref=f6e76]
+        - link "Shop flowers" [ref=f6e77] [cursor=pointer]:
+          - /url: /products
+        - link "Explore shops" [ref=f6e78] [cursor=pointer]:
+          - /url: /shops
+        - link "Wishlist" [ref=f6e79] [cursor=pointer]:
+          - /url: /wishlist
+      - navigation "Information links" [ref=f6e80]:
+        - heading "Information" [level=2] [ref=f6e81]
+        - link "About" [ref=f6e82] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=f6e83] [cursor=pointer]:
+          - /url: /contact
+        - link "Sample orders" [ref=f6e84] [cursor=pointer]:
+          - /url: /account/orders
+      - navigation "Supplier links" [ref=f6e85]:
+        - heading "For suppliers" [level=2] [ref=f6e86]
+        - link "Supplier workspace" [ref=f6e87] [cursor=pointer]:
+          - /url: /supplier
+        - link "Sample registration" [ref=f6e88] [cursor=pointer]:
+          - /url: /supplier/register
+    - generic [ref=f6e89]:
+      - generic [ref=f6e90]: © 2026 Flower & Flora Marketplace
+      - generic [ref=f6e91]: Handcrafted • Locally sourced • Fresh delivery

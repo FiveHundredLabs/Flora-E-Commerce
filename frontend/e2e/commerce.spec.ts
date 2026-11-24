@@ -56,6 +56,25 @@ test('sample delivered feedback validates, saves locally and ignores payment que
   await expect(comment).toHaveValue('A fictional review for the sample session.');
 });
 
+for (const width of [320, 360, 390]) {
+  test(`filled cart remains compact and touch-safe at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto('/products/morning-bouquet');
+    await page.getByRole('button', { name: 'Add to sample cart' }).click();
+    await page.getByRole('button', { name: /Shopping cart with 1 items/ }).click();
+    await page.getByRole('link', { name: 'Review full sample cart' }).click();
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(page.getByRole('heading', { name: 'Sample cart' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Willow & Stem' })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    const controls = page.getByRole('region', { name: 'Willow & Stem' }).getByRole('button');
+    for (let index = 0; index < await controls.count(); index += 1) {
+      const box = await controls.nth(index).boundingBox();
+      expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+    }
+  });
+}
+
 for (const width of [320, 360, 390, 768, 1024, 1440]) {
   for (const path of ['/cart', '/checkout?store=missing', '/account/orders', '/account/orders/sample-delivered', '/account/orders/missing']) {
     test(`${path} commerce is accessible at ${width}px`, async ({ page }, testInfo) => {
