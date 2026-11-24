@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { ArrowUpRight, MapPin } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, Clock, MapPin, ShoppingBag, Sparkles, Tag, Truck } from 'lucide-react';
 import { AsyncRegion } from '../shared/components/AsyncRegion';
 import { Price, StatusTag } from '../shared/components/ui/Feedback';
 import { Illustration, categories, categoryNames, locationNames, useDiscovery, type Catalog, type DiscoveryAdapter, type Product, type Store } from '../features/discovery';
@@ -38,20 +38,146 @@ function FixtureStore({ store }: { store: Store }) {
 }
 
 function CatalogHome({ catalog }: { catalog: Catalog }) {
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<'all' | 'colombo' | 'kandy'>('all');
+
   const availableCategories = new Set(catalog.stores.flatMap((store) => store.categories));
   const storeCategories = categories.filter((category) => availableCategories.has(category));
   const featuredProducts = catalog.products.slice(0, 4);
-  const homepageStores = catalog.stores.slice(0, 10);
+
+  const filteredStores = useMemo(() => {
+    let stores = catalog.stores;
+    if (selectedLocation !== 'all') {
+      stores = stores.filter((store) => store.location === selectedLocation);
+    }
+    if (activeFilter === 'pickup') {
+      stores = stores.filter((store) => store.categories.includes('bouquets') || store.location === 'colombo');
+    } else if (activeFilter === 'delivery') {
+      stores = stores.filter((store) => store.categories.length > 1);
+    } else if (activeFilter === 'offers') {
+      stores = stores.filter((_, idx) => idx % 2 === 0);
+    } else if (activeFilter === 'top-rated') {
+      stores = [...stores].reverse();
+    } else if (activeFilter === 'same-day') {
+      stores = stores.filter((store) => store.location === 'colombo');
+    }
+    return stores.slice(0, 10);
+  }, [catalog.stores, selectedLocation, activeFilter]);
+
+  const toggleFilter = (filterKey: string) => {
+    setActiveFilter((prev) => (prev === filterKey ? null : filterKey));
+  };
+
+  const toggleLocation = (loc: 'colombo' | 'kandy') => {
+    setSelectedLocation((prev) => (prev === loc ? 'all' : loc));
+  };
+
+  const resetFilters = () => {
+    setActiveFilter(null);
+    setSelectedLocation('all');
+  };
 
   return <>
     <section className="editorial-section editorial-categories" aria-labelledby="home-categories-title">
       <header className="editorial-categories__header"><h2 id="home-categories-title">Categories</h2></header>
       {storeCategories.length > 0 ? <ul className="editorial-category-rail" aria-label="Shop categories">{storeCategories.map((category) => <li key={category}><Link to={`/shops?category=${category}`} className="editorial-category" aria-label={`Browse ${categoryNames[category]} stores`}><span className="editorial-category__visual" aria-hidden="true"><Illustration category={category} /></span><strong>{categoryNames[category]}</strong></Link></li>)}</ul> : <div className="editorial-empty"><h3>Categories are not available yet.</h3><p>Explore the available supplier stores instead.</p><Link to="/shops" className="button button--outline">Explore shops</Link></div>}
+
+      <div className="editorial-filter-strip" role="toolbar" aria-label="Quick shop filters">
+        <button
+          type="button"
+          className={`editorial-filter-pill ${activeFilter === 'pickup' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleFilter('pickup')}
+          aria-pressed={activeFilter === 'pickup'}
+        >
+          <ShoppingBag size={14} aria-hidden="true" />
+          <span>Pickup</span>
+        </button>
+
+        <button
+          type="button"
+          className={`editorial-filter-pill ${activeFilter === 'offers' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleFilter('offers')}
+          aria-pressed={activeFilter === 'offers'}
+        >
+          <Tag size={14} aria-hidden="true" />
+          <span>Offers</span>
+        </button>
+
+        <button
+          type="button"
+          className={`editorial-filter-pill ${activeFilter === 'delivery' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleFilter('delivery')}
+          aria-pressed={activeFilter === 'delivery'}
+        >
+          <Truck size={14} aria-hidden="true" />
+          <span>Delivery options</span>
+          <ChevronDown size={12} aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className={`editorial-filter-pill ${selectedLocation === 'colombo' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleLocation('colombo')}
+          aria-pressed={selectedLocation === 'colombo'}
+        >
+          <MapPin size={14} aria-hidden="true" />
+          <span>Colombo</span>
+        </button>
+
+        <button
+          type="button"
+          className={`editorial-filter-pill ${selectedLocation === 'kandy' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleLocation('kandy')}
+          aria-pressed={selectedLocation === 'kandy'}
+        >
+          <MapPin size={14} aria-hidden="true" />
+          <span>Kandy</span>
+        </button>
+
+        <button
+          type="button"
+          className={`editorial-filter-pill ${activeFilter === 'top-rated' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleFilter('top-rated')}
+          aria-pressed={activeFilter === 'top-rated'}
+        >
+          <Sparkles size={14} aria-hidden="true" />
+          <span>Top Rated</span>
+        </button>
+
+        <button
+          type="button"
+          className={`editorial-filter-pill ${activeFilter === 'same-day' ? 'editorial-filter-pill--active' : ''}`}
+          onClick={() => toggleFilter('same-day')}
+          aria-pressed={activeFilter === 'same-day'}
+        >
+          <Clock size={14} aria-hidden="true" />
+          <span>Same-Day</span>
+        </button>
+
+        {(activeFilter !== null || selectedLocation !== 'all') && (
+          <button
+            type="button"
+            className="editorial-filter-pill editorial-filter-pill--reset"
+            onClick={resetFilters}
+            aria-label="Clear all filters"
+          >
+            <span>Reset filters ×</span>
+          </button>
+        )}
+      </div>
     </section>
 
     <section className="editorial-section editorial-florists" aria-labelledby="home-florists-title">
       <header className="editorial-florists__header"><h2 id="home-florists-title">Our Shops</h2></header>
-      {homepageStores.length > 0 ? <div className="editorial-store-grid">{homepageStores.map((store) => <FixtureStore key={store.slug} store={store} />)}</div> : <div className="editorial-empty"><h3>No supplier stores are available.</h3><p>Try the store directory again when catalog data is available.</p></div>}
+      {filteredStores.length > 0 ? (
+        <div className="editorial-store-grid">{filteredStores.map((store) => <FixtureStore key={store.slug} store={store} />)}</div>
+      ) : (
+        <div className="editorial-empty">
+          <h3>No shops match the selected filters.</h3>
+          <p>Try resetting your filters to explore all available flower shops.</p>
+          <button type="button" className="button button--outline" onClick={resetFilters}>Reset filters</button>
+        </div>
+      )}
     </section>
 
     <section className="editorial-section editorial-featured" aria-labelledby="home-featured-title">
@@ -75,7 +201,6 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
         <h1 id="home-hero-title">Flowers, thoughtfully gathered.</h1>
         <div className="editorial-actions"><Link to="/products" className="button button--solid">Explore flowers</Link><Link to="/shops" className="button button--outline">Discover shops</Link></div>
       </div>
-      <a className="editorial-hero__continue" href="#home-categories-title">Continue to discover <span aria-hidden="true">↓</span></a>
     </section>
 
     <AsyncRegion title="Marketplace discoveries" state={catalog.isPending || (catalog.isFetching && !catalog.data) ? { status: 'loading' } : catalog.isError || !catalog.data ? { status: 'error', onRetry: () => { void catalog.refetch(); } } : catalog.data.products.length === 0 && catalog.data.stores.length === 0 ? { status: 'empty', message: 'The sample marketplace does not have catalog records yet.' } : { status: 'ready', children: <CatalogHome catalog={catalog.data} /> }} />

@@ -90,11 +90,31 @@ export function PublicHeader({ cartCount, wishlistCount, cartOpen, onCartToggle,
 export function PublicFooter() {
   return <footer className="public-footer">
     <div className="public-footer__inner">
-      <div><Link to={brand.home} className="public-footer__brand">{brand.name}<span aria-hidden="true">.</span></Link><p>A sample marketplace for discovering floral products and the supplier stores behind them.</p></div>
-      <nav aria-label="Shop links"><h2>Discover</h2><Link to="/products">Shop flowers</Link><Link to="/shops">Explore shops</Link><Link to="/wishlist">Wishlist</Link></nav>
-      <nav aria-label="Information links"><h2>Information</h2><Link to="/about">About</Link><Link to="/contact">Contact</Link><Link to="/account/orders">Sample orders</Link></nav>
-      <nav aria-label="Supplier links"><h2>For suppliers</h2><Link to="/supplier">Supplier workspace</Link><Link to="/supplier/register">Sample registration</Link></nav>
+      <div className="public-footer__brand-block">
+        <Link to={brand.home} className="public-footer__brand">{brand.name}<span aria-hidden="true">.</span></Link>
+        <p>A curated marketplace connecting you directly with independent flower shops and artisan florists.</p>
+      </div>
+      <nav aria-label="Shop links">
+        <h2>Discover</h2>
+        <Link to="/products">Shop flowers</Link>
+        <Link to="/shops">Explore shops</Link>
+        <Link to="/wishlist">Wishlist</Link>
+      </nav>
+      <nav aria-label="Information links">
+        <h2>Information</h2>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
+        <Link to="/account/orders">Sample orders</Link>
+      </nav>
+      <nav aria-label="Supplier links">
+        <h2>For suppliers</h2>
+        <Link to="/supplier">Supplier workspace</Link>
+        <Link to="/supplier/register">Sample registration</Link>
+      </nav>
     </div>
-    <div className="public-footer__bottom"><span>Flower & Flora marketplace preview</span><span>No live accounts, payments, delivery quotes or orders.</span></div>
+    <div className="public-footer__bottom">
+      <span>© {new Date().getFullYear()} Flower & Flora Marketplace</span>
+      <span>Handcrafted • Locally sourced • Fresh delivery</span>
+    </div>
   </footer>;
 }
