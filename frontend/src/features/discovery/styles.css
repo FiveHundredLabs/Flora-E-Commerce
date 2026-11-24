@@ -28,3 +28,34 @@
 .shop-sticky-cart-bar__badge{display:grid;place-items:center;min-width:1.75rem;height:1.75rem;padding:0 .4rem;border-radius:var(--radius-pill);background:var(--color-mint-soft, #B7CDB5);color:var(--color-forest-deep, #244C3A);font:700 var(--text-xs)/1 var(--font-body)}
 .shop-sticky-cart-bar__actions{display:flex;align-items:center;gap:.6rem}
 .shop-sticky-cart-bar__actions .button{min-height:2.5rem;padding:.4rem 1rem;font-size:var(--text-sm)}
+
+/* Keep discovery controls and the first catalog row close to the mobile fold. */
+@media(max-width:520px){
+  .discovery-directory{padding-top:1rem}
+  .discovery-directory .discovery-directory-hero{row-gap:.65rem;padding:.75rem 0 1.25rem;align-items:start}
+  .discovery-directory .discovery-directory-hero .breadcrumbs{margin-bottom:.25rem}
+  .discovery-directory .discovery-directory-hero .discovery-eyebrow{margin:0}
+  .discovery-directory .discovery-directory-hero h1{font-size:clamp(2.35rem,11vw,3rem);line-height:.94}
+  .discovery-directory .discovery-directory-hero>p:last-child{margin:.15rem 0 0;font-size:.95rem;line-height:1.5}
+  .discovery-directory .discovery-fixture-note{gap:.25rem;margin:.75rem 0 1rem;padding:.7rem 0;font-size:.82rem;line-height:1.4}
+  .discovery-directory .discovery-mobile-filter-trigger{margin-bottom:.75rem}
+  .discovery-directory .discovery-results-toolbar{grid-template-columns:minmax(0,1fr) auto;gap:.75rem;align-items:end;padding-bottom:.75rem}
+  .discovery-directory .discovery-results-toolbar .discovery-eyebrow{margin-bottom:.25rem;font-size:.65rem}
+  .discovery-directory .discovery-results-toolbar h2{font-size:1.55rem;line-height:1}
+  .discovery-directory .discovery-results-toolbar label{gap:.2rem;font-size:.7rem}
+  .discovery-directory .discovery-results-toolbar select{max-width:7.5rem;min-height:44px;padding:.4rem}
+  .discovery-directory .discovery-count{margin:.65rem 0}
+  .discovery-directory .discovery-card-art{aspect-ratio:1/1}
+  .discovery-directory .discovery-product-card .discovery-card-kicker{margin:0;font-size:.58rem;letter-spacing:.08em}
+  .discovery-directory .discovery-product-card .discovery-card-body>p:not(.discovery-card-kicker){margin:.1rem 0;font-size:.72rem;line-height:1.35}
+  .discovery-directory .discovery-product-card .discovery-card-body>p:last-of-type{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em;color:var(--muted-foreground)}
+  .discovery-directory .discovery-product-facts{display:grid;gap:.35rem;margin-top:auto;padding-top:.5rem;font-size:.7rem}
+  .discovery-directory .discovery-product-facts .status-tag{white-space:normal;padding:.2rem .4rem;font-size:.62rem;line-height:1.3}
+}
+@media(max-width:800px){
+  .discovery-filter-dialog{width:100%;max-width:none}
+}
+@media(max-width:340px){
+  .discovery-directory .discovery-results-toolbar{grid-template-columns:1fr}
+  .discovery-directory .discovery-results-toolbar select{width:100%;max-width:none}
+}

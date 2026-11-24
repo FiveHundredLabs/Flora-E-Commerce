@@ -1,6 +1,6 @@
 # Phase 04 — Marketplace discovery verification
 
-Updated 2026-11-23. Phase 04 implements requirements **C-01** and **F-01** within the currently available development-fixture contract.
+Updated 2026-11-24. Phase 04 implements requirements **C-01** and **F-01** within the currently available development-fixture contract.
 
 ## Delivered scope
 
@@ -9,6 +9,7 @@ Updated 2026-11-23. Phase 04 implements requirements **C-01** and **F-01** withi
 - `/products` supports product text search plus owning-store and store-location filters. Product categories were removed from the discovery model and all category navigation now targets shop discovery.
 - Product cards expose their owning store and explicitly mark price and availability as unavailable. No ratings, stock, delivery, feedback or contact facts are fabricated.
 - Mobile discovery uses a native modal filter dialog with Apply/Clear controls, active-filter count and focus restoration; desktop retains a compact sidebar.
+- At 320–520 px, the discovery hero, fixture notice and results toolbar use a compact hierarchy so product filters and catalog results enter the first viewport. Product cards retain a two-column touch layout with square imagery, clamped descriptions and readable unavailable-state labels; the filter dialog spans the full viewport width.
 - Homepage shop-category discovery uses an eight-item visual rail: Bouquets, Plants, Stems, Roses, Orchids, Gift Sets, Wedding Flowers and Dried Flowers. The compact cards fit in one desktop row and use horizontal touch/keyboard browsing at narrower widths.
 - Homepage discovery order now moves from Categories into supplier-store discovery before presenting the sample product catalog, keeping store identity ahead of individual items.
 - The homepage supplier section is titled “Our Shops” and displays ten fictional stores in an equal-size responsive card grid: three columns on desktop, two on tablet and one on mobile.
@@ -32,6 +33,7 @@ Updated 2026-11-23. Phase 04 implements requirements **C-01** and **F-01** withi
 
 ## Verification
 
+- 2026-11-24 mobile product follow-up: typecheck, lint, all 238 unit/component tests and the production build passed. Live Playwright-browser inspection at 320, 360 and 390 px confirmed zero horizontal overflow, first-viewport filter/results controls, a two-column product grid and a 360 px-wide modal filter sheet. The repository E2E command could not launch because its configured Playwright Chromium binary is not installed; no browser dependency was silently installed.
 - 2026-11-23 homepage discovery follow-up: typecheck, lint, all 235 unit/component tests, the production build and nine release scenarios passed. The focused homepage, discovery and release Playwright suites passed 21/21 across 320, 360, 390, 768, 1024 and 1440 px, including axe, overflow, forced-colors, reduced-motion, enlarged-text, image loading, security headers, filtering, history and route-link assertions.
 - `npm run typecheck`: passed.
 - `npm run lint`: passed.
