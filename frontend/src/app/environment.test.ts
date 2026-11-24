@@ -4,6 +4,7 @@ import { assertMockEnvironment } from '../../config/preview';
 it('accepts default or explicitly selected mock mode', () => {
   expect(() => assertMockEnvironment({})).not.toThrow();
   expect(() => assertMockEnvironment({ VITE_APP_MODE: 'mock' })).not.toThrow();
+  expect(() => assertMockEnvironment({ VITE_APP_MODE: 'mock', VITE_VERCEL_ENV: 'production', VITE_VERCEL_URL: 'flora.vercel.app' })).not.toThrow();
 });
 it.each(['live', 'production', '', 'MOCK'])('rejects unsupported app mode %j', (mode) => {
   expect(() => assertMockEnvironment({ VITE_APP_MODE: mode })).toThrow('Live integrations are unavailable');

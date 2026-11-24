@@ -1,6 +1,10 @@
 /** Public configuration is deliberately limited until backend/auth contracts are approved. */
 export function assertMockEnvironment(environment: Record<string, string | undefined>): void {
-  if (Object.keys(environment).some((key) => key.startsWith('VITE_') && key !== 'VITE_APP_MODE')) {
+  if (
+    Object.keys(environment).some(
+      (key) => key.startsWith('VITE_') && key !== 'VITE_APP_MODE' && !key.startsWith('VITE_VERCEL_') && !key.startsWith('VITE_NETLIFY_'),
+    )
+  ) {
     throw new Error('Unapproved public configuration. Only VITE_APP_MODE=mock is supported; do not expose credentials or speculative API URLs.');
   }
   if (environment.VITE_APP_MODE !== undefined && environment.VITE_APP_MODE !== 'mock') {
