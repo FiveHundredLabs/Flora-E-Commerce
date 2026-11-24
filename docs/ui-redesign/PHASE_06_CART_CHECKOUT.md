@@ -1,6 +1,6 @@
 # Phase 06 — Cart and checkout verification
 
-Updated 2026-11-22. Phase 06 advances requirements **C-02**, **C-03** and **D-01**, subject to open decisions **OD-02**, **OD-04** and **OD-05**.
+Updated 2026-11-24. Phase 06 advances requirements **C-02**, **C-03** and **D-01**, subject to open decisions **OD-02**, **OD-04** and **OD-05**.
 
 ## Delivered scope
 
@@ -11,6 +11,7 @@ Updated 2026-11-22. Phase 06 advances requirements **C-02**, **C-03** and **D-01
 - Subtotal, fees, tax and final total are marked unavailable because the catalog has no verified price or currency fields. PayHere is identified as unconnected and no client amount or URL parameter is treated as payment proof.
 - The existing in-memory sample-order mutation remains idempotent and protected against double submission, late acknowledgement and mismatched acknowledgement. Its internal pickup preference placeholder is disclosed as non-confirming.
 - Empty, invalid-store, quantity-validation, removal, submitting, sanitized error and acknowledged states remain covered by the existing commerce boundaries.
+- At 320–520 px, the cart uses a compact hero and fixture notice, a two-column item row, 44 px quantity/remove controls and a full-width store checkout action. Store ownership, unavailable commerce facts and the one-store checkout boundary remain unchanged.
 
 ## Contract limits
 
@@ -21,6 +22,7 @@ Updated 2026-11-22. Phase 06 advances requirements **C-02**, **C-03** and **D-01
 
 ## Verification
 
+- 2026-11-24 mobile cart follow-up: typecheck, lint, all 238 unit/component tests and the production build passed. Three installed-Chrome Playwright cases passed at 320, 360 and 390 px, covering a filled cart, zero horizontal overflow and 44 px minimum button heights. Live browser inspection also covered the empty cart and populated quantity/store summary layout.
 - `npm run typecheck`: passed.
 - `npm run lint`: passed.
 - `npm run test -- --run`: passed, 23 files / 210 tests. The focused commerce suite passed 23/23.
