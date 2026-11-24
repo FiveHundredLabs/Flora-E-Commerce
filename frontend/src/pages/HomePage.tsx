@@ -17,7 +17,6 @@ function FixtureProduct({ product, store }: { product: Product; store?: Store })
       <Illustration category={visualKind} slug={product.slug} alt={product.name} />
     </Link>
     <div className="editorial-product__body">
-      <span className="editorial-kicker">Sample catalog item</span>
       <h3><Link to={`/products/${product.slug}`}>{product.name}</Link></h3>
       {store && <Link className="editorial-product__store" to={`/shops/${store.slug}`}>{store.name}</Link>}
       <div className="editorial-product__meta"><Price /><StatusTag>Availability not connected</StatusTag></div>
@@ -33,7 +32,7 @@ function FixtureStore({ store }: { store: Store }) {
       <h3><Link to={`/shops/${store.slug}`}>{store.name}</Link></h3>
       <p>{store.description}</p>
       <p className="editorial-store__categories">{store.categories.map((category) => categoryNames[category]).join(' · ')}</p>
-      <Link to={`/shops/${store.slug}`} className="editorial-inline-link">Visit sample store <ArrowUpRight size={15} aria-hidden="true" /></Link>
+      <Link to={`/shops/${store.slug}`} className="editorial-inline-link">Visit shop <ArrowUpRight size={15} aria-hidden="true" /></Link>
     </div>
   </article>;
 }
@@ -73,9 +72,7 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
     <section className="editorial-hero" aria-labelledby="home-hero-title">
       <div className="editorial-hero__image"><img src={heroImage} alt="Garden flowers and foliage arranged in a deep green ceramic vessel" width="1672" height="941" fetchPriority="high" /></div>
       <div className="editorial-hero__copy">
-        <p className="editorial-kicker">A multi-supplier floral marketplace</p>
         <h1 id="home-hero-title">Flowers, thoughtfully gathered.</h1>
-        <p className="editorial-hero__lede">Browse a clearly labelled sample catalog of floral products and the independent supplier-store experiences behind them.</p>
         <div className="editorial-actions"><Link to="/products" className="button button--solid">Explore flowers</Link><Link to="/shops" className="button button--outline">Discover shops</Link></div>
         <p className="editorial-hero__note">Development preview — no live prices, purchases, payments or delivery quotes.</p>
       </div>
@@ -90,8 +87,8 @@ export function HomePage({ adapter }: { adapter?: DiscoveryAdapter } = {}) {
     </section>
 
     <section className="editorial-section editorial-process" aria-labelledby="home-process-title">
-      <header className="editorial-section__header"><div><p className="editorial-kicker">How the sample flow works</p><h2 id="home-process-title">One store at a time</h2></div><p>The current commerce demonstration keeps checkout isolated by supplier store. It does not make live fulfilment or payment requests.</p></header>
-      <ol><li><span>01</span><h3>Choose a store</h3><p>Browse supplier profiles and the fictional products attached to each store.</p></li><li><span>02</span><h3>Build a store-specific cart</h3><p>Add sample products while keeping each supplier group visible.</p></li><li><span>03</span><h3>Review fulfilment preferences</h3><p>Pickup, delivery provider and payment examples remain preferences until supported contracts confirm availability and cost.</p></li></ol>
+      <header className="editorial-section__header"><div><p className="editorial-kicker">How it works</p><h2 id="home-process-title">Order in three easy steps</h2></div><p>Browse by flower type, choose the shop that speaks to you, and place your order directly with them.</p></header>
+      <ol><li><span>01</span><h3>Pick a flower type</h3><p>Choose from bouquets, roses, orchids, tropical arrangements, and more.</p></li><li><span>02</span><h3>Choose your florist</h3><p>Browse local flower shops that carry your selected flowers and read their story.</p></li><li><span>03</span><h3>Order &amp; enjoy</h3><p>Add your favourites to the cart and place your order directly with the shop.</p></li></ol>
     </section>
 
     <section className="editorial-campaign" aria-labelledby="home-campaign-title">
