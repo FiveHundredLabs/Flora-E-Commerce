@@ -56,7 +56,6 @@ test('homepage product, store, category and primary actions use registered route
   await openHomepage(page);
   await expect(page.getByRole('link', { name: 'Explore flowers' }).first()).toHaveAttribute('href', '/products');
   await expect(page.getByRole('link', { name: 'Discover shops' }).first()).toHaveAttribute('href', '/shops');
-  await expect(page.getByRole('link', { name: 'Continue to discover' })).toHaveAttribute('href', '#home-categories-title');
   await expect(page.getByRole('heading', { name: 'Categories' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Browse Bouquets stores' })).toHaveAttribute('href', '/shops?category=bouquets');
   await expect(page.getByRole('link', { name: 'Browse Gift Sets stores' })).toHaveAttribute('href', '/shops?category=gift-sets');

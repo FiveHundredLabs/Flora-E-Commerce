@@ -1,11 +1,35 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
-import { MapPin } from 'lucide-react';
+import { ArrowUpRight, MapPin } from 'lucide-react';
 import { Price, StatusTag } from '../../shared/components/ui/Feedback';
 import { Illustration } from './Illustration';
 import { categoryNames, locationNames, type Catalog, type Product, type Store } from './model';
+import { cartActions, useCartDispatch, openCartDrawer } from '../commerce';
 
-export function ProductCards({ products, catalog }: { products: Product[]; catalog: Catalog }) {
+export function ProductCards({
+  products,
+  catalog,
+  enableQuickAdd = false,
+}: {
+  products: Product[];
+  catalog: Catalog;
+  enableQuickAdd?: boolean;
+}) {
   const { pathname, search } = useLocation();
+  const dispatch = useCartDispatch();
+  const [addedMap, setAddedMap] = useState<Record<string, boolean>>({});
+
+  const handleQuickAdd = (p: Product, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(cartActions.add({ productSlug: p.slug, storeSlug: p.storeSlug }));
+    setAddedMap((prev) => ({ ...prev, [p.slug]: true }));
+    openCartDrawer();
+    setTimeout(() => {
+      setAddedMap((prev) => ({ ...prev, [p.slug]: false }));
+    }, 1500);
+  };
+
   return (
     <ul className="discovery-card-grid">
       {products.map((p) => {
@@ -30,6 +54,18 @@ export function ProductCards({ products, catalog }: { products: Product[]; catal
                   <Price />
                   <StatusTag>Availability not connected</StatusTag>
                 </div>
+                {enableQuickAdd && (
+                  <div className="discovery-card-order-action">
+                    <button
+                      type="button"
+                      className={`discovery-quick-add-btn ${addedMap[p.slug] ? 'discovery-quick-add-btn--added' : ''}`}
+                      onClick={(e) => handleQuickAdd(p, e)}
+                      aria-label={`Add ${p.name} to order`}
+                    >
+                      {addedMap[p.slug] ? '✓ Added to order' : '+ Add to order'}
+                    </button>
+                  </div>
+                )}
               </div>
             </article>
           </li>
@@ -62,7 +98,11 @@ export function StoreCards({ stores }: { stores: Store[] }) {
                 <ul className="discovery-categories" aria-label={`Shop categories for ${s.name}`}>
                   {s.categories.map((c) => <li key={c}>{categoryNames[c]}</li>)}
                 </ul>
-                <Link className="discovery-text-link" to={url}>View store profile</Link>
+                <div className="discovery-store-card__actions">
+                  <Link className="discovery-text-link" to={url}>
+                    Browse shop &amp; flowers <ArrowUpRight size={15} aria-hidden="true" />
+                  </Link>
+                </div>
               </div>
             </article>
           </li>

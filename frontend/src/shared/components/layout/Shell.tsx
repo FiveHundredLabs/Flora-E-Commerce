@@ -8,6 +8,7 @@ import { useWishlist } from '../../../features/discovery';
 import { cartActions, useCartDispatch, useCartDrawer, useCartSelector, type CartLine } from '../../../features/commerce';
 import type { AdminWorkspace } from '../../../features/admin/model';
 import { PublicFooter, PublicHeader } from './PublicChrome';
+import { BottomNav } from './BottomNav';
 
 type Audience = 'customer' | 'supplier' | 'admin';
 const navigation = {
@@ -148,6 +149,7 @@ export function Shell({ audience, children }: { audience: Audience; children: Re
         </div>
         {lines.length > 0 && <div className="cart-drawer__footer"><Link to="/cart" className="view-cart-full-btn" onClick={() => closeCart()}>Review full sample cart</Link></div>}
       </aside>
+      <BottomNav cartCount={totalCartCount} wishlistCount={wishlist.count} onCartToggle={cartDrawer.toggle} />
       <PublicFooter />
     </>}
   </div>;
