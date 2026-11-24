@@ -4,6 +4,19 @@ Status: **partially resolved by project-owner confirmation on 2026-11-14**. Conf
 
 ## Owner-confirmed decisions — 2026-11-14
 
+### Redesign clarification — 2026-11-21
+
+The owner invoked the new `ui-redesign` brief: Botanical Editorial presentation
+replaces the existing visual design across all three audiences. Its five fixed
+brand colors and design system govern this migration (OD-09 visual direction);
+official identity, logo, licensed assets and category labels remain unconfirmed.
+The brief specifies one store per supplier and many-to-many shop categories,
+with no product-category association. The current discovery mock still has a
+product category field; its explicit migration is scheduled for redesign Phase 04.
+These decisions do not approve endpoint schemas, authentication, supplier approval,
+refund rules or other live capabilities. Phase 00 findings and current demo drift
+are recorded in `ui-redesign/REPOSITORY_AUDIT.md`.
+
 Decision maker: project owner (user), through this project's conversation. Approval applies to the specific choices below, not every earlier proposal.
 
 - **OD-02 — resolved business behavior (C-02, C-03, S-03):** Customers may accumulate items from multiple stores in the cart. Checkout operates separately for each store. Moving to another store must not replace or discard existing cart items. A checkout includes only the selected store's items; unrelated store groups remain available for later checkout. There is no combined multi-store checkout requiring automatic order splitting. Backend order creation, payment reconciliation and cart-update contracts remain pending.
@@ -14,6 +27,14 @@ Decision maker: project owner (user), through this project's conversation. Appro
 Acceptance examples for OD-02: add items from stores A and B and see both groups; start checkout for A with no B items in its summary; completing A must preserve B's items. Failed/cancelled payments must not accidentally clear another store's items. Payment states and retry semantics still follow the approved backend contract.
 
 Concrete starting proposals, accountable owners and required evidence for all 13 decisions are in `PRIORITY_REMEDIATION.md`. They support review and do not constitute signoff.
+
+FE-0301 implements a labeled mock-only discovery slice. Its sample fields, categories, locations and URL rules in `FE-0301_CUSTOMER_DISCOVERY.md` do not resolve OD-07/OD-09/OD-10 or establish live backend capabilities.
+
+FE-0401 implements approved per-store checkout in a labeled in-memory commerce demo. Pickup/delivery/provider choices are preferences, not service availability. New sample orders have no payment request; text feedback is a provisional non-published preview. Price/currency, fees, provider operations, refunds/cancellation, review format/moderation and auth/API contracts remain open. See `FE-0401_CUSTOMER_COMMERCE.md`.
+
+FE-0501 provides a fictional supplier application/profile, unpublished catalog/variant edits, sample stock counts, capability-gated order notes and order/unit summaries. It does not settle supplier approval/publication, registration/auth fields, inventory reservations, order transitions, revenue/reporting or media behavior. Application submission creates no account or approval request. See `FE-0501_SUPPLIER.md`; OD-01/OD-10/OD-11/OD-12 remain open.
+
+FE-0601 adds isolated fictional admin records, display-label/category edits and oversight notes. Notes do not approve suppliers, restrict accounts, grant roles, execute refunds or moderate public feedback. Fixture capabilities/taxonomy are illustrative; they do not resolve OD-01/OD-05/OD-06/OD-08–OD-12. See `FE-0601_ADMIN.md`; all live operational actions remain contract-dependent.
 
 | ID | Question | Affects |
 |---|---|---|

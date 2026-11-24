@@ -12,6 +12,12 @@ Vite SPA with React Router v7 (declarative routing), feature-first modular monol
 - React local state: forms, dialogs, tabs and transient interactions.
 - URL search params: shareable filters, search, sort and pagination.
 
+FE-0401 activates Redux for cart references/quantities/client revisions. `CartProvider` lives in `features/commerce` and is composed by app providers. Catalog projections and optional product actions are wired in `pages/` using public feature APIs; commerce and discovery do not import each other's internals. Orders/feedback remain Query-owned mock-service entities. See `FE-0401_CUSTOMER_COMMERCE.md` for mock-only scope and reconciliation safety.
+
+FE-0501 adds an isolated `features/supplier` mock workspace, composed by `pages/SupplierPage.tsx` through its public screen interface. Query owns fixture reads/acknowledged revisions; forms and dialogs own transient state. Its local adapter protocol is not an HTTP contract. Supplier changes do not publish into discovery or mutate customer commerce. No new state library or dependency is added. See `FE-0501_SUPPLIER.md` for routes and contract boundaries.
+
+FE-0601 adds `features/admin` and `pages/AdminPage.tsx` through the same public feature boundary pattern. It owns an isolated Query snapshot for fictional suppliers/users/categories/orders/refund requests/feedback, with revision-checked sample label/category/note commands. Admin imports no supplier/customer feature internals and creates no operational decisions. The adapter is not an HTTP or authorization contract; no dependency/state-library change is needed. See `FE-0601_ADMIN.md`.
+
 ## Auth
 Prefer HttpOnly Secure SameSite cookies issued by backend; `withCredentials` only for approved origin. Handle 401 with a single-flight refresh strategy only after auth contract approval; never retry indefinitely. CSRF protection must be defined with backend. Authorization remains server-side.
 
@@ -20,6 +26,8 @@ Typed endpoint functions and Zod parsing at untrusted boundaries; consistent err
 
 ## Routes (proposed, not approved contract)
 `/` storefront; `/shops`, `/products/:slug`, `/cart`, `/checkout`, `/account/orders`; `/supplier/*`; `/admin/*`. Confirm slug/id behavior before API binding.
+
+FE-0301 implements `/shops`, `/shops/:slug`, `/products` and `/products/:slug` against an isolated mock discovery adapter. These frontend routes and sample slugs are provisional until approved for backend binding. Discovery's public module boundary is `features/discovery/index.ts`; filter state is serialized in the URL and Query owns catalog caching.
 
 ## Performance
 Route-level lazy loading; image sizes and responsive sources; virtualization only for large lists; avoid eager chart bundles; measure LCP/INP/CLS before setting budgets.
